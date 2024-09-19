@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import dicome from "./api/dicome";
+import dicome from "./api/dicome.js";
 
 dotenv.config();
 

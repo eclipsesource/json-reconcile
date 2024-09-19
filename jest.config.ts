@@ -3,9 +3,25 @@
  * https://jestjs.io/docs/configuration
  */
 
-import type {Config} from 'jest';
+/** @type {import('ts-jest').JestConfigWithTsJest} */
 
-const config: Config = {
+const config = {
+  // The root directory that Jest should scan for tests and modules within
+  // rootDir: undefined,
+
+  // A list of paths to directories that Jest should use to search for files in
+  // roots: [
+  //   "<rootDir>"
+  // ],
+  roots: ["./tests"],
+
+  // A preset that is used as a base for Jest's configuration
+  preset: "ts-jest",
+
+  // The test environment that will be used for testing
+  // testEnvironment: "jest-environment-node",
+  testEnvironment: "node",
+
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -101,9 +117,6 @@ const config: Config = {
   // An enum that specifies notification mode. Requires { notify: true }
   // notifyMode: "failure-change",
 
-  // A preset that is used as a base for Jest's configuration
-  // preset: undefined,
-
   // Run tests from one or more projects
   // projects: undefined,
 
@@ -122,14 +135,6 @@ const config: Config = {
   // Automatically restore mock state and implementation before every test
   // restoreMocks: false,
 
-  // The root directory that Jest should scan for tests and modules within
-  // rootDir: undefined,
-
-  // A list of paths to directories that Jest should use to search for files in
-  // roots: [
-  //   "<rootDir>"
-  // ],
-
   // Allows you to use a custom runner instead of Jest's default test runner
   // runner: "jest-runner",
 
@@ -144,9 +149,6 @@ const config: Config = {
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   // snapshotSerializers: [],
-
-  // The test environment that will be used for testing
-  // testEnvironment: "jest-environment-node",
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -187,7 +189,7 @@ const config: Config = {
   // unmockedModulePathPatterns: undefined,
 
   // Indicates whether each individual test should be reported during the run
-  // verbose: undefined,
+  verbose: true,
 
   // An array of regexp patterns that are matched against all source file paths before re-running tests in watch mode
   // watchPathIgnorePatterns: [],
