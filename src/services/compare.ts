@@ -19,7 +19,7 @@ export function createDiff2Way(a: unknown, b: unknown): Delta | undefined {
   const delta = withHash.diff(a, b);
 
   console.log("delta result");
-  console.log(delta);
+  console.log(JSON.stringify(delta));
   return delta;
 }
 
@@ -37,12 +37,14 @@ export function createDiff3Way(
     objectHash: (obj: any) => obj.name || obj.id || obj._id,
   });
 
-  const delta1 = withHash.diff(original, a);
+  const deltaA = withHash.diff(original, a);
 
-  const delta2 = withHash.diff(original, b);
+  const deltaB = withHash.diff(original, b);
 
-  console.log(delta1);
-  return delta1;
+  const resultDelta = withHash.diff(deltaA, deltaB);
+
+  console.log(JSON.stringify(resultDelta));
+  return resultDelta;
 }
 
 export function applyDiffDoPatch(original: unknown, delta: Delta) {
@@ -50,7 +52,7 @@ export function applyDiffDoPatch(original: unknown, delta: Delta) {
 
   withHash.patch(original, delta);
 
-  console.log(original);
+  console.log(JSON.stringify(original));
   return original;
 }
 
