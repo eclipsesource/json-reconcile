@@ -1,4 +1,4 @@
-import { InputModels } from "../../src/interfaces/inputmodels";
+import { InputModels } from "../../src/interfaces/inputmodels.js";
 
 export const up_up_className: InputModels = {
   original: {

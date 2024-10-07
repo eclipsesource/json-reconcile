@@ -1,26 +1,39 @@
-import { create, Delta, diff } from "jsondiffpatch";
+import * as jsondiffpatch from "jsondiffpatch";
+import { Delta } from "jsondiffpatch";
 
-export function createDiff2Way(a: unknown, b: unknown): Delta | undefined {
+import * as jsonpatchFormatter from "jsondiffpatch/formatters/jsonpatch";
+
+export function createDiff2Way(
+  a: unknown,
+  b: unknown
+): jsonpatchFormatter.Op[] | undefined {
   // const delta1 = diff(originalTest2, personATest2);
   // const delta2 = diff(originalTest2, personBTest2);
 
-  const withoutHash = create();
-  const withHash = create({
-    objectHash: (obj: any) => {
-      console.log("objeect - any type");
-      console.log(obj);
-      return obj.id;
+  const withoutHash = jsondiffpatch.create();
+  const withHash = jsondiffpatch.create({
+    objectHash: (obj) => {
+      const objRecord = obj as Record<string, string>;
+      return objRecord.id;
     },
   });
-  const withHash2 = create({
-    objectHash: (obj: any) => obj.name || obj.id || obj._id,
+  const withHash2 = jsondiffpatch.create({
+    objectHash: (obj) => {
+      const objRecord = obj as Record<string, string>;
+      return objRecord.name || objRecord.id || objRecord._id;
+    },
   });
 
   const delta = withHash.diff(a, b);
 
   console.log("delta result");
   console.log(JSON.stringify(delta));
-  return delta;
+
+  const output = jsonpatchFormatter.format(delta, a);
+  console.log("jsonpatchFormatter result");
+  console.log(output);
+
+  return output;
 }
 
 export function createDiff3Way(
@@ -28,27 +41,36 @@ export function createDiff3Way(
   a: unknown,
   b: unknown
 ): Delta | undefined {
-  // const delta1 = diff(originalTest2, personATest2);
-  // const delta2 = diff(originalTest2, personBTest2);
+  const diffsA = createDiff2Way(original, a);
 
-  const withoutHash = create();
-  const withHash = create({ objectHash: (obj: any) => obj.id });
-  const withHash2 = create({
-    objectHash: (obj: any) => obj.name || obj.id || obj._id,
+  const diffsB = createDiff2Way(original, b);
+
+  if (diffsA == undefined || diffsB == undefined) {
+    return undefined;
+  }
+
+  diffsA.forEach((opA) => {
+    diffsB.forEach((opB) => {
+      if (opA.path === opB.path) {
+        console.log("----------- PROBABLY CONFLICT o.O ---------");
+        console.log(opA);
+        console.log(opB);
+      }
+    });
   });
 
-  const deltaA = withHash.diff(original, a);
-
-  const deltaB = withHash.diff(original, b);
-
-  const resultDelta = withHash.diff(deltaA, deltaB);
-
-  console.log(JSON.stringify(resultDelta));
-  return resultDelta;
+  return undefined;
 }
 
 export function applyDiffDoPatch(original: unknown, delta: Delta) {
-  const withHash = create({ objectHash: (obj: any) => obj.id });
+  const withHash = jsondiffpatch.create({
+    objectHash: (obj) => {
+      const objRecord = obj as Record<string, string>;
+      console.log("objeect - any type");
+      console.log(objRecord);
+      return objRecord.id;
+    },
+  });
 
   withHash.patch(original, delta);
 
@@ -57,7 +79,7 @@ export function applyDiffDoPatch(original: unknown, delta: Delta) {
 }
 
 function improvedTextDiffTry() {
-  const customDiffPatch = create({
+  const customDiffPatch = jsondiffpatch.create({
     // textDiff: {
     //   diffMatchPatch: {},
     //   minLength: 60, // default value
