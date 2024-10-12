@@ -2,10 +2,11 @@ import * as jsondiffpatch from "jsondiffpatch";
 import { Delta } from "jsondiffpatch";
 
 import * as jsonpatchFormatter from "jsondiffpatch/formatters/jsonpatch";
+import { JSONValue } from "../utils/jsonHelper.js";
 
 export function createDiff2Way(
-  a: unknown,
-  b: unknown
+  a: JSONValue,
+  b: JSONValue
 ): jsonpatchFormatter.Op[] | undefined {
   // const delta1 = diff(originalTest2, personATest2);
   // const delta2 = diff(originalTest2, personBTest2);
@@ -37,9 +38,9 @@ export function createDiff2Way(
 }
 
 export function createDiff3Way(
-  original: unknown,
-  a: unknown,
-  b: unknown
+  original: JSONValue,
+  a: JSONValue,
+  b: JSONValue
 ): Delta | undefined {
   const diffsA = createDiff2Way(original, a);
 
@@ -53,6 +54,14 @@ export function createDiff3Way(
     diffsB.forEach((opB) => {
       if (opA.path === opB.path) {
         console.log("----------- PROBABLY CONFLICT o.O ---------");
+        console.log(opA);
+        console.log(opB);
+      } else if (opA.op === "remove" && opB.path.startsWith(opA.path)) {
+        console.log("----------- PARENT - CHILD o.O ---------");
+        console.log(opA);
+        console.log(opB);
+      } else if (opB.op === "remove" && opA.path.startsWith(opB.path)) {
+        console.log("----------- CHILD - PARENT o.O ---------");
         console.log(opA);
         console.log(opB);
       }

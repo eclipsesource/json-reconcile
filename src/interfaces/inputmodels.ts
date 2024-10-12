@@ -1,7 +1,9 @@
+import { JSONValue } from "../utils/jsonHelper.js";
+
 export interface InputModels {
-  original: Model;
-  a: Model;
-  b: Model;
+  original: JSONValue;
+  a: JSONValue;
+  b: JSONValue;
 }
 
 interface Model {
@@ -11,6 +13,9 @@ interface Model {
       id: string;
       attributes?: {
         id: string;
+        upperBound: number; // -1 = *
+        lowerBound: number;
+        type: string;
       }[];
       references?: {
         id: string;
