@@ -1,5 +1,6 @@
 import { InputModels } from "../../src/interfaces/inputmodels.js";
 import { createDiff2Way, createDiff3Way } from "../../src/services/compare.js";
+import { testsEnabled } from "../configs.js";
 
 // TEST MODEL
 
@@ -47,14 +48,14 @@ const up_up_mulitplicity_lowerUpperBound: InputModels = {
             {
               id: "category",
               containment: true,
-              upperBound: -1, // -1 = *
+              upperBound: -1,
               lowerBound: 0,
               type: "Category",
             },
             {
               id: "project",
               containment: true,
-              upperBound: -1, // -1 = *
+              upperBound: -1,
               lowerBound: 0,
               type: "Project",
             },
@@ -88,14 +89,14 @@ const up_up_mulitplicity_lowerUpperBound: InputModels = {
             {
               id: "category",
               containment: true,
-              upperBound: -1, // -1 = *
+              upperBound: -1,
               lowerBound: 0,
               type: "Category",
             },
             {
               id: "project",
               containment: true,
-              upperBound: -1, // -1 = *
+              upperBound: -1,
               lowerBound: 0,
               type: "Project",
             },
@@ -129,14 +130,14 @@ const up_up_mulitplicity_lowerUpperBound: InputModels = {
             {
               id: "category",
               containment: true,
-              upperBound: -1, // -1 = *
+              upperBound: -1,
               lowerBound: 0,
               type: "Category",
             },
             {
               id: "project",
               containment: true,
-              upperBound: -1, // -1 = *
+              upperBound: -1,
               lowerBound: 0,
               type: "Project",
             },
@@ -164,37 +165,38 @@ const up_up_mulitplicity_lowerUpperBound: InputModels = {
 
 // TESTS
 
-describe("smart city class name string change -> up-up conflict", () => {
-  test("2-way: original - a", () => {
-    expect(
-      createDiff2Way(up_up_className.original, up_up_className.a)
-    ).toStrictEqual([
-      { op: "remove", path: "/package/classes/0" },
-      { op: "add", path: "/package/classes/0", value: { id: "SmartCity" } },
-    ]);
+if (testsEnabled["up-up"] === true) {
+  describe("smart city class name string change -> up-up conflict", () => {
+    test("2-way: original - a", () => {
+      expect(
+        createDiff2Way(up_up_className.original, up_up_className.a)
+      ).toStrictEqual([
+        { op: "remove", path: "/package/classes/0" },
+        { op: "add", path: "/package/classes/0", value: { id: "SmartCity" } },
+      ]);
+    });
+
+    test("2-way: original - b", () => {
+      expect(
+        createDiff2Way(up_up_className.original, up_up_className.b)
+      ).toStrictEqual([
+        { op: "remove", path: "/package/classes/0" },
+        { op: "add", path: "/package/classes/0", value: { id: "Smart_City" } },
+      ]);
+    });
+
+    test("3-way", () => {
+      expect(
+        createDiff3Way(
+          up_up_className.original,
+          up_up_className.a,
+          up_up_className.b
+        )
+      ).toBeUndefined();
+    });
   });
 
-  test("2-way: original - b", () => {
-    expect(
-      createDiff2Way(up_up_className.original, up_up_className.b)
-    ).toStrictEqual([
-      { op: "remove", path: "/package/classes/0" },
-      { op: "add", path: "/package/classes/0", value: { id: "Smart_City" } },
-    ]);
-  });
-
-  test("3-way", () => {
-    expect(
-      createDiff3Way(
-        up_up_className.original,
-        up_up_className.a,
-        up_up_className.b
-      )
-    ).toBeUndefined();
-  });
-});
-
-/* describe("relation between Project and Category - lower/upper bound change -> up-up conflict", () => {
+  describe("relation between Project and Category - lower/upper bound change -> up-up conflict", () => {
     test("2-way: original - a", () => {
       expect(
         createDiff2Way(
@@ -205,7 +207,7 @@ describe("smart city class name string change -> up-up conflict", () => {
         package: { class: { name: ["Smart City", "SmartCity"] } },
       });
     });
-  
+
     test("2-way: original - b", () => {
       expect(
         createDiff2Way(
@@ -216,7 +218,7 @@ describe("smart city class name string change -> up-up conflict", () => {
         package: { class: { name: ["Smart City", "Smart_City"] } },
       });
     });
-  
+
     test("3-way", () => {
       expect(
         createDiff3Way(
@@ -227,4 +229,4 @@ describe("smart city class name string change -> up-up conflict", () => {
       ).toBeUndefined();
     });
   });
-   */
+}
