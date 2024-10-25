@@ -27,12 +27,7 @@ export function createDiff2Way(
 
   const delta = withHash.diff(a, b);
 
-  console.log("delta result");
-  console.log(JSON.stringify(delta));
-
   const output = jsonpatchFormatter.format(delta, a);
-  console.log("jsonpatchFormatter result");
-  console.log(output);
 
   return output;
 }
@@ -49,6 +44,9 @@ export function createDiff3Way(
   if (diffsA == undefined || diffsB == undefined) {
     return undefined;
   }
+
+  console.log("jsonpatch result A", diffsA);
+  console.log("jsonpatch result B", diffsB);
 
   diffsA.forEach((opA) => {
     diffsB.forEach((opB) => {
