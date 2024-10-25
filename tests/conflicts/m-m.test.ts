@@ -1,8 +1,8 @@
-// TEST MODEL
-
 import { InputModels } from "../../src/interfaces/inputmodels.js";
 import { createDiff3Way } from "../../src/services/compare.js";
 import { testsEnabled } from "../configs.js";
+
+// TEST MODEL
 
 const m_m_category_reference: InputModels = {
   original: {
@@ -17,19 +17,23 @@ const m_m_category_reference: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Project",
+              type: {
+                $ref: "#/package/classes/2",
+              },
             },
             {
               id: "category",
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Category",
+              type: {
+                $ref: "#/package/classes/1",
+              },
             },
           ],
         },
         {
-          id: "InfrastructureComponent",
+          id: "Category",
         },
         {
           id: "Project",
@@ -39,14 +43,19 @@ const m_m_category_reference: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "InfrastructureComponent",
+              type: {
+                $ref: "#/package/classes/3",
+              },
             },
           ],
+        },
+        {
+          id: "InfrastructureComponent",
         },
       ],
     },
   },
-  a: {
+  left: {
     package: {
       id: "scml",
       classes: [
@@ -58,12 +67,14 @@ const m_m_category_reference: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Project",
+              type: {
+                $ref: "#/package/classes/2",
+              },
             },
           ],
         },
         {
-          id: "InfrastructureComponent",
+          id: "Category",
         },
         {
           id: "Project",
@@ -73,21 +84,28 @@ const m_m_category_reference: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "InfrastructureComponent",
+              type: {
+                $ref: "#/package/classes/3",
+              },
             },
             {
               id: "category",
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Category",
+              type: {
+                $ref: "#/package/classes/1",
+              },
             },
           ],
+        },
+        {
+          id: "InfrastructureComponent",
         },
       ],
     },
   },
-  b: {
+  right: {
     package: {
       id: "scml",
       classes: [
@@ -99,7 +117,26 @@ const m_m_category_reference: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Project",
+              type: {
+                $ref: "#/package/classes/2",
+              },
+            },
+          ],
+        },
+        {
+          id: "Category",
+        },
+        {
+          id: "Project",
+          references: [
+            {
+              id: "component",
+              containment: true,
+              upperBound: -1,
+              lowerBound: 0,
+              type: {
+                $ref: "#/package/classes/3",
+              },
             },
           ],
         },
@@ -111,19 +148,9 @@ const m_m_category_reference: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Category",
-            },
-          ],
-        },
-        {
-          id: "Project",
-          references: [
-            {
-              id: "component",
-              containment: true,
-              upperBound: -1,
-              lowerBound: 0,
-              type: "InfrastructureComponent",
+              type: {
+                $ref: "#/package/classes/1",
+              },
             },
           ],
         },
@@ -140,8 +167,8 @@ if (testsEnabled["m-m"] === true) {
       expect(
         createDiff3Way(
           m_m_category_reference.original,
-          m_m_category_reference.a,
-          m_m_category_reference.b
+          m_m_category_reference.left,
+          m_m_category_reference.right
         )
       ).toBeUndefined();
     });

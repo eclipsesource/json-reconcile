@@ -17,7 +17,9 @@ const d_up_attribute_multiplicity_lowerUpperBound: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 1,
-              type: "Category",
+              type: {
+                $ref: "#/package/classes/1",
+              },
             },
           ],
         },
@@ -36,7 +38,7 @@ const d_up_attribute_multiplicity_lowerUpperBound: InputModels = {
       ],
     },
   },
-  a: {
+  left: {
     package: {
       id: "scml",
       classes: [
@@ -48,7 +50,9 @@ const d_up_attribute_multiplicity_lowerUpperBound: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 1,
-              type: "Category",
+              type: {
+                $ref: "#/package/classes/1",
+              },
             },
           ],
         },
@@ -67,7 +71,7 @@ const d_up_attribute_multiplicity_lowerUpperBound: InputModels = {
       ],
     },
   },
-  b: {
+  right: {
     package: {
       id: "scml",
       classes: [
@@ -112,7 +116,7 @@ const d_up_containment_multiplicity_lowerUpperBound: InputModels = {
       ],
     },
   },
-  a: {
+  left: {
     package: {
       id: "scml",
       classes: [
@@ -142,7 +146,7 @@ const d_up_containment_multiplicity_lowerUpperBound: InputModels = {
       ],
     },
   },
-  b: {
+  right: {
     package: {
       id: "scml",
       classes: [
@@ -174,8 +178,8 @@ if (testsEnabled["d-up"] === true) {
       expect(
         createDiff3Way(
           d_up_attribute_multiplicity_lowerUpperBound.original,
-          d_up_attribute_multiplicity_lowerUpperBound.a,
-          d_up_attribute_multiplicity_lowerUpperBound.b
+          d_up_attribute_multiplicity_lowerUpperBound.left,
+          d_up_attribute_multiplicity_lowerUpperBound.right
         )
       ).toBeUndefined();
     });
@@ -186,8 +190,8 @@ if (testsEnabled["d-up"] === true) {
       expect(
         createDiff3Way(
           d_up_containment_multiplicity_lowerUpperBound.original,
-          d_up_containment_multiplicity_lowerUpperBound.a,
-          d_up_containment_multiplicity_lowerUpperBound.b
+          d_up_containment_multiplicity_lowerUpperBound.left,
+          d_up_containment_multiplicity_lowerUpperBound.right
         )
       ).toBeUndefined();
     });

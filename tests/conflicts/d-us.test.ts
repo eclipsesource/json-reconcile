@@ -17,14 +17,18 @@ const d_us_class_referenced: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Category",
+              type: {
+                $ref: "#/package/classes/1",
+              },
             },
             {
               id: "project",
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Project",
+              type: {
+                $ref: "#/package/classes/2",
+              },
             },
           ],
         },
@@ -45,7 +49,7 @@ const d_us_class_referenced: InputModels = {
       ],
     },
   },
-  a: {
+  left: {
     package: {
       id: "scml",
       classes: [
@@ -57,14 +61,18 @@ const d_us_class_referenced: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Category",
+              type: {
+                $ref: "#/package/classes/1",
+              },
             },
             {
               id: "project",
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Project",
+              type: {
+                $ref: "#/package/classes/2",
+              },
             },
           ],
         },
@@ -88,14 +96,16 @@ const d_us_class_referenced: InputModels = {
               containment: false,
               upperBound: -1,
               lowerBound: 1,
-              type: "Category",
+              type: {
+                $ref: "#/package/classes/1",
+              },
             },
           ],
         },
       ],
     },
   },
-  b: {
+  right: {
     package: {
       id: "scml",
       classes: [
@@ -107,7 +117,9 @@ const d_us_class_referenced: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Project",
+              type: {
+                $ref: "#/package/classes/1",
+              },
             },
           ],
         },
@@ -127,8 +139,8 @@ if (testsEnabled["d-us"] === true) {
       expect(
         createDiff3Way(
           d_us_class_referenced.original,
-          d_us_class_referenced.a,
-          d_us_class_referenced.b
+          d_us_class_referenced.left,
+          d_us_class_referenced.right
         )
       ).toBeUndefined();
     });

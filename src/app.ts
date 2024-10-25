@@ -3,17 +3,14 @@ import dotenv from "dotenv";
 import dicome from "./api/dicome.js";
 import modelGetter from "./api/modelGetter.js";
 import session from "express-session";
-import { JSONValue } from "./utils/jsonHelper.js";
+import { InputModels } from "./interfaces/inputmodels.js";
 
 dotenv.config();
 
 // Augment express-session with a custom SessionData object
 declare module "express-session" {
   interface SessionData {
-    inputModels: {
-      left: JSONValue;
-      right: JSONValue;
-    };
+    inputModels: InputModels;
   }
 }
 

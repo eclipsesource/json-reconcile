@@ -19,7 +19,7 @@ const basic: InputModels = {
       ],
     },
   },
-  a: {
+  left: {
     package: {
       id: "scml",
       classes: [
@@ -29,7 +29,7 @@ const basic: InputModels = {
       ],
     },
   },
-  b: {
+  right: {
     package: {
       id: "scml",
       classes: [
@@ -46,13 +46,13 @@ const basic: InputModels = {
 if (testsEnabled.basic === true) {
   test('no differences result in "undefined" diff', () => {
     expect(createDiff2Way(basic.original, basic.original)).toBeUndefined();
-    expect(createDiff2Way(basic.a, basic.a)).toBeUndefined();
+    expect(createDiff2Way(basic.left, basic.left)).toBeUndefined();
   });
 
   test('no conflicts result in "undefined" diff', () => {
     // TODO
     expect(createDiff2Way(basic.original, basic.original)).toBeUndefined();
-    expect(createDiff2Way(basic.a, basic.a)).toBeUndefined();
+    expect(createDiff2Way(basic.left, basic.left)).toBeUndefined();
   });
 
   test("JSON ref test - how it behaves?", () => {

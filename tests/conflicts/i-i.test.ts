@@ -17,7 +17,9 @@ const i_i_same_class: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Project",
+              type: {
+                $ref: "#/package/classes/2",
+              },
             },
           ],
         },
@@ -32,14 +34,16 @@ const i_i_same_class: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "InfrastructureComponent",
+              type: {
+                $ref: "#/package/classes/1",
+              },
             },
           ],
         },
       ],
     },
   },
-  a: {
+  left: {
     package: {
       id: "scml",
       classes: [
@@ -51,7 +55,9 @@ const i_i_same_class: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Project",
+              type: {
+                $ref: "#/package/classes/2",
+              },
             },
           ],
         },
@@ -63,7 +69,9 @@ const i_i_same_class: InputModels = {
               containment: true,
               upperBound: 1,
               lowerBound: 1,
-              type: "Location",
+              type: {
+                $ref: "#/package/classes/3",
+              },
             },
           ],
         },
@@ -75,7 +83,9 @@ const i_i_same_class: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "InfrastructureComponent",
+              type: {
+                $ref: "#/package/classes/1",
+              },
             },
           ],
         },
@@ -99,7 +109,7 @@ const i_i_same_class: InputModels = {
       ],
     },
   },
-  b: {
+  right: {
     package: {
       id: "scml",
       classes: [
@@ -111,7 +121,9 @@ const i_i_same_class: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Project",
+              type: {
+                $ref: "#/package/classes/2",
+              },
             },
           ],
         },
@@ -123,7 +135,9 @@ const i_i_same_class: InputModels = {
               containment: true,
               upperBound: 1,
               lowerBound: 1,
-              type: "Location",
+              type: {
+                $ref: "#/package/classes/3",
+              },
             },
           ],
         },
@@ -135,7 +149,9 @@ const i_i_same_class: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "InfrastructureComponent",
+              type: {
+                $ref: "#/package/classes/1",
+              },
             },
           ],
         },
@@ -169,8 +185,8 @@ if (testsEnabled["i-i"] === true) {
       expect(
         createDiff3Way(
           i_i_same_class.original,
-          i_i_same_class.a,
-          i_i_same_class.b
+          i_i_same_class.left,
+          i_i_same_class.right
         )
       ).toBeUndefined();
     });

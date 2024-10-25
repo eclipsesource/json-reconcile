@@ -1,9 +1,9 @@
 import { JSONValue } from "../utils/jsonHelper.js";
 
 export interface InputModels {
-  original: JSONValue;
-  a: JSONValue;
-  b: JSONValue;
+  left: JSONValue;
+  right: JSONValue;
+  original?: JSONValue;
 }
 
 interface Model {

@@ -15,7 +15,7 @@ const up_up_className: InputModels = {
       ],
     },
   },
-  a: {
+  left: {
     package: {
       id: "scml",
       classes: [
@@ -25,7 +25,7 @@ const up_up_className: InputModels = {
       ],
     },
   },
-  b: {
+  right: {
     package: {
       id: "scml",
       classes: [
@@ -50,14 +50,18 @@ const up_up_mulitplicity_lowerUpperBound: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Category",
+              type: {
+                $ref: "#/package/classes/2",
+              },
             },
             {
               id: "project",
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Project",
+              type: {
+                $ref: "#/package/classes/1",
+              },
             },
           ],
         },
@@ -69,7 +73,9 @@ const up_up_mulitplicity_lowerUpperBound: InputModels = {
               containment: false,
               upperBound: 1,
               lowerBound: 1,
-              type: "Category",
+              type: {
+                $ref: "#/package/classes/2",
+              },
             },
           ],
         },
@@ -79,7 +85,7 @@ const up_up_mulitplicity_lowerUpperBound: InputModels = {
       ],
     },
   },
-  a: {
+  left: {
     package: {
       id: "scml",
       classes: [
@@ -91,14 +97,18 @@ const up_up_mulitplicity_lowerUpperBound: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Category",
+              type: {
+                $ref: "#/package/classes/2",
+              },
             },
             {
               id: "project",
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Project",
+              type: {
+                $ref: "#/package/classes/1",
+              },
             },
           ],
         },
@@ -110,7 +120,9 @@ const up_up_mulitplicity_lowerUpperBound: InputModels = {
               containment: false,
               upperBound: -1,
               lowerBound: 2,
-              type: "Category",
+              type: {
+                $ref: "#/package/classes/2",
+              },
             },
           ],
         },
@@ -120,7 +132,7 @@ const up_up_mulitplicity_lowerUpperBound: InputModels = {
       ],
     },
   },
-  b: {
+  right: {
     package: {
       id: "scml",
       classes: [
@@ -132,14 +144,18 @@ const up_up_mulitplicity_lowerUpperBound: InputModels = {
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Category",
+              type: {
+                $ref: "#/package/classes/2",
+              },
             },
             {
               id: "project",
               containment: true,
               upperBound: -1,
               lowerBound: 0,
-              type: "Project",
+              type: {
+                $ref: "#/package/classes/1",
+              },
             },
           ],
         },
@@ -151,7 +167,9 @@ const up_up_mulitplicity_lowerUpperBound: InputModels = {
               containment: false,
               upperBound: 7,
               lowerBound: 0,
-              type: "Category",
+              type: {
+                $ref: "#/package/classes/2",
+              },
             },
           ],
         },
@@ -169,7 +187,7 @@ if (testsEnabled["up-up"] === true) {
   describe("smart city class name string change -> up-up conflict", () => {
     test("2-way: original - a", () => {
       expect(
-        createDiff2Way(up_up_className.original, up_up_className.a)
+        createDiff2Way(up_up_className.original, up_up_className.left)
       ).toStrictEqual([
         { op: "remove", path: "/package/classes/0" },
         { op: "add", path: "/package/classes/0", value: { id: "SmartCity" } },
@@ -178,7 +196,7 @@ if (testsEnabled["up-up"] === true) {
 
     test("2-way: original - b", () => {
       expect(
-        createDiff2Way(up_up_className.original, up_up_className.b)
+        createDiff2Way(up_up_className.original, up_up_className.right)
       ).toStrictEqual([
         { op: "remove", path: "/package/classes/0" },
         { op: "add", path: "/package/classes/0", value: { id: "Smart_City" } },
@@ -189,8 +207,8 @@ if (testsEnabled["up-up"] === true) {
       expect(
         createDiff3Way(
           up_up_className.original,
-          up_up_className.a,
-          up_up_className.b
+          up_up_className.left,
+          up_up_className.right
         )
       ).toBeUndefined();
     });
@@ -201,7 +219,7 @@ if (testsEnabled["up-up"] === true) {
       expect(
         createDiff2Way(
           up_up_mulitplicity_lowerUpperBound.original,
-          up_up_mulitplicity_lowerUpperBound.a
+          up_up_mulitplicity_lowerUpperBound.left
         )
       ).toStrictEqual({
         package: { class: { name: ["Smart City", "SmartCity"] } },
@@ -212,7 +230,7 @@ if (testsEnabled["up-up"] === true) {
       expect(
         createDiff2Way(
           up_up_mulitplicity_lowerUpperBound.original,
-          up_up_mulitplicity_lowerUpperBound.b
+          up_up_mulitplicity_lowerUpperBound.right
         )
       ).toStrictEqual({
         package: { class: { name: ["Smart City", "Smart_City"] } },
@@ -223,8 +241,8 @@ if (testsEnabled["up-up"] === true) {
       expect(
         createDiff3Way(
           up_up_mulitplicity_lowerUpperBound.original,
-          up_up_mulitplicity_lowerUpperBound.a,
-          up_up_mulitplicity_lowerUpperBound.b
+          up_up_mulitplicity_lowerUpperBound.left,
+          up_up_mulitplicity_lowerUpperBound.right
         )
       ).toBeUndefined();
     });
