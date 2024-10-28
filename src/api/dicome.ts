@@ -5,10 +5,13 @@ import { InputModels } from "../interfaces/inputmodels.js";
 const dicome = Router();
 
 dicome.post("/compare", (req, res) => {
-  if (req.body !== null) {
+  console.log("request body", req.body);
+  if (req.body.left && req.body.right) {
+    console.log("session regenerate");
     req.session.regenerate((err) => {
       if (err) {
-        res.send(500);
+        console.log("Errror?");
+        res.sendStatus(500);
       }
     });
 
@@ -16,43 +19,44 @@ dicome.post("/compare", (req, res) => {
     req.session.inputModels = reqInputModels;
 
     compare(req.session.inputModels);
-    res.send(200);
+    res.sendStatus(200);
   } else {
     if (
       req.session.inputModels === null ||
       req.session.inputModels === undefined
     ) {
-      res.send(500);
+      res.status(500).send("req body empty and session not found");
     } else {
+      console.log("body is null, take models from session");
       compare(req.session.inputModels);
-      res.send(200);
+      res.sendStatus(200);
     }
   }
 });
 
 dicome.put("/apply/ltr", (req, res) => {
-  res.send(200);
+  res.sendStatus(200);
 });
 
 dicome.put("/apply/rtl", (req, res) => {
-  res.send(200);
+  res.sendStatus(200);
 });
 
 dicome.put("/accept", (req, res) => {
-  res.send(200);
+  res.sendStatus(200);
 });
 
 dicome.put("/reject", (req, res) => {
-  res.send(200);
+  res.sendStatus(200);
 });
 
 dicome.delete("/session", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       console.log(err);
-      res.send(500);
+      res.sendStatus(500);
     } else {
-      res.send(200);
+      res.sendStatus(200);
     }
   });
 });

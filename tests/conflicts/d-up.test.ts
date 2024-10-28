@@ -23,7 +23,6 @@ const d_up_attribute_multiplicity_lowerUpperBound: InputModels = {
             },
           ],
         },
-
         {
           id: "Category",
           attributes: [
@@ -101,7 +100,6 @@ const d_up_containment_multiplicity_lowerUpperBound: InputModels = {
             },
           ],
         },
-
         {
           id: "Category",
           attributes: [
