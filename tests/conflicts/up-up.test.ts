@@ -184,6 +184,12 @@ const up_up_mulitplicity_lowerUpperBound: InputModels = {
 // TESTS
 
 if (testsEnabled["up-up"] === true) {
+  test("2-way comparisson", () => {
+    expect(
+      createDiff2Way(up_up_className.original, up_up_className.left)
+    ).toBeUndefined();
+  });
+
   describe("smart city class name string change -> up-up conflict", () => {
     test("2-way: original - a", () => {
       expect(

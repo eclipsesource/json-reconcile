@@ -1,6 +1,6 @@
 export const testsEnabled = {
-  basic: true,
-  "up-up": false,
+  basic: false,
+  "up-up": true,
   "d-up": false,
   "d-us": false,
   "m-m": false,

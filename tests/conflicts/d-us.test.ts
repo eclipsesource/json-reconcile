@@ -1,5 +1,5 @@
 import { InputModels } from "../../src/interfaces/inputmodels.js";
-import { createDiff3Way } from "../../src/services/compare.js";
+import { compare } from "../../src/services/compare.js";
 import { testsEnabled } from "../configs.js";
 
 // TEST MODEL
@@ -76,7 +76,6 @@ const d_us_class_referenced: InputModels = {
             },
           ],
         },
-
         {
           id: "Category",
           attributes: [
@@ -137,11 +136,11 @@ if (testsEnabled["d-us"] === true) {
   describe("reference from Project to Category and delete Category class -> d-us conflict", () => {
     test("3-way", () => {
       expect(
-        createDiff3Way(
-          d_us_class_referenced.original,
-          d_us_class_referenced.left,
-          d_us_class_referenced.right
-        )
+        compare({
+          original: d_us_class_referenced.original,
+          left: d_us_class_referenced.left,
+          right: d_us_class_referenced.right,
+        })
       ).toBeUndefined();
     });
   });
