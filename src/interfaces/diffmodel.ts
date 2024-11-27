@@ -23,10 +23,10 @@ export interface Difference {
 }
 
 export enum DifferenceKind {
-  ADD,
-  DELETE,
-  CHANGE,
-  MOVE,
+  ADD = "add",
+  DELETE = "remove",
+  CHANGE = "replace", // or update?
+  MOVE = "move",
 }
 
 export enum DifferenceState {
