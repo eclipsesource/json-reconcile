@@ -181,21 +181,114 @@ const up_up_mulitplicity_lowerUpperBound: InputModels = {
   },
 };
 
+const up_up_smartcity_reference: InputModels = {
+  original: {
+    package: {
+      id: "scml",
+      classes: [
+        {
+          id: "Smart City",
+          references: [
+            {
+              id: "component",
+              containment: true,
+              upperBound: -1,
+              lowerBound: 0,
+              type: {
+                $ref: "#/package/classes/3",
+              },
+            },
+          ],
+        },
+        {
+          id: "Category",
+        },
+        {
+          id: "Project",
+        },
+        {
+          id: "InfrastructureComponent",
+        },
+      ],
+    },
+  },
+  left: {
+    package: {
+      id: "scml",
+      classes: [
+        {
+          id: "Smart City",
+          references: [
+            {
+              id: "project",
+              containment: true,
+              upperBound: -1,
+              lowerBound: 0,
+              type: {
+                $ref: "#/package/classes/2",
+              },
+            },
+          ],
+        },
+        {
+          id: "Category",
+        },
+        {
+          id: "Project",
+        },
+        {
+          id: "InfrastructureComponent",
+        },
+      ],
+    },
+  },
+  right: {
+    package: {
+      id: "scml",
+      classes: [
+        {
+          id: "Smart City",
+          references: [
+            {
+              id: "category",
+              containment: true,
+              upperBound: -1,
+              lowerBound: 0,
+              type: {
+                $ref: "#/package/classes/1",
+              },
+            },
+          ],
+        },
+        {
+          id: "Category",
+        },
+        {
+          id: "Project",
+        },
+        {
+          id: "InfrastructureComponent",
+        },
+      ],
+    },
+  },
+};
+
 // TESTS
 
 if (testsEnabled["up-up"] === true) {
-  test("2-way comparisson", () => {
-    expect(
-      createDiff2Way(up_up_className.original, up_up_className.left)
-    ).toBeUndefined();
-  });
-
   describe("smart city class name string change -> up-up conflict", () => {
     test("2-way: original - a", () => {
       expect(
         createDiff2Way(up_up_className.original, up_up_className.left)
       ).toStrictEqual([
-        { op: "remove", path: "/package/classes/0" },
+        {
+          op: "remove",
+          path: "/package/classes/0",
+          value: {
+            id: "Smart City",
+          },
+        },
         { op: "add", path: "/package/classes/0", value: { id: "SmartCity" } },
       ]);
     });
@@ -204,7 +297,13 @@ if (testsEnabled["up-up"] === true) {
       expect(
         createDiff2Way(up_up_className.original, up_up_className.right)
       ).toStrictEqual([
-        { op: "remove", path: "/package/classes/0" },
+        {
+          op: "remove",
+          path: "/package/classes/0",
+          value: {
+            id: "Smart City",
+          },
+        },
         { op: "add", path: "/package/classes/0", value: { id: "Smart_City" } },
       ]);
     });
@@ -227,9 +326,18 @@ if (testsEnabled["up-up"] === true) {
           up_up_mulitplicity_lowerUpperBound.original,
           up_up_mulitplicity_lowerUpperBound.left
         )
-      ).toStrictEqual({
-        package: { class: { name: ["Smart City", "SmartCity"] } },
-      });
+      ).toStrictEqual([
+        {
+          op: "replace",
+          path: "/package/classes/1/references/0/lowerBound",
+          value: 2,
+        },
+        {
+          op: "replace",
+          path: "/package/classes/1/references/0/upperBound",
+          value: -1,
+        },
+      ]);
     });
 
     test("2-way: original - b", () => {
@@ -238,9 +346,18 @@ if (testsEnabled["up-up"] === true) {
           up_up_mulitplicity_lowerUpperBound.original,
           up_up_mulitplicity_lowerUpperBound.right
         )
-      ).toStrictEqual({
-        package: { class: { name: ["Smart City", "Smart_City"] } },
-      });
+      ).toStrictEqual([
+        {
+          op: "replace",
+          path: "/package/classes/1/references/0/lowerBound",
+          value: 0,
+        },
+        {
+          op: "replace",
+          path: "/package/classes/1/references/0/upperBound",
+          value: 7,
+        },
+      ]);
     });
 
     test("3-way", () => {
@@ -249,6 +366,90 @@ if (testsEnabled["up-up"] === true) {
           up_up_mulitplicity_lowerUpperBound.original,
           up_up_mulitplicity_lowerUpperBound.left,
           up_up_mulitplicity_lowerUpperBound.right
+        )
+      ).toBeUndefined();
+    });
+  });
+
+  describe("reference from smart city outgoing to Component/Project/Category -> up-up conflict", () => {
+    test("2-way: original - a", () => {
+      expect(
+        createDiff2Way(
+          up_up_smartcity_reference.original,
+          up_up_smartcity_reference.left
+        )
+      ).toStrictEqual([
+        {
+          op: "remove",
+          path: "/package/classes/0/references/0",
+          value: {
+            id: "component",
+            containment: true,
+            upperBound: -1,
+            lowerBound: 0,
+            type: {
+              $ref: "#/package/classes/3",
+            },
+          },
+        },
+        {
+          op: "add",
+          path: "/package/classes/0/references/0",
+          value: {
+            id: "project",
+            containment: true,
+            upperBound: -1,
+            lowerBound: 0,
+            type: {
+              $ref: "#/package/classes/2",
+            },
+          },
+        },
+      ]);
+    });
+
+    test("2-way: original - b", () => {
+      expect(
+        createDiff2Way(
+          up_up_smartcity_reference.original,
+          up_up_smartcity_reference.right
+        )
+      ).toStrictEqual([
+        {
+          op: "remove",
+          path: "/package/classes/0/references/0",
+          value: {
+            id: "component",
+            containment: true,
+            upperBound: -1,
+            lowerBound: 0,
+            type: {
+              $ref: "#/package/classes/3",
+            },
+          },
+        },
+        {
+          op: "add",
+          path: "/package/classes/0/references/0",
+          value: {
+            id: "category",
+            containment: true,
+            upperBound: -1,
+            lowerBound: 0,
+            type: {
+              $ref: "#/package/classes/1",
+            },
+          },
+        },
+      ]);
+    });
+
+    test("3-way", () => {
+      expect(
+        createDiff3Way(
+          up_up_smartcity_reference.original,
+          up_up_smartcity_reference.left,
+          up_up_smartcity_reference.right
         )
       ).toBeUndefined();
     });

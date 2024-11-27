@@ -1,5 +1,5 @@
 import { InputModels } from "../../src/interfaces/inputmodels.js";
-import { createDiff3Way } from "../../src/services/compare.js";
+import { createDiff2Way, createDiff3Way } from "../../src/services/compare.js";
 import { testsEnabled } from "../configs.js";
 
 // TEST MODEL
@@ -181,6 +181,88 @@ const i_i_same_class: InputModels = {
 
 if (testsEnabled["i-i"] === true) {
   describe("new class Location and reference from InfrastructureComponent to Location -> i-i the same conflict", () => {
+    test("2-way: original - a", () => {
+      expect(
+        createDiff2Way(i_i_same_class.original, i_i_same_class.left)
+      ).toStrictEqual([
+        {
+          op: "add",
+          path: "/package/classes/1/references",
+          value: {
+            containment: true,
+            id: "location",
+            lowerBound: 1,
+            type: {
+              $ref: "#/package/classes/3",
+            },
+            upperBound: 1,
+          },
+        },
+        {
+          op: "add",
+          path: "/package/classes/3",
+          value: {
+            attributes: [
+              {
+                id: "Lat",
+                lowerBound: 1,
+                type: "flaot",
+                upperBound: 1,
+              },
+              {
+                id: "Long",
+                lowerBound: 1,
+                type: "flaot",
+                upperBound: 1,
+              },
+            ],
+            id: "Location",
+          },
+        },
+      ]);
+    });
+
+    test("2-way: original - b", () => {
+      expect(
+        createDiff2Way(i_i_same_class.original, i_i_same_class.right)
+      ).toStrictEqual([
+        {
+          op: "add",
+          path: "/package/classes/1/references",
+          value: {
+            containment: true,
+            id: "location",
+            lowerBound: 1,
+            type: {
+              $ref: "#/package/classes/3",
+            },
+            upperBound: 1,
+          },
+        },
+        {
+          op: "add",
+          path: "/package/classes/3",
+          value: {
+            attributes: [
+              {
+                id: "Lat",
+                lowerBound: 1,
+                type: "flaot",
+                upperBound: 1,
+              },
+              {
+                id: "Long",
+                lowerBound: 1,
+                type: "flaot",
+                upperBound: 1,
+              },
+            ],
+            id: "Location",
+          },
+        },
+      ]);
+    });
+
     test("3-way", () => {
       expect(
         createDiff3Way(
