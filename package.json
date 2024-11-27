@@ -18,13 +18,16 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-session": "^1.18.1",
+    "json-refs": "^3.0.15",
     "jsondiffpatch": "^0.6.0",
+    "lodash.isequal": "^4.5.0",
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.14",
+    "@types/lodash.isequal": "^4.5.8",
     "@types/node": "^22.5.0",
     "eslint": "^9.9.1",
     "globals": "^15.9.0",
