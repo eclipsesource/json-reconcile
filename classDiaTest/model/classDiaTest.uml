@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_4Vsj8LYgEe-RZIptlZSLZw" name="classDiaTest">
+  <packagedElement xmi:type="uml:Class" xmi:id="_dkhi4bahEe-Dm-x7DNrM2Q" name="SmartCity">
+    <ownedAttribute xmi:id="_e50FYraiEe-Dm-x7DNrM2Q" name="Category" type="_4opQgLahEe-Dm-x7DNrM2Q" association="_e5zeULaiEe-Dm-x7DNrM2Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_e50scLaiEe-Dm-x7DNrM2Q" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_e50scbaiEe-Dm-x7DNrM2Q" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_jTnXM7aiEe-Dm-x7DNrM2Q" name="Projekt" type="_xcdWoLahEe-Dm-x7DNrM2Q" association="_jTmwILaiEe-Dm-x7DNrM2Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_jTnXNLaiEe-Dm-x7DNrM2Q" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_jTnXNbaiEe-Dm-x7DNrM2Q" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_xcdWoLahEe-Dm-x7DNrM2Q" name="Projekt">
+    <ownedAttribute xmi:id="_jTnXMLaiEe-Dm-x7DNrM2Q" name="SmartCity" type="_dkhi4bahEe-Dm-x7DNrM2Q" aggregation="composite" association="_jTmwILaiEe-Dm-x7DNrM2Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_jTnXMbaiEe-Dm-x7DNrM2Q" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_jTnXMraiEe-Dm-x7DNrM2Q" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_4opQgLahEe-Dm-x7DNrM2Q" name="Category">
+    <ownedAttribute xmi:id="_e5zeUbaiEe-Dm-x7DNrM2Q" name="SmartCity" type="_dkhi4bahEe-Dm-x7DNrM2Q" aggregation="composite" association="_e5zeULaiEe-Dm-x7DNrM2Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_e50FYLaiEe-Dm-x7DNrM2Q" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_e50FYbaiEe-Dm-x7DNrM2Q" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_kBUKsLaiEe-Dm-x7DNrM2Q" name="SDG">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kBUxwLaiEe-Dm-x7DNrM2Q" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_kBUxwbaiEe-Dm-x7DNrM2Q" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_e5zeULaiEe-Dm-x7DNrM2Q" memberEnd="_e5zeUbaiEe-Dm-x7DNrM2Q _e50FYraiEe-Dm-x7DNrM2Q"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_jTmwILaiEe-Dm-x7DNrM2Q" memberEnd="_jTnXMLaiEe-Dm-x7DNrM2Q _jTnXM7aiEe-Dm-x7DNrM2Q"/>
+</uml:Model>
