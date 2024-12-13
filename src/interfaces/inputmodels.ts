@@ -7,10 +7,15 @@ export interface InputModels {
   original?: JSONValue;
 }
 
+export interface DiffWithUsedFlag {
+  diff: customJuuFormatter.Op;
+  used: boolean;
+}
+
 export interface DiffGroupByOpAndPath {
   add: Map<string, customJuuFormatter.Op[]>;
-  remove: Map<string, customJuuFormatter.Op[]>;
-  replace: Map<string, customJuuFormatter.Op[]>;
+  delete: Map<string, customJuuFormatter.Op[]>;
+  update: Map<string, customJuuFormatter.Op[]>;
   move: Map<string, customJuuFormatter.Op[]>;
 }
 
