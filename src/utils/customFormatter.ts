@@ -10,26 +10,20 @@ import {
 import BaseFormatter, {
   BaseFormatterContext,
 } from "jsondiffpatch/formatters/base";
-
-export enum Operation {
-  ADD = "add",
-  REMOVE = "remove",
-  REPLACE = "replace",
-  MOVE = "move",
-}
+import { DifferenceOperationKind } from "../interfaces/util.js";
 
 export interface AddOp {
   op: "add";
   path: string;
   value: unknown;
 }
-export interface RemoveOp {
-  op: "remove";
+export interface DeleteOp {
+  op: "delete";
   path: string;
   value: unknown;
 }
-export interface ReplaceOp {
-  op: "replace";
+export interface UpdateOp {
+  op: "update";
   path: string;
   value: unknown;
 }
@@ -38,7 +32,7 @@ export interface MoveOp {
   from: string;
   path: string;
 }
-export type Op = AddOp | RemoveOp | ReplaceOp | MoveOp;
+export type Op = AddOp | DeleteOp | UpdateOp | MoveOp;
 
 interface CustomJuuFormatterContext extends BaseFormatterContext {
   result: Op[];
@@ -50,11 +44,11 @@ interface CustomJuuFormatterContext extends BaseFormatterContext {
           value: unknown;
         }
       | {
-          op: "remove";
+          op: "delete";
           value: unknown;
         }
       | {
-          op: "replace";
+          op: "update";
           value: unknown;
         }
   ) => void;
@@ -80,9 +74,9 @@ class CustomJuuFormatter extends BaseFormatter<
     context.path = [];
     context.pushCurrentOp = function (obj) {
       if (
-        obj.op === Operation.ADD ||
-        obj.op === Operation.REPLACE ||
-        obj.op === Operation.REMOVE
+        obj.op === DifferenceOperationKind.ADD ||
+        obj.op === DifferenceOperationKind.UPDATE ||
+        obj.op === DifferenceOperationKind.DELETE
       ) {
         this.result!.push({
           op: obj.op,
@@ -94,7 +88,7 @@ class CustomJuuFormatter extends BaseFormatter<
     context.pushMoveOp = function (to) {
       const from = this.currentPath!();
       this.result!.push({
-        op: Operation.MOVE,
+        op: DifferenceOperationKind.MOVE,
         from,
         path: this.toPath!(to),
       });
@@ -141,19 +135,25 @@ class CustomJuuFormatter extends BaseFormatter<
     this.formatDeltaChildren(context, delta, left);
   }
   format_added(context: CustomJuuFormatterContext, delta: AddedDelta): void {
-    context.pushCurrentOp({ op: Operation.ADD, value: delta[0] });
+    context.pushCurrentOp({ op: DifferenceOperationKind.ADD, value: delta[0] });
   }
   format_modified(
     context: CustomJuuFormatterContext,
     delta: ModifiedDelta
   ): void {
-    context.pushCurrentOp({ op: Operation.REPLACE, value: delta[1] });
+    context.pushCurrentOp({
+      op: DifferenceOperationKind.UPDATE,
+      value: delta[1],
+    });
   }
   format_deleted(
     context: CustomJuuFormatterContext,
     delta: DeletedDelta
   ): void {
-    context.pushCurrentOp({ op: Operation.REMOVE, value: delta[0] });
+    context.pushCurrentOp({
+      op: DifferenceOperationKind.DELETE,
+      value: delta[0],
+    });
   }
   format_moved(context: CustomJuuFormatterContext, delta: MovedDelta): void {
     const to = delta[1];
@@ -186,8 +186,8 @@ const compareByIndexDesc = (indexA: string, indexB: string) => {
     return 0;
   }
 };
-const opsByDescendingOrder = (removeOps: Op[]) =>
-  sortBy(removeOps, (a: Op, b: Op) => {
+const opsByDescendingOrder = (deleteOps: Op[]) =>
+  sortBy(deleteOps, (a: Op, b: Op) => {
     const splitA = a.path.split("/");
     const splitB = b.path.split("/");
     if (splitA.length !== splitB.length) {
@@ -214,14 +214,14 @@ export const partitionOps = (arr: Op[], fns: ((op: Op) => boolean)[]) => {
     }, initArr);
 };
 const isMoveOp = ({ op }: { op: string }) => op === "move";
-const isRemoveOp = ({ op }: { op: string }) => op === "remove";
+const isDeleteOp = ({ op }: { op: string }) => op === "delete";
 const reorderOps = (diff: Op[]) => {
   const [moveOps, removedOps, restOps] = partitionOps(diff, [
     isMoveOp,
-    isRemoveOp,
+    isDeleteOp,
   ]);
-  const removeOpsReverse = opsByDescendingOrder(removedOps);
-  return [...removeOpsReverse, ...moveOps, ...restOps];
+  const deleteOpsReverse = opsByDescendingOrder(removedOps);
+  return [...deleteOpsReverse, ...moveOps, ...restOps];
 };
 
 let defaultInstance: CustomJuuFormatter;
