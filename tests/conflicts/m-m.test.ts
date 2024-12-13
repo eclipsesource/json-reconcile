@@ -173,7 +173,7 @@ if (testsEnabled["m-m"] === true) {
         )
       ).toStrictEqual([
         {
-          op: "remove",
+          op: "delete",
           path: "/package/classes/0/references/1",
           value: {
             id: "category",
@@ -209,7 +209,7 @@ if (testsEnabled["m-m"] === true) {
         )
       ).toStrictEqual([
         {
-          op: "remove",
+          op: "delete",
           path: "/package/classes/0/references/1",
           value: {
             id: "category",

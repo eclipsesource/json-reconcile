@@ -25,6 +25,7 @@ const i_i_same_class: InputModels = {
         },
         {
           id: "InfrastructureComponent",
+          references: [],
         },
         {
           id: "Project",
@@ -202,6 +203,7 @@ if (testsEnabled["i-i"] === true) {
           op: "add",
           path: "/package/classes/3",
           value: {
+            id: "Location",
             attributes: [
               {
                 id: "Lat",
@@ -216,7 +218,6 @@ if (testsEnabled["i-i"] === true) {
                 upperBound: 1,
               },
             ],
-            id: "Location",
           },
         },
       ]);
@@ -243,6 +244,7 @@ if (testsEnabled["i-i"] === true) {
           op: "add",
           path: "/package/classes/3",
           value: {
+            id: "Location",
             attributes: [
               {
                 id: "Lat",
@@ -257,7 +259,6 @@ if (testsEnabled["i-i"] === true) {
                 upperBound: 1,
               },
             ],
-            id: "Location",
           },
         },
       ]);

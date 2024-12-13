@@ -144,7 +144,7 @@ if (testsEnabled["d-us"] === true) {
         )
       ).toStrictEqual([
         {
-          op: "remove",
+          op: "delete",
           path: "/package/classes/1",
           value: {
             id: "Category",
@@ -159,7 +159,7 @@ if (testsEnabled["d-us"] === true) {
           },
         },
         {
-          op: "remove",
+          op: "delete",
           path: "/package/classes/0/references/0",
           value: {
             id: "category",
@@ -172,7 +172,7 @@ if (testsEnabled["d-us"] === true) {
           },
         },
         {
-          op: "replace",
+          op: "update",
           path: "/package/classes/0/references/0/type/$ref",
           value: "#/package/classes/1",
         },
