@@ -1,12 +1,14 @@
 {
-    "compilerOptions": {
-      "target": "es6",
-      "module": "node16",
-      "types": ["jest"],
-      "isolatedModules": true,
-      "esModuleInterop": true,
-      "forceConsistentCasingInFileNames": true,
-      "strict": true,
-      "skipLibCheck": true
-    }
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "node16",
+    "types": [
+      "jest"
+    ],
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  }
 }
