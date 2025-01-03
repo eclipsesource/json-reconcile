@@ -29,7 +29,7 @@ app.use(
 app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server is alive");
+  res.send("Server is alive. You can call dicome API.");
 });
 
 app.use("/dicome/model", modelGetter);

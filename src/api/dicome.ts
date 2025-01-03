@@ -10,7 +10,7 @@ dicome.post("/compare", (req, res) => {
     console.log("session regenerate");
     req.session.regenerate((err) => {
       if (err) {
-        console.log("Errror?");
+        console.log("Error occured at session regeneration");
         res.sendStatus(500);
       }
     });
@@ -27,7 +27,9 @@ dicome.post("/compare", (req, res) => {
     ) {
       res.status(500).send("req body empty and session not found");
     } else {
-      console.log("body is null, take models from session");
+      console.log(
+        "body is null, models from session are taken for comparisson"
+      );
       compare(req.session.inputModels);
       res.sendStatus(200);
     }
@@ -35,18 +37,22 @@ dicome.post("/compare", (req, res) => {
 });
 
 dicome.put("/apply/ltr", (req, res) => {
+  // TODO
   res.sendStatus(200);
 });
 
 dicome.put("/apply/rtl", (req, res) => {
+  // TODO
   res.sendStatus(200);
 });
 
 dicome.put("/accept", (req, res) => {
+  // TODO
   res.sendStatus(200);
 });
 
 dicome.put("/reject", (req, res) => {
+  // TODO
   res.sendStatus(200);
 });
 
