@@ -1,5 +1,5 @@
 import { InputModels } from "../src/interfaces/inputmodels.js";
-import { createDiff2Way } from "../src/services/compare.js";
+import { compare, createDiff2Way } from "../src/services/compare.js";
 import {
   tryOutJSONRefLib1,
   tryOutJSONRefsLib2,
@@ -44,13 +44,53 @@ const basic: InputModels = {
 // TESTS
 
 if (testsEnabled.basic === true) {
-  test('no differences result in "undefined" diff', () => {
+  test("no differences result in empty conflict array", () => {
     expect(createDiff2Way(basic.original, basic.original)).toStrictEqual([]);
     expect(createDiff2Way(basic.left, basic.left)).toStrictEqual([]);
   });
 
-  test("1. JSON ref test - how it behaves?", () => {
-    expect(tryOutJSONRefLib1()).toBeUndefined();
+  test("compare 2-way - no differences API result", () => {
+    expect(
+      compare({ left: basic.original, right: basic.original })
+    ).toStrictEqual({
+      threeWay: false,
+      differencesL: [],
+      differencesR: [],
+      conflicts: [],
+    });
+    expect(compare({ left: basic.left, right: basic.left })).toStrictEqual({
+      threeWay: false,
+      differencesL: [],
+      differencesR: [],
+      conflicts: [],
+    });
+  });
+
+  test("compare 3-way - no differences API result", () => {
+    expect(
+      compare({
+        original: basic.original,
+        left: basic.original,
+        right: basic.original,
+      })
+    ).toStrictEqual({
+      threeWay: true,
+      differencesL: [],
+      differencesR: [],
+      conflicts: [],
+    });
+    expect(
+      compare({ original: basic.left, left: basic.left, right: basic.left })
+    ).toStrictEqual({
+      threeWay: true,
+      differencesL: [],
+      differencesR: [],
+      conflicts: [],
+    });
+  });
+
+  test("1. JSON ref test - how it behaves?", async () => {
+    expect(await tryOutJSONRefLib1()).toBeUndefined();
   });
 
   test("2. JSON ref test - how it behaves?", () => {

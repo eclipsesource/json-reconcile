@@ -498,7 +498,7 @@ if (testsEnabled["up-up"] === true) {
         threeWay: true,
         differencesL: [
           {
-            id: 1,
+            id: 0,
             kind: DifferenceOperationKind.UPDATE,
             state: DifferenceState.UNRESOLVED,
             path: "/package/classes/1/references/0/upperBound",
@@ -506,10 +506,10 @@ if (testsEnabled["up-up"] === true) {
         ],
         differencesR: [
           {
-            id: 2,
+            id: 0,
             kind: DifferenceOperationKind.UPDATE,
             state: DifferenceState.UNRESOLVED,
-            path: "",
+            path: "/package/classes/1/references/0/upperBound",
           },
         ],
         conflicts: [
@@ -564,7 +564,47 @@ if (testsEnabled["up-up"] === true) {
           up_up_id_property.left,
           up_up_id_property.right
         )
-      ).toBeUndefined();
+      ).toStrictEqual({
+        threeWay: true,
+        differencesL: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.DELETE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/0",
+          },
+          {
+            id: 1,
+            kind: DifferenceOperationKind.ADD,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/0",
+          },
+        ],
+        differencesR: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.DELETE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/0",
+          },
+          {
+            id: 1,
+            kind: DifferenceOperationKind.ADD,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/0",
+          },
+        ],
+        conflicts: [
+          {
+            leftDiff: {
+              $ref: "#/differencesL/1",
+            },
+            rightDiff: {
+              $ref: "#/differencesR/1",
+            },
+          },
+        ],
+      });
     });
   });
 
@@ -640,7 +680,47 @@ if (testsEnabled["up-up"] === true) {
           up_up_property_name_and_class_parent.left,
           up_up_property_name_and_class_parent.right
         )
-      ).toBeUndefined();
+      ).toStrictEqual({
+        threeWay: true,
+        differencesL: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.DELETE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/2/attributes/0",
+          },
+          {
+            id: 1,
+            kind: DifferenceOperationKind.ADD,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/0/attributes/0",
+          },
+        ],
+        differencesR: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.DELETE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/2/attributes/0",
+          },
+          {
+            id: 1,
+            kind: DifferenceOperationKind.ADD,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/1/attributes/0",
+          },
+        ],
+        conflicts: [
+          {
+            leftDiff: {
+              $ref: "#/differencesL/1",
+            },
+            rightDiff: {
+              $ref: "#/differencesR/1",
+            },
+          },
+        ],
+      });
     });
   });
 
@@ -682,7 +762,35 @@ if (testsEnabled["up-up"] === true) {
           up_up_smartcity_reference.left,
           up_up_smartcity_reference.right
         )
-      ).toBeUndefined();
+      ).toStrictEqual({
+        threeWay: true,
+        differencesL: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.UPDATE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/0/references/0/type/$ref",
+          },
+        ],
+        differencesR: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.UPDATE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/0/references/0/type/$ref",
+          },
+        ],
+        conflicts: [
+          {
+            leftDiff: {
+              $ref: "#/differencesL/0",
+            },
+            rightDiff: {
+              $ref: "#/differencesR/0",
+            },
+          },
+        ],
+      });
     });
   });
 
@@ -766,7 +874,38 @@ if (testsEnabled["up-up"] === true) {
           up_up_smartcity_reference_with_id_value_change.left,
           up_up_smartcity_reference_with_id_value_change.right
         )
-      ).toBeUndefined();
+      ).toStrictEqual({
+        threeWay: true,
+        differencesL: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.DELETE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/0/references/0",
+          },
+          {
+            id: 1,
+            kind: DifferenceOperationKind.ADD,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/0/references/0",
+          },
+        ],
+        differencesR: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.DELETE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/0/references/0",
+          },
+          {
+            id: 1,
+            kind: DifferenceOperationKind.ADD,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/0/references/0",
+          },
+        ],
+        conflicts: [],
+      });
     });
   });
 }
