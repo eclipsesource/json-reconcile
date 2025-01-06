@@ -13,24 +13,25 @@ import BaseFormatter, {
 import { DifferenceOperationKind } from "../interfaces/util.js";
 
 export interface AddOp {
-  op: "add";
+  op: DifferenceOperationKind.ADD;
   path: string;
   value: unknown;
 }
 export interface DeleteOp {
-  op: "delete";
+  op: DifferenceOperationKind.DELETE;
   path: string;
   value: unknown;
 }
 export interface UpdateOp {
-  op: "update";
+  op: DifferenceOperationKind.UPDATE;
   path: string;
   value: unknown;
 }
 export interface MoveOp {
-  op: "move";
+  op: DifferenceOperationKind.MOVE;
   from: string;
   path: string;
+  value: unknown;
 }
 export type Op = AddOp | DeleteOp | UpdateOp | MoveOp;
 
@@ -40,19 +41,19 @@ interface CustomJuuFormatterContext extends BaseFormatterContext {
   pushCurrentOp: (
     obj:
       | {
-          op: "add";
+          op: DifferenceOperationKind.ADD;
           value: unknown;
         }
       | {
-          op: "delete";
+          op: DifferenceOperationKind.DELETE;
           value: unknown;
         }
       | {
-          op: "update";
+          op: DifferenceOperationKind.UPDATE;
           value: unknown;
         }
   ) => void;
-  pushMoveOp: (to: number) => void;
+  pushMoveOp: (obj: { to: number; value: unknown }) => void;
   currentPath: () => string;
   toPath: (to: number) => string;
 }
@@ -85,12 +86,13 @@ class CustomJuuFormatter extends BaseFormatter<
         });
       }
     };
-    context.pushMoveOp = function (to) {
+    context.pushMoveOp = function (obj) {
       const from = this.currentPath!();
       this.result!.push({
         op: DifferenceOperationKind.MOVE,
         from,
-        path: this.toPath!(to),
+        path: this.toPath!(obj.to),
+        value: obj.value,
       });
     };
     context.currentPath = function () {
@@ -156,8 +158,10 @@ class CustomJuuFormatter extends BaseFormatter<
     });
   }
   format_moved(context: CustomJuuFormatterContext, delta: MovedDelta): void {
-    const to = delta[1];
-    context.pushMoveOp(to);
+    context.pushMoveOp({
+      value: delta[0],
+      to: delta[1],
+    });
   }
   format_textdiff() {
     throw new Error("Not implemented");
@@ -213,8 +217,10 @@ export const partitionOps = (arr: Op[], fns: ((op: Op) => boolean)[]) => {
       return acc;
     }, initArr);
 };
-const isMoveOp = ({ op }: { op: string }) => op === "move";
-const isDeleteOp = ({ op }: { op: string }) => op === "delete";
+const isMoveOp = ({ op }: { op: DifferenceOperationKind }) =>
+  op === DifferenceOperationKind.MOVE;
+const isDeleteOp = ({ op }: { op: DifferenceOperationKind }) =>
+  op === DifferenceOperationKind.DELETE;
 const reorderOps = (diff: Op[]) => {
   const [moveOps, removedOps, restOps] = partitionOps(diff, [
     isMoveOp,

@@ -1,3 +1,4 @@
+// other options: "_id", "name"
 export const CONFIG = {
   IDENTIFIER: "id",
 };

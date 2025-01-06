@@ -8,15 +8,15 @@ export interface InputModels {
 }
 
 export interface DiffWithUsedFlag {
-  diff: customJuuFormatter.Op;
+  opInfo: customJuuFormatter.Op;
   used: boolean;
 }
 
 export interface DiffGroupByOpAndPath {
-  add: Map<string, customJuuFormatter.Op[]>;
-  delete: Map<string, customJuuFormatter.Op[]>;
-  update: Map<string, customJuuFormatter.Op[]>;
-  move: Map<string, customJuuFormatter.Op[]>;
+  add: Map<string, DiffWithUsedFlag>;
+  delete: Map<string, DiffWithUsedFlag>;
+  update: Map<string, DiffWithUsedFlag>;
+  move: Map<string, DiffWithUsedFlag>;
 }
 
 interface Model {

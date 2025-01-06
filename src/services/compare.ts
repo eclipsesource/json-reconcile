@@ -7,18 +7,29 @@ import {
   DiffWithUsedFlag,
   InputModels,
 } from "../interfaces/inputmodels.js";
-import { isDeleteUseConflict, isMoveMoveConflict } from "./defaultMerger.js";
-import { DifferenceState, DiffModel } from "../interfaces/diffmodel.js";
+import {
+  isDeleteUseConflict,
+  isMoveMoveConflict,
+} from "../customisable/defaultConflictDetection.js";
+import {
+  Difference,
+  DifferenceState,
+  DiffModel,
+} from "../interfaces/diffmodel.js";
 import * as customJuuFormatter from "../utils/customFormatter.js";
 import { DifferenceOperationKind } from "../interfaces/util.js";
 import defaultHashMatching from "../customisable/defaultHashMatching.js";
+import { algoVariation, CONFIG } from "../config.js";
+import { addUsedFlag, prepareDiffMap } from "../utils/prepInputModels.js";
 
 export function compare(inputModels: InputModels): DiffModel {
   if (inputModels.original === undefined) {
+    console.log("2-Way Comparison");
     return createDiffModelFrom2WayDiff(
       createDiff2Way(inputModels.left, inputModels.right)
     );
   } else {
+    console.log("3-Way Comparison");
     return createDiff3Way(
       inputModels.original,
       inputModels.left,
@@ -39,8 +50,8 @@ function createDiffModelFrom2WayDiff(
 
   for (const op of operations) {
     diffModel.differencesL.push({
-      id: 77, // TODO !!
-      kind: op.op as DifferenceOperationKind,
+      id: 77, // TODO: what id to take?
+      kind: op.op,
       state: DifferenceState.UNRESOLVED,
       path: op.path,
     });
@@ -71,7 +82,7 @@ export function createDiff3Way(
   left: JSONValue,
   right: JSONValue
 ): DiffModel {
-  const diffModel: DiffModel = {
+  let diffModel: DiffModel = {
     threeWay: true,
     differencesL: [],
     differencesR: [],
@@ -88,8 +99,8 @@ export function createDiff3Way(
     if (diffsLeft === undefined) {
       for (const [i, diff] of diffsRight.entries()) {
         diffModel.differencesR.push({
-          id: i,
-          kind: diff.op as DifferenceOperationKind,
+          id: i, // TODO: maybe other id instead of index?
+          kind: diff.op,
           path: diff.path,
           state: DifferenceState.UNRESOLVED,
         });
@@ -97,8 +108,8 @@ export function createDiff3Way(
     } else {
       for (const [i, diff] of diffsLeft.entries()) {
         diffModel.differencesL.push({
-          id: i,
-          kind: diff.op as DifferenceOperationKind,
+          id: i, // TODO: maybe other id instead of index?
+          kind: diff.op,
           path: diff.path,
           state: DifferenceState.UNRESOLVED,
         });
@@ -110,81 +121,42 @@ export function createDiff3Way(
   console.log("jsonpatch result left", JSON.stringify(diffsLeft));
   console.log("jsonpatch result right", JSON.stringify(diffsRight));
 
-  const diffsLeftWithUsedFlag: DiffWithUsedFlag[] = addUsedFlag(diffsLeft);
-  const diffsRightWithUsedFlag: DiffWithUsedFlag[] = addUsedFlag(diffsRight);
+  const diffMapL = prepareDiffMap(diffsLeft);
+  const diffMapR = prepareDiffMap(diffsRight);
 
-  const mapOperationPathLeft = groupByOperationAndPath(diffsLeft);
-  const mapOperationPathRight = groupByOperationAndPath(diffsRight);
+  const diffsWithUsedFlagL = addUsedFlag(diffsLeft);
+  const diffsWithUsedFlagR = addUsedFlag(diffsRight);
 
-  // const operationPartitionedLeft = partitionByOp(diffsLeft);
-  // const operationPartitionedRight = partitionByOp(diffsRight);
+  // Populate differencesL and differencesR
+  diffModel.differencesL = diffsWithUsedFlagL.map((diff, index) => ({
+    id: index, // TODO: maybe other id instead of index?
+    kind: diff.opInfo.op,
+    state: DifferenceState.UNRESOLVED,
+    path: diff.opInfo.path,
+  }));
 
-  nestedForLoopWorstImplementation(
-    diffsLeftWithUsedFlag,
-    diffsRightWithUsedFlag
-  );
+  diffModel.differencesR = diffsWithUsedFlagR.map((diff, index) => ({
+    id: index, // TODO: maybe other id instead of index?
+    kind: diff.opInfo.op,
+    state: DifferenceState.UNRESOLVED,
+    path: diff.opInfo.path,
+  }));
 
-  // ChatGPT
-  // Now, iterate through diffsLeft and compare with corresponding diffsRight
-  /* 
-  for (const opA of diffsLeft) {
-    const matchingB = mapOperationPathRight[opA.op].get(opA.path);
-
-    if (matchingB) {
-      // There are matching operations in diffsRight for the same path and operation type
-      for (const opB of matchingB) {
-        if (opA.op === "add" && opB.op === "add") {
-          console.log("----------- INSERT INSERT CONFLICT :o -----------");
-          console.log(JSON.stringify(opA));
-          console.log(JSON.stringify(opB));
-          // TODO: add to DiffModel conflicts
-        } else if (opA.op === "update" && opB.op === "update") {
-          console.log("----------- one way of UPDATE UPDATE CONFLICT :o -----------");
-          console.log(JSON.stringify(opA));
-          console.log(JSON.stringify(opB));
-          // TODO: add to DiffModel conflicts
-        } else if (opA.op === "delete" && opB.op === "delete") {
-          console.log("----------- PROBABLY MOVE MOVE CONFLICT :O -----------");
-          console.log(JSON.stringify(opA));
-          console.log(JSON.stringify(opB));
-          console.log(isMoveMoveConflict(diffsLeft, opA, diffsRight, opB));
-        } else if (
-          (opA.op === "delete" && opB.op === "add") ||
-          (opA.op === "add" && opB.op === "delete")
-        ) {
-          console.log("----------- PROBABLY DELETE USE CONFLICT :O -----------");
-          console.log(JSON.stringify(opA));
-          console.log(JSON.stringify(opB));
-          console.log(isDeleteUseConflict(opA, opB));
-        }
-      }
-    } else {
-      // If no matching B for opA
-      const deleteB = mapOperationPathRight.remove.get(opA.path);
-      if (deleteB) {
-        for (const opB of deleteB) {
-          if (opB.op === "delete" && opA.path.startsWith(opB.path)) {
-            console.log("----------- CHILD - PARENT O.O -----------");
-            console.log(JSON.stringify(opA));
-            console.log(JSON.stringify(opB));
-          }
-        }
-      }
-    }
+  if (algoVariation.nested) {
+    diffModel = nestedForLoopWorstImplementation(
+      diffsWithUsedFlagL,
+      diffsWithUsedFlagR,
+      diffModel
+    );
   }
 
-  // Now, check diffsRight for operations that were not processed yet (not in diffsA)
-  for (const opB of diffsRight) {
-    const matchingA = mapOperationPathLeft[opB.op].get(opB.path);
-    if (!matchingA) {
-      // If no matching A for opB
-      if (opB.op === "delete" && opB.path.startsWith(opA.path)) {
-        console.log("----------- PARENT - CHILD O.O -----------");
-        console.log(JSON.stringify(opB));
-      }
-    }
+  if (algoVariation.eficient) {
+    diffModel = runtimeImprovedMapImplementations(
+      diffMapL,
+      diffMapR,
+      diffModel
+    );
   }
-     */
 
   return diffModel;
 }
@@ -195,7 +167,7 @@ export function applyDiffDoPatch(original: unknown, delta: Delta) {
       const objRecord = obj as Record<string, string>;
       console.log("objeect - any type");
       console.log(objRecord);
-      return objRecord.id;
+      return objRecord[CONFIG.IDENTIFIER];
     },
   });
 
@@ -216,121 +188,167 @@ function improvedTextDiffTry() {
 } 
 */
 
-// partition diffs by operation type
-function partitionByOp(
-  diffs: customJuuFormatter.Op[]
-): Map<string, customJuuFormatter.Op[]> {
-  const partitioning: Map<DifferenceOperationKind, customJuuFormatter.Op[]> =
-    new Map();
-
-  for (const element of diffs) {
-    const elemOp = element.op as DifferenceOperationKind;
-    if (!partitioning.has(elemOp)) {
-      partitioning.set(elemOp, [element]);
-    } else {
-      const updatedMapValue = partitioning.get(elemOp);
-      updatedMapValue!.push(element);
-      partitioning.set(elemOp, updatedMapValue!);
-    }
-  }
-
-  console.log(partitioning);
-  return partitioning;
-}
-
-function groupByOperationAndPath(
-  diffs: customJuuFormatter.Op[]
-): DiffGroupByOpAndPath {
-  const groupingOperationPath: DiffGroupByOpAndPath = {
-    add: new Map<string, customJuuFormatter.Op[]>(),
-    delete: new Map<string, customJuuFormatter.Op[]>(),
-    update: new Map<string, customJuuFormatter.Op[]>(),
-    move: new Map<string, customJuuFormatter.Op[]>(),
-  };
-
-  for (const diff of diffs) {
-    if (!groupingOperationPath[diff.op].has(diff.path)) {
-      groupingOperationPath[diff.op].set(diff.path, []);
-    }
-    groupingOperationPath[diff.op].get(diff.path)?.push(diff);
-  }
-
-  return groupingOperationPath;
-}
-
 function nestedForLoopWorstImplementation(
   diffsLeft: DiffWithUsedFlag[],
-  diffsRight: DiffWithUsedFlag[]
-) {
-  for (const opA of diffsLeft) {
-    for (const opB of diffsRight) {
-      if (!opA.used && !opB.used) {
-        if (opA.diff.path === opB.diff.path) {
+  diffsRight: DiffWithUsedFlag[],
+  diffModel: DiffModel
+): DiffModel {
+  for (const diffA of diffsLeft) {
+    for (const diffB of diffsRight) {
+      if (!diffA.used && !diffB.used) {
+        if (diffA.opInfo.path === diffB.opInfo.path) {
           // --- same path
-          if (opA.diff.op === "add" && opB.diff.op === "add") {
+          if (
+            diffA.opInfo.op === DifferenceOperationKind.ADD &&
+            diffB.opInfo.op === DifferenceOperationKind.ADD
+          ) {
             console.log("----------- INSERT INSERT CONFLICT :o -----------");
-            console.log(JSON.stringify(opA));
-            console.log(JSON.stringify(opB));
+            console.log(JSON.stringify(diffA));
+            console.log(JSON.stringify(diffB));
 
-            // TODO add to DiffModel conflicts
-          } else if (opA.diff.op === "update" && opB.diff.op === "update") {
+            addConflict(diffA, diffB, diffModel);
+          } else if (
+            diffA.opInfo.op === DifferenceOperationKind.UPDATE &&
+            diffB.opInfo.op === DifferenceOperationKind.UPDATE
+          ) {
             console.log(
               "----------- one way of UPDATE UPDATE CONFLICT :o -----------"
             );
-            console.log(JSON.stringify(opA));
-            console.log(JSON.stringify(opB));
+            console.log(JSON.stringify(diffA));
+            console.log(JSON.stringify(diffB));
 
-            // TODO add to DiffModel conflicts
-          } else if (opA.diff.op === "delete" && opB.diff.op === "delete") {
+            addConflict(diffA, diffB, diffModel);
+          } else if (
+            diffA.opInfo.op === DifferenceOperationKind.DELETE &&
+            diffB.opInfo.op === DifferenceOperationKind.DELETE
+          ) {
             console.log(
               "----------- PROBABLY MOVE MOVE CONFLICT :O -----------"
             );
-            console.log(JSON.stringify(opA));
-            console.log(JSON.stringify(opB));
+            console.log(JSON.stringify(diffA));
+            console.log(JSON.stringify(diffB));
 
-            console.log(isMoveMoveConflict(diffsLeft, opA, diffsRight, opB));
+            if (isMoveMoveConflict(diffsLeft, diffA, diffsRight, diffB)) {
+              console.log("YES - it is move move conflict");
+
+              addConflict(diffA, diffB, diffModel);
+            }
           }
           // ---- not same path
         } else if (
-          opA.diff.op === "delete" &&
-          opB.diff.path.startsWith(opA.diff.path)
+          diffA.opInfo.op === DifferenceOperationKind.DELETE &&
+          diffB.opInfo.path.startsWith(diffA.opInfo.path)
         ) {
           console.log("----------- PARENT - CHILD O.O -----------");
-          console.log(JSON.stringify(opA));
-          console.log(JSON.stringify(opB));
+          console.log(JSON.stringify(diffA));
+          console.log(JSON.stringify(diffB));
         } else if (
-          opB.diff.op === "delete" &&
-          opA.diff.path.startsWith(opB.diff.path)
+          diffB.opInfo.op === DifferenceOperationKind.DELETE &&
+          diffA.opInfo.path.startsWith(diffB.opInfo.path)
         ) {
           console.log("----------- CHILD - PARENT O.O -----------");
-          console.log(JSON.stringify(opA));
-          console.log(JSON.stringify(opB));
+          console.log(JSON.stringify(diffA));
+          console.log(JSON.stringify(diffB));
         } else if (
-          (opA.diff.op === "delete" && opB.diff.op === "add") ||
-          (opA.diff.op === "add" && opB.diff.op === "delete")
+          (diffA.opInfo.op === DifferenceOperationKind.DELETE &&
+            diffB.opInfo.op === DifferenceOperationKind.ADD) ||
+          (diffA.opInfo.op === DifferenceOperationKind.ADD &&
+            diffB.opInfo.op === DifferenceOperationKind.DELETE)
         ) {
           console.log(
             "----------- PROBABLY DELETE USE CONFLICT :O -----------"
           );
-          console.log(JSON.stringify(opA));
-          console.log(JSON.stringify(opB));
+          console.log(JSON.stringify(diffA));
+          console.log(JSON.stringify(diffB));
 
-          console.log(isDeleteUseConflict(opA.diff, opB.diff));
+          if (isDeleteUseConflict(diffA.opInfo, diffB.opInfo)) {
+            console.log("YES - it is delete use conflict");
+
+            addConflict(diffA, diffB, diffModel);
+          }
         }
       }
     }
   }
+
+  return diffModel;
 }
 
-function addUsedFlag(diffs: customJuuFormatter.Op[]): DiffWithUsedFlag[] {
-  const diffsWithUsedFlag: DiffWithUsedFlag[] = [];
+// GENERAL QUESITONS:
+// do I really need this used flag?
+function runtimeImprovedMapImplementations(
+  diffMapLeft: DiffGroupByOpAndPath,
+  diffMapRight: DiffGroupByOpAndPath,
+  diffModel: DiffModel
+): DiffModel {
+  console.log("----------- INSERT INSERT CONFLICT ? -----------");
+  for (const pathLeft of diffMapLeft.add.keys()) {
+    const matchingRight = diffMapRight.add.get(pathLeft);
 
-  for (const operation of diffs) {
-    diffsWithUsedFlag.push({
-      diff: operation,
-      used: false,
-    });
+    if (matchingRight !== undefined) {
+      console.log("INSER INSERT conflict");
+      // TODO add to DiffModel conflicts
+      /* conflicts.push({
+        leftDiff: diffMapLeft.add.get(pathLeft)!,
+        rightDiff: matchingRight,
+      }); */
+    }
   }
 
-  return diffsWithUsedFlag;
+  console.log("----------- UPDATE UPDATE CONFLICT ? -----------");
+  for (const pathLeft of diffMapLeft.update.keys()) {
+    const matchingRight = diffMapRight.update.get(pathLeft);
+
+    if (matchingRight !== undefined) {
+      console.log("UPDATE UPDATE conflict");
+      // TODO add to DiffModel conflicts
+      /* conflicts.push({
+        leftDiff: diffMapLeft.update.get(pathLeft)!,
+        rightDiff: matchingRight,
+      }); */
+    }
+  }
+
+  console.log("----------- MOVE MOVE CONFLICT ? -----------");
+  for (const element of diffMapLeft.move.keys()) {
+    const matchingB = diffMapRight.move.get(element);
+  }
+
+  console.log("----------- DELETE UPDATE or DELETE USE CONFLICT ? -----------");
+  for (const element of diffMapLeft.delete.keys()) {
+    const matchingB = diffMapRight.update.get(element);
+    const matching = diffMapRight.add.get(element);
+  }
+
+  for (const element of diffMapLeft.update.keys()) {
+    const matchingB = diffMapRight.delete.get(element);
+  }
+
+  for (const element of diffMapLeft.add.keys()) {
+    const matchingB = diffMapRight.delete.get(element);
+  }
+
+  return diffModel;
 }
+
+const findRefById = (
+  diff: DiffWithUsedFlag,
+  differences: Difference[],
+  differencesSuffix: "L" | "R"
+) =>
+  `#/differences${differencesSuffix}/${differences.findIndex(
+    (d) => d.path === diff.opInfo.path && d.kind === diff.opInfo.op
+  )}`;
+
+const addConflict = (
+  diffA: DiffWithUsedFlag,
+  diffB: DiffWithUsedFlag,
+  diffModel: DiffModel
+) => {
+  diffModel.conflicts.push({
+    leftDiff: { $ref: findRefById(diffA, diffModel.differencesL, "L") },
+    rightDiff: { $ref: findRefById(diffB, diffModel.differencesR, "R") },
+  });
+
+  console.log("CONFLIIICTS: ", JSON.stringify(diffModel), diffA, diffB);
+};
