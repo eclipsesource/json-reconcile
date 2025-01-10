@@ -9,6 +9,7 @@ import {
 } from "../interfaces/inputmodels.js";
 import {
   isDeleteUseConflict,
+  isDeletUpdateConflict,
   isMoveMoveConflict,
 } from "../customisable/defaultConflictDetection.js";
 import {
@@ -123,6 +124,10 @@ export function createDiff3Way(
 
   const diffMapL = prepareDiffMap(diffsLeft);
   const diffMapR = prepareDiffMap(diffsRight);
+
+  console.log("maps of left and right diffs");
+  console.log(JSON.stringify(diffMapL));
+  console.log(JSON.stringify(diffMapR));
 
   const diffsWithUsedFlagL = addUsedFlag(diffsLeft);
   const diffsWithUsedFlagR = addUsedFlag(diffsRight);
@@ -263,6 +268,23 @@ function nestedForLoopWorstImplementation(
 
           if (isDeleteUseConflict(diffA.opInfo, diffB.opInfo)) {
             console.log("YES - it is delete use conflict");
+
+            addConflict(diffA, diffB, diffModel);
+          }
+        } else if (
+          (diffA.opInfo.op === DifferenceOperationKind.DELETE &&
+            diffB.opInfo.op === DifferenceOperationKind.UPDATE) ||
+          (diffA.opInfo.op === DifferenceOperationKind.UPDATE &&
+            diffB.opInfo.op === DifferenceOperationKind.DELETE)
+        ) {
+          console.log(
+            "----------- PROBABLY DELETE UPDATE CONFLICT :O -----------"
+          );
+          console.log(JSON.stringify(diffA));
+          console.log(JSON.stringify(diffB));
+
+          if (isDeletUpdateConflict(diffA.opInfo, diffB.opInfo)) {
+            console.log("YES - it is delete update conflict");
 
             addConflict(diffA, diffB, diffModel);
           }
