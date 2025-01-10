@@ -4,12 +4,32 @@ import { directRefExists } from "../utils/refHandler.js";
 import { DifferenceOperationKind } from "../interfaces/util.js";
 import { DiffWithUsedFlag } from "../interfaces/inputmodels.js";
 
-/* 
-    this is the easy version of check, only with string comparisson
-    "includes" operation
-    better version would be with ref exists check
-    => gibt es in dem value Objekt eine ref mit Pfad = der von delete op
- */
+// dublicated code (except operation type add-update) same as isDeleteUseConflict
+export function isDeletUpdateConflict(
+  operationLeft: Op,
+  operationRight: Op
+): boolean {
+  if (
+    operationLeft.op === DifferenceOperationKind.DELETE &&
+    operationRight.op === DifferenceOperationKind.UPDATE
+  ) {
+    console.log("-DELETE UPDATE CHECK-");
+    // TODO WARNING, there could occure an error when the updated value is just a string or number not an object
+    if (directRefExists(operationLeft.path, operationRight.value as object)) {
+      return true;
+    }
+  } else if (
+    operationLeft.op === DifferenceOperationKind.UPDATE &&
+    operationRight.op === DifferenceOperationKind.DELETE
+  ) {
+    if (directRefExists(operationRight.path, operationLeft.value as object)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// dublicated code (except operation type add-update) same as isDeletUpdateConflict
 export function isDeleteUseConflict(
   operationLeft: Op,
   operationRight: Op
