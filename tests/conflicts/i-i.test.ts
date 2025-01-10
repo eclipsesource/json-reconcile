@@ -517,7 +517,7 @@ if (testsEnabled["i-i"] === true) {
       ).toStrictEqual([
         {
           op: "add",
-          path: "/package/classes/1/references",
+          path: "/package/classes/1/references/0",
           value: {
             containment: true,
             id: "location",

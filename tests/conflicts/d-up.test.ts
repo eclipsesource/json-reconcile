@@ -1,10 +1,109 @@
+import { DifferenceState } from "../../src/interfaces/diffmodel.js";
 import { InputModels } from "../../src/interfaces/inputmodels.js";
+import { DifferenceOperationKind } from "../../src/interfaces/util.js";
 import { createDiff2Way, createDiff3Way } from "../../src/services/compare.js";
 import { testsEnabled } from "../configs.js";
 
 // TEST MODEL
-
 const d_up_attribute_multiplicity_upperBound: InputModels = {
+  original: {
+    package: {
+      id: "scml",
+      classes: [
+        {
+          id: "Smart City",
+          references: [
+            {
+              id: "category",
+              containment: true,
+              upperBound: -1,
+              lowerBound: 1,
+              type: {
+                $ref: "#/package/classes/1",
+              },
+            },
+          ],
+        },
+        {
+          id: "Category",
+          attributes: [
+            {
+              id: "SDG",
+              upperBound: -1,
+              lowerBound: 1,
+              type: "int",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  left: {
+    package: {
+      id: "scml",
+      classes: [
+        {
+          id: "Smart City",
+          references: [
+            {
+              id: "category",
+              containment: true,
+              upperBound: -1,
+              lowerBound: 1,
+              type: {
+                $ref: "#/package/classes/1",
+              },
+            },
+          ],
+        },
+        {
+          id: "Category",
+          attributes: [
+            {
+              id: "SDG",
+              lowerBound: 1,
+              type: "int",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  right: {
+    package: {
+      id: "scml",
+      classes: [
+        {
+          id: "Smart City",
+          references: [
+            {
+              id: "category",
+              containment: true,
+              upperBound: -1,
+              lowerBound: 1,
+              type: {
+                $ref: "#/package/classes/1",
+              },
+            },
+          ],
+        },
+        {
+          id: "Category",
+          attributes: [
+            {
+              id: "SDG",
+              upperBound: 17,
+              lowerBound: 1,
+              type: "int",
+            },
+          ],
+        },
+      ],
+    },
+  },
+};
+
+const d_up_attribute_multiplicity_upperBound_delete_parent: InputModels = {
   original: {
     package: {
       id: "scml",
@@ -66,7 +165,6 @@ const d_up_attribute_multiplicity_upperBound: InputModels = {
             },
           ],
         },
-
         {
           id: "Category",
           attributes: [
@@ -333,12 +431,82 @@ const d_up_i_delete_elem_add_elem_in_array: InputModels = {
 // TESTS
 
 if (testsEnabled["d-up"] === true) {
-  describe("update Category attribute multiplicity upper bound and delete Category class -> d-up conflict", () => {
+  describe("update Category attribute multiplicity upper bound and delete this attribute upper bound -> d-up conflict", () => {
     test("2-way: original - a", () => {
       expect(
         createDiff2Way(
           d_up_attribute_multiplicity_upperBound.original,
           d_up_attribute_multiplicity_upperBound.left
+        )
+      ).toStrictEqual([
+        {
+          op: "delete",
+          path: "/package/classes/1/attributes/0/upperBound",
+          value: -1,
+        },
+      ]);
+    });
+
+    test("2-way: original - b", () => {
+      expect(
+        createDiff2Way(
+          d_up_attribute_multiplicity_upperBound.original,
+          d_up_attribute_multiplicity_upperBound.right
+        )
+      ).toStrictEqual([
+        {
+          op: "update",
+          path: "/package/classes/1/attributes/0/upperBound",
+          value: 17,
+        },
+      ]);
+    });
+
+    test("3-way", () => {
+      expect(
+        createDiff3Way(
+          d_up_attribute_multiplicity_upperBound.original,
+          d_up_attribute_multiplicity_upperBound.left,
+          d_up_attribute_multiplicity_upperBound.right
+        )
+      ).toStrictEqual({
+        threeWay: true,
+        differencesL: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.DELETE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/1/attributes/0/upperBound",
+          },
+        ],
+        differencesR: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.UPDATE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/1/attributes/0/upperBound",
+          },
+        ],
+        conflicts: [
+          {
+            leftDiff: {
+              $ref: "#/differencesL/0",
+            },
+            rightDiff: {
+              $ref: "#/differencesR/0",
+            },
+          },
+        ],
+      });
+    });
+  });
+
+  describe("update Category attribute multiplicity upper bound and delete parent Category class -> d-up conflict", () => {
+    test("2-way: original - a", () => {
+      expect(
+        createDiff2Way(
+          d_up_attribute_multiplicity_upperBound_delete_parent.original,
+          d_up_attribute_multiplicity_upperBound_delete_parent.left
         )
       ).toStrictEqual([
         {
@@ -375,8 +543,8 @@ if (testsEnabled["d-up"] === true) {
     test("2-way: original - b", () => {
       expect(
         createDiff2Way(
-          d_up_attribute_multiplicity_upperBound.original,
-          d_up_attribute_multiplicity_upperBound.right
+          d_up_attribute_multiplicity_upperBound_delete_parent.original,
+          d_up_attribute_multiplicity_upperBound_delete_parent.right
         )
       ).toStrictEqual([
         {
@@ -390,15 +558,49 @@ if (testsEnabled["d-up"] === true) {
     test("3-way", () => {
       expect(
         createDiff3Way(
-          d_up_attribute_multiplicity_upperBound.original,
-          d_up_attribute_multiplicity_upperBound.left,
-          d_up_attribute_multiplicity_upperBound.right
+          d_up_attribute_multiplicity_upperBound_delete_parent.original,
+          d_up_attribute_multiplicity_upperBound_delete_parent.left,
+          d_up_attribute_multiplicity_upperBound_delete_parent.right
         )
-      ).toBeUndefined();
+      ).toStrictEqual({
+        threeWay: true,
+        differencesL: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.DELETE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/1",
+          },
+          {
+            id: 1,
+            kind: DifferenceOperationKind.DELETE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/0/references/0",
+          },
+        ],
+        differencesR: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.UPDATE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/1/attributes/0/upperBound",
+          },
+        ],
+        conflicts: [
+          {
+            leftDiff: {
+              $ref: "#/differencesL/0",
+            },
+            rightDiff: {
+              $ref: "#/differencesR/0",
+            },
+          },
+        ],
+      });
     });
   });
 
-  describe("delete parent Project of child Category class and update Category attribute multiplicity -> d-up conflict", () => {
+  describe("delete parent Project of child Category class and update attribute multiplicity of Category class - parent - child -> d-up conflict", () => {
     test("2-way: original - a", () => {
       expect(
         createDiff2Way(
@@ -461,7 +663,35 @@ if (testsEnabled["d-up"] === true) {
           d_up_attribute_multiplicity_upperbound_child_parent.left,
           d_up_attribute_multiplicity_upperbound_child_parent.right
         )
-      ).toBeUndefined();
+      ).toStrictEqual({
+        threeWay: true,
+        differencesL: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.DELETE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/0/childs/0",
+          },
+        ],
+        differencesR: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.UPDATE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/0/childs/0/childs/0/attributes/0/upperBound",
+          },
+        ],
+        conflicts: [
+          {
+            leftDiff: {
+              $ref: "#/differencesL/0",
+            },
+            rightDiff: {
+              $ref: "#/differencesR/0",
+            },
+          },
+        ],
+      });
     });
   });
 
@@ -509,7 +739,35 @@ if (testsEnabled["d-up"] === true) {
           d_up_containment_multiplicity_upperBound.left,
           d_up_containment_multiplicity_upperBound.right
         )
-      ).toBeUndefined();
+      ).toStrictEqual({
+        threeWay: true,
+        differencesL: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.DELETE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/0/references/0",
+          },
+        ],
+        differencesR: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.UPDATE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/0/references/0/upperBound",
+          },
+        ],
+        conflicts: [
+          {
+            leftDiff: {
+              $ref: "#/differencesL/0",
+            },
+            rightDiff: {
+              $ref: "#/differencesR/0",
+            },
+          },
+        ],
+      });
     });
   });
 
@@ -555,7 +813,26 @@ if (testsEnabled["d-up"] === true) {
           d_up_i_delete_elem_add_elem_in_array.left,
           d_up_i_delete_elem_add_elem_in_array.right
         )
-      ).toBeUndefined();
+      ).toStrictEqual({
+        threeWay: true,
+        differencesL: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.DELETE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/1",
+          },
+        ],
+        differencesR: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.ADD,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/2",
+          },
+        ],
+        conflicts: ["TEST"],
+      });
     });
   });
 }

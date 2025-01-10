@@ -1,4 +1,6 @@
+import { DifferenceState } from "../../src/interfaces/diffmodel.js";
 import { InputModels } from "../../src/interfaces/inputmodels.js";
+import { DifferenceOperationKind } from "../../src/interfaces/util.js";
 import { createDiff2Way, createDiff3Way } from "../../src/services/compare.js";
 import { testsEnabled } from "../configs.js";
 
@@ -244,7 +246,35 @@ if (testsEnabled["m-m"] === true) {
           m_m_category_reference.left,
           m_m_category_reference.right
         )
-      ).toBeUndefined();
+      ).toStrictEqual({
+        threeWay: true,
+        differencesL: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.MOVE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/2/references/1",
+          },
+        ],
+        differencesR: [
+          {
+            id: 0,
+            kind: DifferenceOperationKind.MOVE,
+            state: DifferenceState.UNRESOLVED,
+            path: "/package/classes/2/references/1",
+          },
+        ],
+        conflicts: [
+          {
+            leftDiff: {
+              $ref: "#/differencesL/0",
+            },
+            rightDiff: {
+              $ref: "#/differencesR/0",
+            },
+          },
+        ],
+      });
     });
   });
 }
