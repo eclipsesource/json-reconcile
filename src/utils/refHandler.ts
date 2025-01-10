@@ -83,11 +83,11 @@ export function getAllReferences(): void {
 }
 
 export function directRefExists(referencepath: string, value: object): boolean {
+  console.log("------- directRefExists function ------");
+  console.log("input parameter value: ", value);
   const refs = findRefs(value);
 
-  console.log("------- directRefExists ------");
-
-  console.log(JSON.stringify(value));
+  console.log(refs);
 
   const uriReferencePath = "#" + referencepath;
 
