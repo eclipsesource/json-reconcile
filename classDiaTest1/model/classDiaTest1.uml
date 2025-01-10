@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_Rk9BoM9PEe-cMaU3oB6XpA" name="classDiaTest1">
+  <packagedElement xmi:type="uml:Package" xmi:id="_S9HucM9PEe-cMaU3oB6XpA" name="NewPackage1">
+    <packagedElement xmi:type="uml:Class" xmi:id="_TX7bIM9PEe-cMaU3oB6XpA" name="NewClass1">
+      <ownedAttribute xmi:id="_WAn7ss9PEe-cMaU3oB6XpA" name="NewClass1" type="_SaPq4M9PEe-cMaU3oB6XpA" association="_WAnUoM9PEe-cMaU3oB6XpA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_WAoiwM9PEe-cMaU3oB6XpA" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_WAoiwc9PEe-cMaU3oB6XpA" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_SaPq4M9PEe-cMaU3oB6XpA" name="NewClass1">
+    <ownedAttribute xmi:id="_WAnUoc9PEe-cMaU3oB6XpA" name="NewClass1" type="_TX7bIM9PEe-cMaU3oB6XpA" aggregation="composite" association="_WAnUoM9PEe-cMaU3oB6XpA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_WAn7sM9PEe-cMaU3oB6XpA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_WAn7sc9PEe-cMaU3oB6XpA" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_WAnUoM9PEe-cMaU3oB6XpA" memberEnd="_WAnUoc9PEe-cMaU3oB6XpA _WAn7ss9PEe-cMaU3oB6XpA"/>
+</uml:Model>
