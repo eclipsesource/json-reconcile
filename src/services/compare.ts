@@ -9,8 +9,8 @@ import {
 } from "../interfaces/inputmodels.js";
 import {
   isDeleteUseConflict,
-  isDeletUpdateConflict,
   isMoveMoveConflict,
+  isParentChildDeleteUseConflict,
 } from "../customisable/defaultConflictDetection.js";
 import {
   Difference,
@@ -18,7 +18,7 @@ import {
   DiffModel,
 } from "../interfaces/diffmodel.js";
 import * as customJuuFormatter from "../utils/customFormatter.js";
-import { DifferenceOperationKind } from "../interfaces/util.js";
+import { CustomOp, DifferenceOperationKind } from "../interfaces/util.js";
 import defaultHashMatching from "../customisable/defaultHashMatching.js";
 import { algoVariation, CONFIG } from "../config.js";
 import { addUsedFlag, prepareDiffMap } from "../utils/prepInputModels.js";
@@ -39,9 +39,7 @@ export function compare(inputModels: InputModels): DiffModel {
   }
 }
 
-function createDiffModelFrom2WayDiff(
-  operations: customJuuFormatter.Op[]
-): DiffModel {
+function createDiffModelFrom2WayDiff(operations: CustomOp[]): DiffModel {
   const diffModel: DiffModel = {
     threeWay: false,
     differencesL: [],
@@ -61,14 +59,11 @@ function createDiffModelFrom2WayDiff(
   return diffModel;
 }
 
-export function createDiff2Way(
-  left: JSONValue,
-  right: JSONValue
-): customJuuFormatter.Op[] {
+export function createDiff2Way(left: JSONValue, right: JSONValue): CustomOp[] {
   const delta = jsondiffpatch
     .create({
       objectHash: (obj) => {
-        return defaultHashMatching(obj as Record<string, string>);
+        return defaultHashMatching(obj as Record<string, undefined>);
       },
     })
     .diff(left, right);
@@ -122,32 +117,25 @@ export function createDiff3Way(
   console.log("jsonpatch result left", JSON.stringify(diffsLeft));
   console.log("jsonpatch result right", JSON.stringify(diffsRight));
 
-  const diffMapL = prepareDiffMap(diffsLeft);
-  const diffMapR = prepareDiffMap(diffsRight);
-
-  console.log("maps of left and right diffs");
-  console.log(JSON.stringify(diffMapL));
-  console.log(JSON.stringify(diffMapR));
-
-  const diffsWithUsedFlagL = addUsedFlag(diffsLeft);
-  const diffsWithUsedFlagR = addUsedFlag(diffsRight);
-
-  // Populate differencesL and differencesR
-  diffModel.differencesL = diffsWithUsedFlagL.map((diff, index) => ({
-    id: index, // TODO: maybe other id instead of index?
-    kind: diff.opInfo.op,
-    state: DifferenceState.UNRESOLVED,
-    path: diff.opInfo.path,
-  }));
-
-  diffModel.differencesR = diffsWithUsedFlagR.map((diff, index) => ({
-    id: index, // TODO: maybe other id instead of index?
-    kind: diff.opInfo.op,
-    state: DifferenceState.UNRESOLVED,
-    path: diff.opInfo.path,
-  }));
-
   if (algoVariation.nested) {
+    const diffsWithUsedFlagL = addUsedFlag(diffsLeft);
+    const diffsWithUsedFlagR = addUsedFlag(diffsRight);
+
+    // Populate differencesL and differencesR
+    diffModel.differencesL = diffsWithUsedFlagL.map((diff, index) => ({
+      id: index, // TODO: maybe other id instead of index?
+      kind: diff.opInfo.op,
+      state: DifferenceState.UNRESOLVED,
+      path: diff.opInfo.path,
+    }));
+
+    diffModel.differencesR = diffsWithUsedFlagR.map((diff, index) => ({
+      id: index, // TODO: maybe other id instead of index?
+      kind: diff.opInfo.op,
+      state: DifferenceState.UNRESOLVED,
+      path: diff.opInfo.path,
+    }));
+
     diffModel = nestedForLoopWorstImplementation(
       diffsWithUsedFlagL,
       diffsWithUsedFlagR,
@@ -156,6 +144,42 @@ export function createDiff3Way(
   }
 
   if (algoVariation.eficient) {
+    const diffMapL = prepareDiffMap(diffsLeft);
+    const diffMapR = prepareDiffMap(diffsRight);
+
+    console.log("maps of left and right diffs");
+
+    const diffListL = [
+      ...diffMapL.add.values(),
+      ...diffMapL.update.values(),
+      ...diffMapL.delete.values(),
+      ...diffMapL.move.values(),
+    ];
+    const diffListR = [
+      ...diffMapR.add.values(),
+      ...diffMapR.update.values(),
+      ...diffMapR.delete.values(),
+      ...diffMapR.move.values(),
+    ];
+
+    console.log(diffListL);
+    console.log(diffListR);
+
+    // Populate differencesL and differencesR
+    diffModel.differencesL = diffListL.map((diff, index) => ({
+      id: index, // TODO: maybe other id instead of index?
+      kind: diff.opInfo.op,
+      state: DifferenceState.UNRESOLVED,
+      path: diff.opInfo.path,
+    }));
+
+    diffModel.differencesR = diffListR.map((diff, index) => ({
+      id: index, // TODO: maybe other id instead of index?
+      kind: diff.opInfo.op,
+      state: DifferenceState.UNRESOLVED,
+      path: diff.opInfo.path,
+    }));
+
     diffModel = runtimeImprovedMapImplementations(
       diffMapL,
       diffMapR,
@@ -169,7 +193,7 @@ export function createDiff3Way(
 export function applyDiffDoPatch(original: unknown, delta: Delta) {
   const withHash = jsondiffpatch.create({
     objectHash: (obj) => {
-      const objRecord = obj as Record<string, string>;
+      const objRecord = obj as Record<string, undefined>;
       console.log("objeect - any type");
       console.log(objRecord);
       return objRecord[CONFIG.IDENTIFIER];
@@ -238,22 +262,47 @@ function nestedForLoopWorstImplementation(
 
               addConflict(diffA, diffB, diffModel);
             }
+          } else if (
+            (diffA.opInfo.op === DifferenceOperationKind.DELETE &&
+              diffB.opInfo.op === DifferenceOperationKind.UPDATE) ||
+            (diffA.opInfo.op === DifferenceOperationKind.UPDATE &&
+              diffB.opInfo.op === DifferenceOperationKind.DELETE)
+          ) {
+            console.log("----------- DELETE UPDATE CONFLICT :O -----------");
+            console.log(JSON.stringify(diffA));
+            console.log(JSON.stringify(diffB));
+
+            addConflict(diffA, diffB, diffModel);
           }
-          // ---- not same path
+          // ---- all below code not same path
         } else if (
           diffA.opInfo.op === DifferenceOperationKind.DELETE &&
-          diffB.opInfo.path.startsWith(diffA.opInfo.path)
+          diffB.opInfo.op === DifferenceOperationKind.UPDATE &&
+          diffB.opInfo.path.startsWith(diffA.opInfo.path) &&
+          diffB.opInfo.path.split("/").length >
+            diffA.opInfo.path.split("/").length
         ) {
-          console.log("----------- PARENT - CHILD O.O -----------");
+          console.log(
+            "----------- PARENT - CHILD DELELTE UPDATE CONFLICT :o ----------- "
+          );
           console.log(JSON.stringify(diffA));
           console.log(JSON.stringify(diffB));
+
+          addConflict(diffA, diffB, diffModel);
         } else if (
           diffB.opInfo.op === DifferenceOperationKind.DELETE &&
-          diffA.opInfo.path.startsWith(diffB.opInfo.path)
+          diffA.opInfo.op === DifferenceOperationKind.UPDATE &&
+          diffA.opInfo.path.startsWith(diffB.opInfo.path) &&
+          diffA.opInfo.path.split("/").length >
+            diffB.opInfo.path.split("/").length
         ) {
-          console.log("----------- CHILD - PARENT O.O -----------");
+          console.log(
+            "----------- CHILD - PARENT DELELTE UPDATE CONFLICT :o ----------- "
+          );
           console.log(JSON.stringify(diffA));
           console.log(JSON.stringify(diffB));
+
+          addConflict(diffA, diffB, diffModel);
         } else if (
           (diffA.opInfo.op === DifferenceOperationKind.DELETE &&
             diffB.opInfo.op === DifferenceOperationKind.ADD) ||
@@ -270,24 +319,16 @@ function nestedForLoopWorstImplementation(
             console.log("YES - it is delete use conflict");
 
             addConflict(diffA, diffB, diffModel);
-          }
-        } else if (
-          (diffA.opInfo.op === DifferenceOperationKind.DELETE &&
-            diffB.opInfo.op === DifferenceOperationKind.UPDATE) ||
-          (diffA.opInfo.op === DifferenceOperationKind.UPDATE &&
-            diffB.opInfo.op === DifferenceOperationKind.DELETE)
-        ) {
-          console.log(
-            "----------- PROBABLY DELETE UPDATE CONFLICT :O -----------"
-          );
-          console.log(JSON.stringify(diffA));
-          console.log(JSON.stringify(diffB));
-
-          if (isDeletUpdateConflict(diffA.opInfo, diffB.opInfo)) {
-            console.log("YES - it is delete update conflict");
-
+          } else if (
+            isParentChildDeleteUseConflict(diffA.opInfo, diffB.opInfo)
+          ) {
+            console.log("YES - it is PARENT - CHILD >DELELTE USE< conflict");
             addConflict(diffA, diffB, diffModel);
           }
+        } else {
+          console.log("----------- IT IS ACTUALLY NO CONFLICT -----------");
+          console.log(JSON.stringify(diffA));
+          console.log(JSON.stringify(diffB));
         }
       }
     }
@@ -308,12 +349,8 @@ function runtimeImprovedMapImplementations(
     const matchingRight = diffMapRight.add.get(pathLeft);
 
     if (matchingRight !== undefined) {
-      console.log("INSER INSERT conflict");
-      // TODO add to DiffModel conflicts
-      /* conflicts.push({
-        leftDiff: diffMapLeft.add.get(pathLeft)!,
-        rightDiff: matchingRight,
-      }); */
+      console.log("INSER INSERT conflict !!");
+      addConflict(diffMapLeft.add.get(pathLeft)!, matchingRight, diffModel);
     }
   }
 
@@ -322,32 +359,69 @@ function runtimeImprovedMapImplementations(
     const matchingRight = diffMapRight.update.get(pathLeft);
 
     if (matchingRight !== undefined) {
-      console.log("UPDATE UPDATE conflict");
-      // TODO add to DiffModel conflicts
-      /* conflicts.push({
-        leftDiff: diffMapLeft.update.get(pathLeft)!,
-        rightDiff: matchingRight,
-      }); */
+      console.log("UPDATE UPDATE conflict !!");
+      addConflict(diffMapLeft.update.get(pathLeft)!, matchingRight, diffModel);
     }
   }
 
   console.log("----------- MOVE MOVE CONFLICT ? -----------");
-  for (const element of diffMapLeft.move.keys()) {
-    const matchingB = diffMapRight.move.get(element);
+  for (const pathLeft of diffMapLeft.move.keys()) {
+    const matchingRight = diffMapRight.move.get(pathLeft);
+    const matchingLeft = diffMapLeft.move.get(pathLeft);
+
+    if (
+      matchingLeft !== undefined &&
+      matchingRight !== undefined &&
+      matchingLeft.opInfo.from === matchingRight.opInfo.from &&
+      (JSON.stringify(matchingLeft.opInfo.value) ===
+        JSON.stringify(matchingRight.opInfo.value) ||
+        (matchingLeft.opInfo.value as Record<string, undefined>)[
+          CONFIG.IDENTIFIER
+        ] ===
+          (matchingRight.opInfo.value as Record<string, undefined>)[
+            CONFIG.IDENTIFIER
+          ])
+    ) {
+      console.log("MOVE MOVE conflict !!");
+      addConflict(matchingLeft, matchingRight, diffModel);
+    }
   }
 
-  console.log("----------- DELETE UPDATE or DELETE USE CONFLICT ? -----------");
-  for (const element of diffMapLeft.delete.keys()) {
-    const matchingB = diffMapRight.update.get(element);
-    const matching = diffMapRight.add.get(element);
+  console.log("----------- DELETE UPDATE or DELETE USE conflict ? -----------");
+  for (const pathLeft of diffMapLeft.delete.keys()) {
+    const matchingLeft = diffMapLeft.delete.get(pathLeft);
+    const matchingRightUpdate = diffMapRight.update.get(pathLeft);
+
+    if (matchingRightUpdate !== undefined && matchingLeft !== undefined) {
+      console.log("----------- DELETE UPDATE conflict :O !! -----------");
+      addConflict(matchingLeft, matchingRightUpdate, diffModel);
+    }
+
+    const matchingRightAdd = diffMapRight.add.get(pathLeft);
+    if (matchingRightAdd !== undefined && matchingLeft !== undefined) {
+      console.log("----------- DELETE USE conflict :O !! -----------");
+      addConflict(matchingLeft, matchingRightAdd, diffModel);
+    }
   }
 
-  for (const element of diffMapLeft.update.keys()) {
-    const matchingB = diffMapRight.delete.get(element);
+  for (const pathLeft of diffMapLeft.update.keys()) {
+    const matchingLeft = diffMapLeft.update.get(pathLeft);
+    const matchingRight = diffMapRight.delete.get(pathLeft);
+
+    if (matchingRight !== undefined && matchingLeft !== undefined) {
+      console.log("----------- UPDATE DELETE conflict :O !! -----------");
+      addConflict(matchingLeft, matchingRight, diffModel);
+    }
   }
 
-  for (const element of diffMapLeft.add.keys()) {
-    const matchingB = diffMapRight.delete.get(element);
+  for (const pathLeft of diffMapLeft.add.keys()) {
+    const matchingLeft = diffMapLeft.add.get(pathLeft);
+    const matchingRight = diffMapRight.delete.get(pathLeft);
+
+    if (matchingRight !== undefined && matchingLeft !== undefined) {
+      console.log("----------- USE DELETE conflict :O !! -----------");
+      addConflict(matchingLeft, matchingRight, diffModel);
+    }
   }
 
   return diffModel;
