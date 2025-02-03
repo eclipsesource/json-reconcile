@@ -261,7 +261,7 @@ if (testsEnabled["m-m"] === true) {
             id: 0,
             kind: DifferenceOperationKind.MOVE,
             state: DifferenceState.UNRESOLVED,
-            path: "/package/classes/2/references/1",
+            path: "/package/classes/3/references/0",
           },
         ],
         conflicts: [

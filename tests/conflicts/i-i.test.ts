@@ -359,7 +359,7 @@ const i_i_same_class_different_id: InputModels = {
 // TESTS
 
 if (testsEnabled["i-i"] === true) {
-  describe("new class Location and reference from InfrastructureComponent to Location, also same id -> i-i the same conflict", () => {
+  describe("new class Location and reference from InfrastructureComponent to Location, also same id -> i-i the same - conflict", () => {
     test("2-way: original - a", () => {
       expect(
         createDiff2Way(
@@ -507,7 +507,7 @@ if (testsEnabled["i-i"] === true) {
     });
   });
 
-  describe("new class Location and reference from InfrastructureComponent to Location, id not the same -> no conflict", () => {
+  describe("new class Location and reference from InfrastructureComponent to Location, id not the same -> i-i - no conflict", () => {
     test("2-way: original - a", () => {
       expect(
         createDiff2Way(
@@ -562,7 +562,7 @@ if (testsEnabled["i-i"] === true) {
       ).toStrictEqual([
         {
           op: "add",
-          path: "/package/classes/1/references",
+          path: "/package/classes/1/references/0",
           value: {
             containment: true,
             id: "location",

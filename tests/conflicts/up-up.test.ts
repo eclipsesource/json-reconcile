@@ -794,7 +794,7 @@ if (testsEnabled["up-up"] === true) {
     });
   });
 
-  describe("reference from smart city outgoing to Component/Project/Category with reference id update -> up-up conflict", () => {
+  describe("NOT COVERED (up-up with id change) - reference from smart city outgoing to Component/Project/Category with reference id update -> up-up conflict", () => {
     test("2-way: original - a", () => {
       expect(
         createDiff2Way(
@@ -904,7 +904,7 @@ if (testsEnabled["up-up"] === true) {
             path: "/package/classes/0/references/0",
           },
         ],
-        conflicts: [],
+        conflicts: ["test"],
       });
     });
   });

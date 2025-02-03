@@ -771,6 +771,7 @@ if (testsEnabled["d-up"] === true) {
     });
   });
 
+  // ????? more clarification needed what should happen here?
   describe("delete elem on index 1 array and add elem on index 2 array -> d-up/d-i? conflict", () => {
     test("2-way: original - a", () => {
       expect(
@@ -831,7 +832,7 @@ if (testsEnabled["d-up"] === true) {
             path: "/package/classes/2",
           },
         ],
-        conflicts: ["TEST"],
+        conflicts: ["?? TEST ??"],
       });
     });
   });
