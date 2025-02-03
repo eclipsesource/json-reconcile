@@ -1,5 +1,5 @@
 import { JSONValue } from "../utils/jsonHelper.js";
-import * as customJuuFormatter from "../utils/customFormatter.js";
+import { AddOp, CustomOp, DeleteOp, MoveOp, UpdateOp } from "./util.js";
 
 export interface InputModels {
   left: JSONValue;
@@ -8,15 +8,20 @@ export interface InputModels {
 }
 
 export interface DiffWithUsedFlag {
-  opInfo: customJuuFormatter.Op;
+  opInfo: CustomOp;
+  used: boolean;
+}
+
+export interface DiffWithUsedFlagCustom<Op> {
+  opInfo: Op;
   used: boolean;
 }
 
 export interface DiffGroupByOpAndPath {
-  add: Map<string, DiffWithUsedFlag>;
-  delete: Map<string, DiffWithUsedFlag>;
-  update: Map<string, DiffWithUsedFlag>;
-  move: Map<string, DiffWithUsedFlag>;
+  add: Map<string, DiffWithUsedFlagCustom<AddOp>>;
+  delete: Map<string, DiffWithUsedFlagCustom<DeleteOp>>;
+  update: Map<string, DiffWithUsedFlagCustom<UpdateOp>>;
+  move: Map<string, DiffWithUsedFlagCustom<MoveOp>>;
 }
 
 interface Model {
