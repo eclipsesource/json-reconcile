@@ -4,13 +4,15 @@ import dicome from "./api/dicome.js";
 import modelGetter from "./api/modelGetter.js";
 import session from "express-session";
 import { InputModels } from "./interfaces/inputmodels.js";
+import { DiffModel } from "./interfaces/diffmodel.js";
 
 dotenv.config();
 
 // Augment express-session with a custom SessionData object
 declare module "express-session" {
-  interface SessionData {
+  export interface SessionData {
     inputModels: InputModels;
+    diffModel: DiffModel;
   }
 }
 
