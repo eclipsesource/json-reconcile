@@ -1,14 +1,62 @@
+import { Session, SessionData } from "express-session";
 import { CONFIG } from "../config.js";
 import {
   DiffGroupByOpAndPath,
   DiffWithUsedFlag,
+  DiffWithUsedFlagCustom,
+  InputModels,
 } from "../interfaces/inputmodels.js";
-import { DifferenceOperationKind } from "../interfaces/util.js";
-import * as customJuuFormatter from "../utils/customFormatter.js";
+import {
+  AddOp,
+  CustomOp,
+  DeleteOp,
+  DifferenceOperationKind,
+  MoveOp,
+  UpdateOp,
+} from "../interfaces/util.js";
+import { DiffModel } from "../interfaces/diffmodel.js";
 
-export function addUsedFlag(
-  diffs: customJuuFormatter.Op[]
-): DiffWithUsedFlag[] {
+// Augment express-session with a custom SessionData object
+declare module "express-session" {
+  export interface SessionData {
+    inputModels: InputModels;
+    diffModel: DiffModel;
+  }
+}
+
+export function getInputModelsOrError(
+  reqBody: InputModels,
+  reqSession: Session & Partial<SessionData>
+): InputModels | string {
+  if (reqBody.left && reqBody.right) {
+    console.log("session regenerate");
+    reqSession.regenerate((err) => {
+      if (err) {
+        return "Error occured at session regeneration";
+      }
+    });
+
+    const reqInputModels: InputModels = reqBody;
+    reqSession.inputModels = reqInputModels;
+
+    return reqSession.inputModels;
+  } else {
+    if (
+      reqSession.inputModels === null ||
+      reqSession.inputModels === undefined
+    ) {
+      return "Req body empty and session not found";
+    } else {
+      console.log(
+        "body is null, models from session are taken for comparisson"
+      );
+
+      return reqSession.inputModels;
+    }
+  }
+}
+
+export function addUsedFlag(diffs: CustomOp[]): DiffWithUsedFlag[] {
   const diffsWithUsedFlag: DiffWithUsedFlag[] = [];
 
   for (const diff of diffs) {
@@ -22,11 +70,8 @@ export function addUsedFlag(
 }
 
 // partition diffs by operation type
-function partitionByOp(
-  diffs: customJuuFormatter.Op[]
-): Map<string, customJuuFormatter.Op[]> {
-  const partitioning: Map<DifferenceOperationKind, customJuuFormatter.Op[]> =
-    new Map();
+function partitionByOp(diffs: CustomOp[]): Map<string, CustomOp[]> {
+  const partitioning: Map<DifferenceOperationKind, CustomOp[]> = new Map();
 
   for (const element of diffs) {
     const elemOp = element.op;
@@ -47,14 +92,42 @@ function groupByOperationAndPath(
   diffs: DiffWithUsedFlag[]
 ): DiffGroupByOpAndPath {
   const groupingOperationPath: DiffGroupByOpAndPath = {
-    add: new Map<string, DiffWithUsedFlag>(),
-    delete: new Map<string, DiffWithUsedFlag>(),
-    update: new Map<string, DiffWithUsedFlag>(),
-    move: new Map<string, DiffWithUsedFlag>(),
+    add: new Map<string, DiffWithUsedFlagCustom<AddOp>>(),
+    delete: new Map<string, DiffWithUsedFlagCustom<DeleteOp>>(),
+    update: new Map<string, DiffWithUsedFlagCustom<UpdateOp>>(),
+    move: new Map<string, DiffWithUsedFlagCustom<MoveOp>>(),
   };
 
   for (const diff of diffs) {
-    groupingOperationPath[diff.opInfo.op].set(diff.opInfo.path, diff);
+    switch (diff.opInfo.op) {
+      case DifferenceOperationKind.ADD:
+        groupingOperationPath.add.set(diff.opInfo.path, {
+          opInfo: diff.opInfo,
+          used: diff.used,
+        });
+        break;
+      case DifferenceOperationKind.DELETE:
+        groupingOperationPath.delete.set(diff.opInfo.path, {
+          opInfo: diff.opInfo,
+          used: diff.used,
+        });
+        break;
+      case DifferenceOperationKind.UPDATE:
+        groupingOperationPath.update.set(diff.opInfo.path, {
+          opInfo: diff.opInfo,
+          used: diff.used,
+        });
+        break;
+      case DifferenceOperationKind.MOVE:
+        groupingOperationPath.move.set(diff.opInfo.path, {
+          opInfo: diff.opInfo,
+          used: diff.used,
+        });
+        break;
+      default:
+        // unexpected operation types ?
+        break;
+    }
   }
 
   return groupingOperationPath;
@@ -82,22 +155,21 @@ function gatherUpMoveOpsFromDeleteAdd(
     ...[...diffMap.add.values()]
   );
 
-  console.log("FLATTEN DELETE: ", flattenDelete);
-  console.log("FLATTEN ADD: ", flattenAdd);
+  console.log("FLATTEN DELETE: ", JSON.stringify(flattenDelete));
+  console.log("FLATTEN ADD: ", JSON.stringify(flattenAdd));
 
   for (const diffAdd of flattenAdd) {
     const foundDelete = flattenDelete.find(
       (diffDelete) =>
-        diffDelete.opInfo.value === diffAdd.opInfo.value ||
-        (diffDelete.opInfo.value as Record<string, string>)[
+        (diffDelete.opInfo.value as Record<string, undefined>)[
           CONFIG.IDENTIFIER
         ] ===
-          (diffAdd.opInfo.value as Record<string, string>)[CONFIG.IDENTIFIER]
+        (diffAdd.opInfo.value as Record<string, undefined>)[CONFIG.IDENTIFIER]
     );
 
     if (foundDelete !== undefined) {
       // TODO should I check here if key already exist in map (assumption there are more than one difference on one path ((theoretically only for id change)))
-      diffMapWithMove.move.set(diffAdd.opInfo.path, {
+      diffMapWithMove.move.set(foundDelete.opInfo.path, {
         opInfo: {
           op: DifferenceOperationKind.MOVE,
           value: diffAdd.opInfo.value,
@@ -107,19 +179,27 @@ function gatherUpMoveOpsFromDeleteAdd(
         used: false,
       });
 
-      console.log(diffMapWithMove.move.get(diffAdd.opInfo.path));
+      if (
+        JSON.stringify(diffAdd.opInfo.value) !==
+        JSON.stringify(foundDelete.opInfo.value)
+      ) {
+        console.log(
+          "TODO  ----- ALSO UPDATE additionally to move !!!!!!!!!!!!!!!!!!!!"
+        );
+        // TODO
+        // somehow a update diff must be added to but which path??
+      }
 
       diffMapWithMove.add.delete(diffAdd.opInfo.path);
       diffMapWithMove.delete.delete(foundDelete.opInfo.path);
     }
   }
 
+  console.log("difMapWithMove END of gatherup MoveMove Ops", diffMapWithMove);
   return diffMapWithMove;
 }
 
-export function prepareDiffMap(
-  diffs: customJuuFormatter.Op[]
-): DiffGroupByOpAndPath {
+export function prepareDiffMap(diffs: CustomOp[]): DiffGroupByOpAndPath {
   const mapOperationPath = groupByOperationAndPath(addUsedFlag(diffs));
 
   // probably don't need this kind of map
@@ -127,4 +207,42 @@ export function prepareDiffMap(
   // const operationPartitionedRight = partitionByOp(diffsRight);
 
   return gatherUpMoveOpsFromDeleteAdd(mapOperationPath);
+}
+
+function diffsWithMoveOps(diffs: CustomOp[]): CustomOp[] {
+  console.log("------------ diffsWithMoveOps -------------");
+
+  let diffsWithMove: CustomOp[] = diffs;
+
+  const fillteredAddDiffs = diffs.filter(
+    (diff) => diff.op === DifferenceOperationKind.ADD
+  );
+  const filltereDeleteDiffs = diffs.filter(
+    (diff) => diff.op === DifferenceOperationKind.DELETE
+  );
+
+  for (const addDiff of fillteredAddDiffs) {
+    const foundDelete = filltereDeleteDiffs.find(
+      (deleteDiff) =>
+        deleteDiff.value === addDiff.value ||
+        (deleteDiff.value as Record<string, undefined>)[CONFIG.IDENTIFIER] ===
+          (addDiff.value as Record<string, undefined>)[CONFIG.IDENTIFIER]
+    );
+
+    if (foundDelete !== undefined) {
+      // TODO should I check here if key already exist in map (assumption there are more than one difference on one path ((theoretically only for id change)))
+      diffsWithMove.push({
+        op: DifferenceOperationKind.MOVE,
+        value: addDiff.value,
+        from: foundDelete.path,
+        path: addDiff.path,
+      });
+
+      diffsWithMove = diffsWithMove.filter(
+        (obj) => obj !== addDiff && obj !== foundDelete
+      );
+    }
+  }
+
+  return diffsWithMove;
 }

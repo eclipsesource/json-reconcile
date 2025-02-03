@@ -1,38 +1,20 @@
 import { Router } from "express";
 import { compare } from "../services/compare.js";
-import { InputModels } from "../interfaces/inputmodels.js";
+import { getInputModelsOrError } from "../utils/prepInputModels.js";
 
 const dicome = Router();
 
 dicome.post("/compare", (req, res) => {
   console.log("request body", req.body);
-  if (req.body.left && req.body.right) {
-    console.log("session regenerate");
-    req.session.regenerate((err) => {
-      if (err) {
-        console.log("Error occured at session regeneration");
-        res.sendStatus(500);
-      }
-    });
+  const inputModelsOrError = getInputModelsOrError(req.body, req.session);
 
-    const reqInputModels: InputModels = req.body;
-    req.session.inputModels = reqInputModels;
-
-    compare(req.session.inputModels);
-    res.sendStatus(200);
+  if (typeof inputModelsOrError === "string") {
+    console.log(inputModelsOrError);
+    res.status(500).send(inputModelsOrError);
   } else {
-    if (
-      req.session.inputModels === null ||
-      req.session.inputModels === undefined
-    ) {
-      res.status(500).send("req body empty and session not found");
-    } else {
-      console.log(
-        "body is null, models from session are taken for comparisson"
-      );
-      compare(req.session.inputModels);
-      res.sendStatus(200);
-    }
+    const diffModel = compare(inputModelsOrError);
+    req.session.diffModel = diffModel;
+    res.send(diffModel);
   }
 });
 
