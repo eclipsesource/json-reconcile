@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_L-WkENcnEe-CAKiOT9REwg" name="classDia_up-up_propertyAndParent">
+  <packagedElement xmi:type="uml:Class" xmi:id="_M6_ygNcnEe-CAKiOT9REwg" name="SmartCity"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_OnnFUNcnEe-CAKiOT9REwg" name="Category">
+    <ownedAttribute xmi:id="_XUjAQNcnEe-CAKiOT9REwg" name="SDG">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_XUjnUNcnEe-CAKiOT9REwg" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_XUjnUdcnEe-CAKiOT9REwg" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_PADagNcnEe-CAKiOT9REwg" name="Project"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_S9A_UNcnEe-CAKiOT9REwg" name="SmartCity"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_S9A_UdcnEe-CAKiOT9REwg" name="Category"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_S9A_UtcnEe-CAKiOT9REwg" name="Project">
+    <ownedAttribute xmi:id="_YP08wNcnEe-CAKiOT9REwg" name="SDGs">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YP08wdcnEe-CAKiOT9REwg" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YP08wtcnEe-CAKiOT9REwg" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_U48ggNcnEe-CAKiOT9REwg" name="SmartCity">
+    <ownedAttribute xmi:id="_Y9LK8NcnEe-CAKiOT9REwg" name="sdg">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Y9LK8dcnEe-CAKiOT9REwg" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Y9LK8tcnEe-CAKiOT9REwg" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_U48ggdcnEe-CAKiOT9REwg" name="Category"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_U48ggtcnEe-CAKiOT9REwg" name="Project"/>
+</uml:Model>
