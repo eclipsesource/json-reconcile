@@ -1,38 +1,38 @@
 import isEqual from "lodash.isequal";
-import { Op } from "../utils/customFormatter.js";
-import { directRefExists } from "../utils/refHandler.js";
-import { DifferenceOperationKind } from "../interfaces/util.js";
+import { childParentRefExists, directRefExists } from "../utils/refHandler.js";
+import { CustomOp, DifferenceOperationKind } from "../interfaces/util.js";
 import { DiffWithUsedFlag } from "../interfaces/inputmodels.js";
 
-// dublicated code (except operation type add-update) same as isDeleteUseConflict
-export function isDeletUpdateConflict(
-  operationLeft: Op,
-  operationRight: Op
+export function isParentChildDeleteUseConflict(
+  operationLeft: CustomOp,
+  operationRight: CustomOp
 ): boolean {
   if (
     operationLeft.op === DifferenceOperationKind.DELETE &&
-    operationRight.op === DifferenceOperationKind.UPDATE
+    operationRight.op === DifferenceOperationKind.ADD
   ) {
-    console.log("-DELETE UPDATE CHECK-");
-    // TODO WARNING, there could occure an error when the updated value is just a string or number not an object
-    if (directRefExists(operationLeft.path, operationRight.value as object)) {
+    if (
+      childParentRefExists(operationLeft.path, operationRight.value as object)
+    ) {
       return true;
     }
   } else if (
-    operationLeft.op === DifferenceOperationKind.UPDATE &&
-    operationRight.op === DifferenceOperationKind.DELETE
+    operationRight.op === DifferenceOperationKind.DELETE &&
+    operationLeft.op === DifferenceOperationKind.ADD
   ) {
-    if (directRefExists(operationRight.path, operationLeft.value as object)) {
+    if (
+      childParentRefExists(operationRight.path, operationLeft.value as object)
+    ) {
       return true;
     }
   }
+
   return false;
 }
 
-// dublicated code (except operation type add-update) same as isDeletUpdateConflict
 export function isDeleteUseConflict(
-  operationLeft: Op,
-  operationRight: Op
+  operationLeft: CustomOp,
+  operationRight: CustomOp
 ): boolean {
   if (
     operationLeft.op === DifferenceOperationKind.DELETE &&
