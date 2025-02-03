@@ -10,8 +10,48 @@ Typescript library for diffing and merging JSON models
 - state of the merging progress is saved and handled with session cookies
 
 ## Examples
+### update update conflict
+**Request**
+```
+POST /dicome/compare
+Content-Type: application/json
 
-xx
+{
+  "original": {
+    "package": {
+      "id": "scml",
+      "classes": [
+        {
+          "id": "xyz",
+          "name": "Smart City"
+        }
+      ]
+    }
+  },
+  "left": {
+    "package": {
+      "id": "scml",
+      "classes": [
+        {
+          "id": "xyz",
+          "name": "SmartCity"
+        }
+      ]
+    }
+  },
+  "right": {
+    "package": {
+      "id": "scml",
+      "classes": [
+        {
+          "id": "xyz",
+          "name": "Smart_City"
+        }
+      ]
+    }
+  }
+}
+```
 
 ## Usage
 
