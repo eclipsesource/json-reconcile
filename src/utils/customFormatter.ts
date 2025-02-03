@@ -10,33 +10,10 @@ import {
 import BaseFormatter, {
   BaseFormatterContext,
 } from "jsondiffpatch/formatters/base";
-import { DifferenceOperationKind } from "../interfaces/util.js";
-
-export interface AddOp {
-  op: DifferenceOperationKind.ADD;
-  path: string;
-  value: unknown;
-}
-export interface DeleteOp {
-  op: DifferenceOperationKind.DELETE;
-  path: string;
-  value: unknown;
-}
-export interface UpdateOp {
-  op: DifferenceOperationKind.UPDATE;
-  path: string;
-  value: unknown;
-}
-export interface MoveOp {
-  op: DifferenceOperationKind.MOVE;
-  from: string;
-  path: string;
-  value: unknown;
-}
-export type Op = AddOp | DeleteOp | UpdateOp | MoveOp;
+import { CustomOp, DifferenceOperationKind } from "../interfaces/util.js";
 
 interface CustomJuuFormatterContext extends BaseFormatterContext {
-  result: Op[];
+  result: CustomOp[];
   path: (string | number)[];
   pushCurrentOp: (
     obj:
@@ -60,7 +37,7 @@ interface CustomJuuFormatterContext extends BaseFormatterContext {
 
 class CustomJuuFormatter extends BaseFormatter<
   CustomJuuFormatterContext,
-  Op[]
+  CustomOp[]
 > {
   constructor() {
     super();
@@ -166,7 +143,7 @@ class CustomJuuFormatter extends BaseFormatter<
   format_textdiff() {
     throw new Error("Not implemented");
   }
-  format(delta: Delta, left?: unknown): Op[] {
+  format(delta: Delta, left?: unknown): CustomOp[] {
     const context = this.prepareContext({});
     const preparedContext = context;
     this.recurse(preparedContext, delta, left);
@@ -177,7 +154,10 @@ class CustomJuuFormatter extends BaseFormatter<
 export default CustomJuuFormatter;
 
 const last = (arr: string[]) => arr[arr.length - 1];
-const sortBy = (arr: Op[], pred: (a: Op, b: Op) => number) => {
+const sortBy = (
+  arr: CustomOp[],
+  pred: (a: CustomOp, b: CustomOp) => number
+) => {
   arr.sort(pred);
   return arr;
 };
@@ -190,8 +170,8 @@ const compareByIndexDesc = (indexA: string, indexB: string) => {
     return 0;
   }
 };
-const opsByDescendingOrder = (deleteOps: Op[]) =>
-  sortBy(deleteOps, (a: Op, b: Op) => {
+const opsByDescendingOrder = (deleteOps: CustomOp[]) =>
+  sortBy(deleteOps, (a: CustomOp, b: CustomOp) => {
     const splitA = a.path.split("/");
     const splitB = b.path.split("/");
     if (splitA.length !== splitB.length) {
@@ -200,8 +180,11 @@ const opsByDescendingOrder = (deleteOps: Op[]) =>
       return compareByIndexDesc(last(splitA), last(splitB));
     }
   });
-export const partitionOps = (arr: Op[], fns: ((op: Op) => boolean)[]) => {
-  const initArr: Op[][] = Array(fns.length + 1)
+export const partitionOps = (
+  arr: CustomOp[],
+  fns: ((op: CustomOp) => boolean)[]
+) => {
+  const initArr: CustomOp[][] = Array(fns.length + 1)
     .fill(undefined)
     .map(() => []);
   return arr
@@ -221,7 +204,7 @@ const isMoveOp = ({ op }: { op: DifferenceOperationKind }) =>
   op === DifferenceOperationKind.MOVE;
 const isDeleteOp = ({ op }: { op: DifferenceOperationKind }) =>
   op === DifferenceOperationKind.DELETE;
-const reorderOps = (diff: Op[]) => {
+const reorderOps = (diff: CustomOp[]) => {
   const [moveOps, removedOps, restOps] = partitionOps(diff, [
     isMoveOp,
     isDeleteOp,
