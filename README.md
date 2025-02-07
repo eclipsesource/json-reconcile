@@ -1,8 +1,9 @@
 # json-reconcile [![Project - Active Development](https://img.shields.io/badge/Project-Active-2ea44f)](https://github.com/eclipsesource/.github/blob/main/repository-classification.md) [![Aim - PoC](https://img.shields.io/badge/Aim-PoC-a45b2e)](https://github.com/eclipsesource/.github/blob/main/repository-classification.md)
+
 Typescript library for diffing and merging JSON models
 
-
 ## Purpose
+
 - easy-to-use conflict management
 - comparison and merging functionality in a general way
 - platform-independent REST API that can handle model conflicts in JSON format
@@ -10,7 +11,9 @@ Typescript library for diffing and merging JSON models
 - state of the merging progress is saved and handled with session cookies
 
 ## Examples
+
 ### update update conflict
+
 **Request**
 ```
 POST /dicome/compare
@@ -138,3 +141,62 @@ triggers cleanup (remove models)
 **Request Body:** -
 
 **Response:** 200 OK
+
+## Run Code without API Call
+
+``` npx tsc ``` or ``` npm run build ```
+
+and then
+
+``` node dist/src/api/testRunner.js ```
+
+## Run Tests with ECMAScript Modules
+
+from package.json command:
+``` npm run test ```
+
+from console:
+``` NODE_OPTIONS="$NODE_OPTIONS --experimental-vm-modules" npx jest ```
+
+## EXAMPLES
+
+### Input
+
+original
+{
+  "package": {
+    "id": "scml",
+    "classes": [
+      {
+        "id": "Smart City",
+        "references": "haaalooo"
+      }
+    ]
+  }
+}
+
+a
+{
+  "package": {
+    "classes": [
+      {
+        "id": "SmartCity",
+        "references": "hallo"
+      }
+    ]
+  }
+}
+
+orginal
+{
+  "package": {
+    "id": "scml",
+    "classes": [
+      {
+        "id": "Smart City",
+        "references": [],
+        "a": "b"
+      }
+      ]
+  }
+}
