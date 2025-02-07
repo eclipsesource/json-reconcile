@@ -5,9 +5,9 @@
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 
-const config = {
+const config: import("ts-jest").JestConfigWithTsJest = {
   // The root directory that Jest should scan for tests and modules within
-  rootDir: "./",
+  rootDir: ".",
 
   // A list of paths to directories that Jest should use to search for files in
   // roots: [
@@ -15,7 +15,11 @@ const config = {
   // ],
   roots: ["./tests", "./node_modules"],
 
-  modulePaths: ["./src", "./node_modules"],
+  modulePaths: [
+    "./src",
+    "./node_modules",
+    "./node_modules/jsondiffpatch/lib/formatters",
+  ],
 
   // A preset that is used as a base for Jest's configuration
   preset: "ts-jest",
