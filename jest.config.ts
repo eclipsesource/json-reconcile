@@ -13,7 +13,9 @@ const config = {
   // roots: [
   //   "<rootDir>"
   // ],
-  roots: ["./tests"],
+  roots: ["./tests", "./node_modules"],
+
+  modulePaths: ["./src", "./node_modules"],
 
   // A preset that is used as a base for Jest's configuration
   preset: "ts-jest",
