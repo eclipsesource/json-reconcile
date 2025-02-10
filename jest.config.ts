@@ -5,7 +5,9 @@
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 
-const config: import("ts-jest").JestConfigWithTsJest = {
+import type { Config } from "jest";
+
+const config: Config = {
   // The root directory that Jest should scan for tests and modules within
   rootDir: ".",
 
