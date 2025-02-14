@@ -4,7 +4,7 @@
   "main": "/dist/src/app.js",
   "type": "module",
   "scripts": {
-    "test": "node --trace-warnings --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "build": "npx tsc",
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts"

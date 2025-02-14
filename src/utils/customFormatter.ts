@@ -7,9 +7,8 @@ import {
   MovedDelta,
   ObjectDelta,
 } from "jsondiffpatch";
-import BaseFormatter, {
-  BaseFormatterContext,
-} from "jsondiffpatch/formatters/base";
+import { BaseFormatterContext } from "../../node_modules/jsondiffpatch/lib/formatters/base.js";
+import BaseFormatter from "../../node_modules/jsondiffpatch/lib/formatters/base.js";
 import { CustomOp, DifferenceOperationKind } from "../interfaces/util.js";
 
 interface CustomJuuFormatterContext extends BaseFormatterContext {
