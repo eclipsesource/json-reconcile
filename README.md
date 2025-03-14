@@ -14,8 +14,9 @@ Typescript library for diffing and merging JSON models
 
 ### update update conflict
 
-**Request**
-```
+#### Request
+
+```json
 POST /dicome/compare
 Content-Type: application/json
 
@@ -60,9 +61,10 @@ Content-Type: application/json
 
 ### API Description
 
-```
+```bash
 POST /dicome/compare
 ```
+
 initial endpoint, if request header not set then new session is created (set cookie header for all following requests)
 
 **Request Header:** optional current session - session cookie
@@ -71,36 +73,40 @@ initial endpoint, if request header not set then new session is created (set coo
 
 **Response:** diffmodel
 
-```
+```bash
 GET /dicome/model/left
 ```
+
 **Request Header:** current session - session cookie
 
 **Request Body:** -
 
 **Response:** left model
 
-```
+```bash
 GET /dicome/model/right
 ```
+
 **Request Header:** current session - session cookie
 
 **Request Body:** -
 
 **Response:** right model
 
-```
+```bash
 GET /dicome/model/diff
 ```
+
 **Request Header:** current session - session cookie
 
 **Request Body:** -
 
 **Response:** diff model
 
-```
+```bash
 PUT /dicome/apply/[ltr | rtl]
 ```
+
 **Request Header:** current session - session cookie
 
 **Parameter:** ltr (left to right) or rtl (right to left)
@@ -109,9 +115,10 @@ PUT /dicome/apply/[ltr | rtl]
 
 **Response:** JSON patch (if technically possible) of diff model and left/right
 
-```
+```bash
 PUT /dicome/accept
 ```
+
 for conflicts, if this is a left change then right automatically rejected and vis a versa
 
 **Request Header:** current session - session cookie
@@ -120,9 +127,10 @@ for conflicts, if this is a left change then right automatically rejected and vi
 
 **Response:** JSON patch (if technically possible) of diff model and left/right
 
-```
+```bash
 PUT /dicome/reject
 ```
+
 for conflicts, if this is a left change then right automatically acctepted and vis a versa
 
 **Request Header:** current session - session cookie
@@ -131,9 +139,10 @@ for conflicts, if this is a left change then right automatically acctepted and v
 
 **Response:** JSON patch (if technically possible) of diff model and left/right
 
-```
+```bash
 DELETE /dicome/session
 ```
+
 triggers cleanup (remove models)
 
 **Request Header:** current session - session cookie
@@ -142,7 +151,7 @@ triggers cleanup (remove models)
 
 **Response:** 200 OK
 
-## Run Code without API Call
+## Build & Run
 
 ``` npx tsc ``` or ``` npm run build ```
 
@@ -157,46 +166,3 @@ from package.json command:
 
 from console:
 ``` NODE_OPTIONS="$NODE_OPTIONS --experimental-vm-modules" npx jest ```
-
-## EXAMPLES
-
-### Input
-
-original
-{
-  "package": {
-    "id": "scml",
-    "classes": [
-      {
-        "id": "Smart City",
-        "references": "haaalooo"
-      }
-    ]
-  }
-}
-
-a
-{
-  "package": {
-    "classes": [
-      {
-        "id": "SmartCity",
-        "references": "hallo"
-      }
-    ]
-  }
-}
-
-orginal
-{
-  "package": {
-    "id": "scml",
-    "classes": [
-      {
-        "id": "Smart City",
-        "references": [],
-        "a": "b"
-      }
-      ]
-  }
-}
