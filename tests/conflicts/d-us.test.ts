@@ -1,7 +1,10 @@
 import { DifferenceState } from "../../src/interfaces/diffmodel.js";
 import { InputModels } from "../../src/interfaces/inputmodels.js";
 import { DifferenceOperationKind } from "../../src/interfaces/util.js";
-import { compare, createDiff2Way } from "../../src/services/compare.js";
+import {
+  createDiff2Way,
+  createDiff3Way,
+} from "../../src/services/createDiff.js";
 import { testsEnabled } from "../configs.js";
 
 // TEST MODEL
@@ -305,11 +308,11 @@ if (testsEnabled["d-us"] === true) {
 
     test("3-way", () => {
       expect(
-        compare({
-          original: d_us_class_reference.original,
-          left: d_us_class_reference.left,
-          right: d_us_class_reference.right,
-        })
+        createDiff3Way(
+          d_us_class_reference.original,
+          d_us_class_reference.left,
+          d_us_class_reference.right
+        )
       ).toStrictEqual({
         threeWay: true,
         differencesL: [
@@ -402,11 +405,11 @@ if (testsEnabled["d-us"] === true) {
 
     test("3-way", () => {
       expect(
-        compare({
-          original: d_us_package_reference_parent_child.original,
-          left: d_us_package_reference_parent_child.left,
-          right: d_us_package_reference_parent_child.right,
-        })
+        createDiff3Way(
+          d_us_package_reference_parent_child.original,
+          d_us_package_reference_parent_child.left,
+          d_us_package_reference_parent_child.right
+        )
       ).toStrictEqual({
         threeWay: true,
         differencesL: [

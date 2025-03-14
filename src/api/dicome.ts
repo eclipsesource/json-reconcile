@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { compare } from "../services/compare.js";
+import { createDiff } from "../services/createDiff.js";
 import { getInputModelsOrError } from "../utils/prepInputModels.js";
 
 const dicome = Router();
@@ -12,7 +12,7 @@ dicome.post("/compare", (req, res) => {
     console.log(inputModelsOrError);
     res.status(500).send(inputModelsOrError);
   } else {
-    const diffModel = compare(inputModelsOrError);
+    const diffModel = createDiff(inputModelsOrError);
     req.session.diffModel = diffModel;
     res.send(diffModel);
   }

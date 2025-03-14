@@ -1,7 +1,10 @@
 import { DifferenceState } from "../../src/interfaces/diffmodel.js";
 import { InputModels } from "../../src/interfaces/inputmodels.js";
 import { DifferenceOperationKind } from "../../src/interfaces/util.js";
-import { createDiff2Way, createDiff3Way } from "../../src/services/compare.js";
+import {
+  createDiff2Way,
+  createDiff3Way,
+} from "../../src/services/createDiff.js";
 import { testsEnabled } from "../configs.js";
 
 // TEST MODEL

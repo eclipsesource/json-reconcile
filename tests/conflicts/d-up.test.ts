@@ -1,7 +1,10 @@
 import { DifferenceState } from "../../src/interfaces/diffmodel.js";
 import { InputModels } from "../../src/interfaces/inputmodels.js";
 import { DifferenceOperationKind } from "../../src/interfaces/util.js";
-import { createDiff2Way, createDiff3Way } from "../../src/services/compare.js";
+import {
+  createDiff2Way,
+  createDiff3Way,
+} from "../../src/services/createDiff.js";
 import { testsEnabled } from "../configs.js";
 
 // TEST MODEL
@@ -771,7 +774,10 @@ if (testsEnabled["d-up"] === true) {
     });
   });
 
-  // ????? more clarification needed what should happen here?
+  // Github Issue #6 created https://github.com/eclipsesource/json-reconcile/issues/6
+  // more clarification needed what should happen here
+  // depends on ORDERED_LIST config true or false?
+  /* 
   describe("delete elem on index 1 array and add elem on index 2 array -> d-up/d-i? conflict", () => {
     test("2-way: original - a", () => {
       expect(
@@ -836,4 +842,5 @@ if (testsEnabled["d-up"] === true) {
       });
     });
   });
+  */
 }

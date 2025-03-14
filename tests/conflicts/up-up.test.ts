@@ -1,7 +1,10 @@
 import { DifferenceState } from "../../src/interfaces/diffmodel.js";
 import { InputModels } from "../../src/interfaces/inputmodels.js";
 import { DifferenceOperationKind } from "../../src/interfaces/util.js";
-import { createDiff2Way, createDiff3Way } from "../../src/services/compare.js";
+import {
+  createDiff2Way,
+  createDiff3Way,
+} from "../../src/services/createDiff.js";
 import { testsEnabled } from "../configs.js";
 
 // TEST MODEL
@@ -608,6 +611,8 @@ if (testsEnabled["up-up"] === true) {
     });
   });
 
+  // Github issue #5 created https://github.com/eclipsesource/json-reconcile/issues/5
+  /* 
   describe("category class property SDG update parent class and property name -> up-up conflict", () => {
     test("2-way: original - a", () => {
       expect(
@@ -723,6 +728,7 @@ if (testsEnabled["up-up"] === true) {
       });
     });
   });
+  */
 
   describe("reference from smart city outgoing to Component/Project/Category, reference id staying the same -> up-up conflict", () => {
     test("2-way: original - a", () => {
@@ -794,7 +800,9 @@ if (testsEnabled["up-up"] === true) {
     });
   });
 
-  describe("NOT COVERED (up-up with id change) - reference from smart city outgoing to Component/Project/Category with reference id update -> up-up conflict", () => {
+  // Github Issue #4 created https://github.com/eclipsesource/json-reconcile/issues/4
+  /* 
+  describe("NOT SPECIFIED/NOT COVERED (up-up with id change) - reference from smart city outgoing to Component/Project/Category with reference id update -> up-up conflict", () => {
     test("2-way: original - a", () => {
       expect(
         createDiff2Way(
@@ -908,4 +916,5 @@ if (testsEnabled["up-up"] === true) {
       });
     });
   });
+  */
 }

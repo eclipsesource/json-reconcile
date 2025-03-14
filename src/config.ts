@@ -5,6 +5,6 @@ export const CONFIG = {
 };
 
 export const algoVariation = {
-  nested: true,
-  eficient: false,
+  nested: false,
+  eficient: true,
 };

@@ -1,5 +1,5 @@
 import { InputModels } from "../src/interfaces/inputmodels.js";
-import { compare, createDiff2Way } from "../src/services/compare.js";
+import { createDiff, createDiff2Way } from "../src/services/createDiff.js";
 import {
   tryOutJSONRefLib1,
   tryOutJSONRefsLib2,
@@ -51,14 +51,14 @@ if (testsEnabled.basic === true) {
 
   test("compare 2-way - no differences API result", () => {
     expect(
-      compare({ left: basic.original, right: basic.original })
+      createDiff({ left: basic.original, right: basic.original })
     ).toStrictEqual({
       threeWay: false,
       differencesL: [],
       differencesR: [],
       conflicts: [],
     });
-    expect(compare({ left: basic.left, right: basic.left })).toStrictEqual({
+    expect(createDiff({ left: basic.left, right: basic.left })).toStrictEqual({
       threeWay: false,
       differencesL: [],
       differencesR: [],
@@ -68,7 +68,7 @@ if (testsEnabled.basic === true) {
 
   test("compare 3-way - no differences API result", () => {
     expect(
-      compare({
+      createDiff({
         original: basic.original,
         left: basic.original,
         right: basic.original,
@@ -80,7 +80,7 @@ if (testsEnabled.basic === true) {
       conflicts: [],
     });
     expect(
-      compare({ original: basic.left, left: basic.left, right: basic.left })
+      createDiff({ original: basic.left, left: basic.left, right: basic.left })
     ).toStrictEqual({
       threeWay: true,
       differencesL: [],
