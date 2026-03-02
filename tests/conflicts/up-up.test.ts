@@ -529,6 +529,9 @@ if (testsEnabled["up-up"] === true) {
     });
   });
 
+  // Github Issue #4 created https://github.com/eclipsesource/json-reconcile/issues/4
+  // not specified what conflicts should be detected
+  /* 
   describe("smart city class property id update -> up-up conflict", () => {
     test("2-way: original - a", () => {
       expect(
@@ -610,9 +613,9 @@ if (testsEnabled["up-up"] === true) {
       });
     });
   });
+  */
 
   // Github issue #5 created https://github.com/eclipsesource/json-reconcile/issues/5
-  /* 
   describe("category class property SDG update parent class and property name -> up-up conflict", () => {
     test("2-way: original - a", () => {
       expect(
@@ -728,7 +731,6 @@ if (testsEnabled["up-up"] === true) {
       });
     });
   });
-  */
 
   describe("reference from smart city outgoing to Component/Project/Category, reference id staying the same -> up-up conflict", () => {
     test("2-way: original - a", () => {
@@ -801,8 +803,9 @@ if (testsEnabled["up-up"] === true) {
   });
 
   // Github Issue #4 created https://github.com/eclipsesource/json-reconcile/issues/4
+  // NOT SPECIFIED/NOT COVERED what conflicts should be detected
   /* 
-  describe("NOT SPECIFIED/NOT COVERED (up-up with id change) - reference from smart city outgoing to Component/Project/Category with reference id update -> up-up conflict", () => {
+  describe("reference from smart city outgoing to Component/Project/Category with reference id update -> up-up conflict", () => {
     test("2-way: original - a", () => {
       expect(
         createDiff2Way(

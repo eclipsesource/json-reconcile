@@ -570,10 +570,10 @@ if (testsEnabled["i-i"] === true) {
             containment: true,
             id: "location",
             lowerBound: 1,
+            upperBound: 1,
             type: {
               $ref: "#/package/classes/3",
             },
-            upperBound: 1,
           },
         },
         {
@@ -585,14 +585,14 @@ if (testsEnabled["i-i"] === true) {
             attributes: [
               {
                 id: "Lat",
-                lowerBound: 1,
                 type: "flaot",
+                lowerBound: 1,
                 upperBound: 1,
               },
               {
                 id: "Long",
-                lowerBound: 1,
                 type: "flaot",
+                lowerBound: 1,
                 upperBound: 1,
               },
             ],

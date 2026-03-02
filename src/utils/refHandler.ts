@@ -103,7 +103,7 @@ export function directRefExists(pathToCompare: string, value: object): boolean {
 
 export function childParentRefExists(
   pathToCompare: string,
-  value: object
+  value: object,
 ): boolean {
   console.log("------- childParentRefExists function ------");
   console.log("input parameter value: ", value);
@@ -120,8 +120,9 @@ export function childParentRefExists(
     }
     const foundUri = refs[key].uri;
     if (
-      foundUri.startsWith(uriReferencePath) &&
-      foundUri.split("/").length > uriReferencePath.split("/").length
+      (foundUri.startsWith(uriReferencePath) &&
+        foundUri.split("/").length > uriReferencePath.split("/").length) ||
+      foundUri === uriReferencePath
     ) {
       console.log("found uri: ", refs[key]);
       return true;

@@ -213,10 +213,39 @@ export function runtimeImprovedMapImplementations(
       addConflict(matchingLeft, matchingRightUpdate, diffModel);
     }
 
+    for (const [k, matchingRightChildUpdate] of diffMapRight.update) {
+      if (
+        matchingLeft !== undefined &&
+        k !== pathLeft &&
+        k.startsWith(pathLeft) &&
+        k.split("/").length > pathLeft.split("/").length
+      ) {
+        console.log(
+          "----------- PARENT CHILD -- DELETE UPDATE conflict :O !! -----------"
+        );
+        addConflict(matchingLeft, matchingRightChildUpdate, diffModel);
+      }
+    }
+
     const matchingRightAdd = diffMapRight.add.get(pathLeft);
     if (matchingRightAdd !== undefined && matchingLeft !== undefined) {
       console.log("----------- DELETE USE conflict :O !! -----------");
       addConflict(matchingLeft, matchingRightAdd, diffModel);
+    }
+
+    for (const [k, matchingRightChildAdd] of diffMapRight.add) {
+      if (
+        matchingLeft !== undefined &&
+        isParentChildDeleteUseConflict(
+          matchingLeft.opInfo,
+          matchingRightChildAdd.opInfo
+        )
+      ) {
+        console.log(
+          "----------- PARENT CHILD -- DELETE USE conflict :O !! -----------"
+        );
+        addConflict(matchingLeft, matchingRightChildAdd, diffModel);
+      }
     }
   }
 

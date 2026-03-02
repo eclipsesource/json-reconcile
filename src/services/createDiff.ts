@@ -141,15 +141,15 @@ export function createDiff3Way(
     console.log("maps of left and right diffs");
 
     const diffListL = [
+      ...diffMapL.delete.values(),
       ...diffMapL.add.values(),
       ...diffMapL.update.values(),
-      ...diffMapL.delete.values(),
       ...diffMapL.move.values(),
     ];
     const diffListR = [
+      ...diffMapR.delete.values(),
       ...diffMapR.add.values(),
       ...diffMapR.update.values(),
-      ...diffMapR.delete.values(),
       ...diffMapR.move.values(),
     ];
 

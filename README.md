@@ -157,7 +157,7 @@ triggers cleanup (remove models)
 
 and then
 
-``` node dist/src/api/testRunner.js ```
+``` npm run start ```
 
 ## Run Tests with ECMAScript Modules
 
