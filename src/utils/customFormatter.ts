@@ -7,7 +7,10 @@ import {
   MovedDelta,
   ObjectDelta,
 } from "jsondiffpatch";
-import { BaseFormatterContext } from "../../node_modules/jsondiffpatch/lib/formatters/base.js";
+import {
+  BaseFormatterContext,
+  DeltaType,
+} from "../../node_modules/jsondiffpatch/lib/formatters/base.js";
 import BaseFormatter from "../../node_modules/jsondiffpatch/lib/formatters/base.js";
 import { CustomOp, DifferenceOperationKind } from "../interfaces/util.js";
 
@@ -27,7 +30,7 @@ interface CustomJuuFormatterContext extends BaseFormatterContext {
       | {
           op: DifferenceOperationKind.UPDATE;
           value: unknown;
-        }
+        },
   ) => void;
   pushMoveOp: (obj: { to: number; value: unknown }) => void;
   currentPath: () => string;
@@ -44,7 +47,7 @@ class CustomJuuFormatter extends BaseFormatter<
   }
 
   prepareContext(
-    context: Partial<CustomJuuFormatterContext>
+    context: Partial<CustomJuuFormatterContext>,
   ): CustomJuuFormatterContext {
     super.prepareContext(context);
     context.result = [];
@@ -55,6 +58,7 @@ class CustomJuuFormatter extends BaseFormatter<
         obj.op === DifferenceOperationKind.UPDATE ||
         obj.op === DifferenceOperationKind.DELETE
       ) {
+        // console.log(JSON.stringify(obj), "\n current Path", this.currentPath!());
         this.result!.push({
           op: obj.op,
           path: this.currentPath!(),
@@ -85,7 +89,7 @@ class CustomJuuFormatter extends BaseFormatter<
 
   typeFormattterErrorFormatter(
     context: CustomJuuFormatterContext,
-    err: unknown
+    err: unknown,
   ) {
     context.out(`[ERROR] ${err}`);
   }
@@ -93,58 +97,66 @@ class CustomJuuFormatter extends BaseFormatter<
   rootBegin() {}
   rootEnd() {}
 
-  nodeBegin(
-    { path }: CustomJuuFormatterContext,
-    key: string,
-    leftKey: string | number
-  ) {
-    path.push(leftKey);
+  nodeBegin({ path }: CustomJuuFormatterContext, key: string, type: DeltaType) {
+    if (type !== "node" && key.startsWith("_")) {
+      path.push(key.slice(1));
+    } else {
+      path.push(key);
+    }
   }
+
   nodeEnd({ path }: CustomJuuFormatterContext) {
     path.pop();
   }
+
   format_unchanged() {}
   format_movedestination() {}
   format_node(
     context: CustomJuuFormatterContext,
     delta: ObjectDelta | ArrayDelta,
-    left: unknown
+    left: unknown,
   ) {
     this.formatDeltaChildren(context, delta, left);
   }
   format_added(context: CustomJuuFormatterContext, delta: AddedDelta): void {
     context.pushCurrentOp({ op: DifferenceOperationKind.ADD, value: delta[0] });
   }
+
   format_modified(
     context: CustomJuuFormatterContext,
-    delta: ModifiedDelta
+    delta: ModifiedDelta,
   ): void {
     context.pushCurrentOp({
       op: DifferenceOperationKind.UPDATE,
       value: delta[1],
     });
   }
+
   format_deleted(
     context: CustomJuuFormatterContext,
-    delta: DeletedDelta
+    delta: DeletedDelta,
   ): void {
     context.pushCurrentOp({
       op: DifferenceOperationKind.DELETE,
       value: delta[0],
     });
   }
+
   format_moved(context: CustomJuuFormatterContext, delta: MovedDelta): void {
     context.pushMoveOp({
       value: delta[0],
       to: delta[1],
     });
   }
+
   format_textdiff() {
     throw new Error("Not implemented");
   }
+
   format(delta: Delta, left?: unknown): CustomOp[] {
     const context = this.prepareContext({});
     const preparedContext = context;
+    console.log("CONTEXT", JSON.stringify(preparedContext));
     this.recurse(preparedContext, delta, left);
     return preparedContext.result;
   }
@@ -155,11 +167,12 @@ export default CustomJuuFormatter;
 const last = (arr: string[]) => arr[arr.length - 1];
 const sortBy = (
   arr: CustomOp[],
-  pred: (a: CustomOp, b: CustomOp) => number
+  pred: (a: CustomOp, b: CustomOp) => number,
 ) => {
   arr.sort(pred);
   return arr;
 };
+
 const compareByIndexDesc = (indexA: string, indexB: string) => {
   const lastA = parseInt(indexA, 10);
   const lastB = parseInt(indexB, 10);
@@ -169,6 +182,7 @@ const compareByIndexDesc = (indexA: string, indexB: string) => {
     return 0;
   }
 };
+
 const opsByDescendingOrder = (deleteOps: CustomOp[]) =>
   sortBy(deleteOps, (a: CustomOp, b: CustomOp) => {
     const splitA = a.path.split("/");
@@ -179,9 +193,10 @@ const opsByDescendingOrder = (deleteOps: CustomOp[]) =>
       return compareByIndexDesc(last(splitA), last(splitB));
     }
   });
+
 export const partitionOps = (
   arr: CustomOp[],
-  fns: ((op: CustomOp) => boolean)[]
+  fns: ((op: CustomOp) => boolean)[],
 ) => {
   const initArr: CustomOp[][] = Array(fns.length + 1)
     .fill(undefined)
@@ -199,10 +214,13 @@ export const partitionOps = (
       return acc;
     }, initArr);
 };
+
 const isMoveOp = ({ op }: { op: DifferenceOperationKind }) =>
   op === DifferenceOperationKind.MOVE;
+
 const isDeleteOp = ({ op }: { op: DifferenceOperationKind }) =>
   op === DifferenceOperationKind.DELETE;
+
 const reorderOps = (diff: CustomOp[]) => {
   const [moveOps, removedOps, restOps] = partitionOps(diff, [
     isMoveOp,
@@ -214,7 +232,7 @@ const reorderOps = (diff: CustomOp[]) => {
 
 let defaultInstance: CustomJuuFormatter;
 
-export const format = (delta: Delta, left?: unknown) => {
+export const format = (delta: Delta, left?: unknown): CustomOp[] => {
   if (!defaultInstance) {
     defaultInstance = new CustomJuuFormatter();
   }
