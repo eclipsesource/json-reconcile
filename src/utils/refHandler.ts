@@ -109,7 +109,7 @@ export function childParentRefExists(
   console.log("input parameter value: ", value);
   const refs = findRefs(value);
 
-  console.log(refs);
+  console.log("REFS: ", refs);
 
   const uriReferencePath = "#" + pathToCompare;
 

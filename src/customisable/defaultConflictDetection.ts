@@ -3,9 +3,12 @@ import { childParentRefExists, directRefExists } from "../utils/refHandler.js";
 import { CustomOp, DifferenceOperationKind } from "../interfaces/util.js";
 import { DiffWithUsedFlag } from "../interfaces/inputmodels.js";
 
+/* 
+both directions
+*/
 export function isParentChildDeleteUseConflict(
   operationLeft: CustomOp,
-  operationRight: CustomOp
+  operationRight: CustomOp,
 ): boolean {
   if (
     operationLeft.op === DifferenceOperationKind.DELETE &&
@@ -32,7 +35,7 @@ export function isParentChildDeleteUseConflict(
 
 export function isDeleteUseConflict(
   operationLeft: CustomOp,
-  operationRight: CustomOp
+  operationRight: CustomOp,
 ): boolean {
   if (
     operationLeft.op === DifferenceOperationKind.DELETE &&
@@ -57,7 +60,7 @@ export function isMoveMoveConflict(
   diffsL: DiffWithUsedFlag[],
   diffL: DiffWithUsedFlag,
   diffsR: DiffWithUsedFlag[],
-  diffR: DiffWithUsedFlag
+  diffR: DiffWithUsedFlag,
 ): boolean {
   // find second operation of move > add of left
   // find the coresponding add operation on right

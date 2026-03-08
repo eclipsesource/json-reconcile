@@ -5,6 +5,6 @@ export const CONFIG = {
 };
 
 export const algoVariation = {
-  nested: false,
+  nested: false, // the "not so" efficient one
   eficient: true,
 };

@@ -18,14 +18,14 @@ export function createDiff(inputModels: InputModels): DiffModel {
   if (inputModels.original === undefined) {
     console.log("2-Way Comparison");
     return createDiffModelFrom2WayDiff(
-      createDiff2Way(inputModels.left, inputModels.right)
+      createDiff2Way(inputModels.left, inputModels.right),
     );
   } else {
     console.log("3-Way Comparison");
     return createDiff3Way(
       inputModels.original,
       inputModels.left,
-      inputModels.right
+      inputModels.right,
     );
   }
 }
@@ -59,6 +59,8 @@ export function createDiff2Way(left: JSONValue, right: JSONValue): CustomOp[] {
     })
     .diff(left, right);
 
+  console.log("DEELTAA", JSON.stringify(delta));
+
   const operations = customJuuFormatter.format(delta);
 
   return operations;
@@ -67,7 +69,7 @@ export function createDiff2Way(left: JSONValue, right: JSONValue): CustomOp[] {
 export function createDiff3Way(
   original: JSONValue,
   left: JSONValue,
-  right: JSONValue
+  right: JSONValue,
 ): DiffModel {
   let diffModel: DiffModel = {
     threeWay: true,
@@ -108,6 +110,7 @@ export function createDiff3Way(
   console.log("jsonpatch result left", JSON.stringify(diffsLeft));
   console.log("jsonpatch result right", JSON.stringify(diffsRight));
 
+  /* 
   if (algoVariation.nested) {
     const diffsWithUsedFlagL = addUsedFlag(diffsLeft);
     const diffsWithUsedFlagR = addUsedFlag(diffsRight);
@@ -130,9 +133,10 @@ export function createDiff3Way(
     diffModel = nestedForLoopWorstImplementation(
       diffsWithUsedFlagL,
       diffsWithUsedFlagR,
-      diffModel
+      diffModel,
     );
   }
+ */
 
   if (algoVariation.eficient) {
     const diffMapL = prepareDiffMap(diffsLeft);
@@ -174,7 +178,7 @@ export function createDiff3Way(
     diffModel = runtimeImprovedMapImplementations(
       diffMapL,
       diffMapR,
-      diffModel
+      diffModel,
     );
   }
 
