@@ -1,8 +1,10 @@
 export const testsEnabled = {
-  basic: true,
-  "up-up": true,
-  "d-up": true,
-  "d-us": true,
-  "m-m": true,
-  "i-i": true,
+  basic: false,
+  "1_delete-use": true,
+  "2_delete-move": false,
+  "3_delete-update": false,
+  "4_update-update": false,
+  "5_move-move": false,
+  "6_insert-insert": false,
+  "7_not-categorized": false,
 };

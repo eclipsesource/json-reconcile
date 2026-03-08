@@ -1,0 +1,31 @@
+{
+  "base": {
+    
+  },
+  "left": {
+    
+  },
+  "right": {
+    
+  },
+  "expected": {
+    "2way-a": [
+      
+    ],
+    "2way-b": [
+      
+    ],
+    "3way": {
+      "threeWay": true,
+      "differencesL": [
+        
+      ],
+      "differencesR": [
+        
+      ],
+      "conflicts": [
+        
+      ]
+    }
+  }
+}

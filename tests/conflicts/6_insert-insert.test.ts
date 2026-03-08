@@ -361,14 +361,14 @@ const i_i_same_class_different_id: InputModels = {
 
 // TESTS
 
-if (testsEnabled["i-i"] === true) {
+if (testsEnabled["6_insert-insert"] === true) {
   describe("new class Location and reference from InfrastructureComponent to Location, also same id -> i-i the same - conflict", () => {
     test("2-way: original - a", () => {
       expect(
         createDiff2Way(
           i_i_same_class_same_id.original,
-          i_i_same_class_same_id.left
-        )
+          i_i_same_class_same_id.left,
+        ),
       ).toStrictEqual([
         {
           op: "add",
@@ -411,8 +411,8 @@ if (testsEnabled["i-i"] === true) {
       expect(
         createDiff2Way(
           i_i_same_class_same_id.original,
-          i_i_same_class_same_id.right
-        )
+          i_i_same_class_same_id.right,
+        ),
       ).toStrictEqual([
         {
           op: "add",
@@ -456,8 +456,8 @@ if (testsEnabled["i-i"] === true) {
         createDiff3Way(
           i_i_same_class_same_id.original,
           i_i_same_class_same_id.left,
-          i_i_same_class_same_id.right
-        )
+          i_i_same_class_same_id.right,
+        ),
       ).toStrictEqual({
         threeWay: true,
         differencesL: [
@@ -515,8 +515,8 @@ if (testsEnabled["i-i"] === true) {
       expect(
         createDiff2Way(
           i_i_same_class_different_id.original,
-          i_i_same_class_different_id.left
-        )
+          i_i_same_class_different_id.left,
+        ),
       ).toStrictEqual([
         {
           op: "add",
@@ -560,8 +560,8 @@ if (testsEnabled["i-i"] === true) {
       expect(
         createDiff2Way(
           i_i_same_class_different_id.original,
-          i_i_same_class_different_id.right
-        )
+          i_i_same_class_different_id.right,
+        ),
       ).toStrictEqual([
         {
           op: "add",
@@ -606,8 +606,8 @@ if (testsEnabled["i-i"] === true) {
         createDiff3Way(
           i_i_same_class_different_id.original,
           i_i_same_class_different_id.left,
-          i_i_same_class_different_id.right
-        )
+          i_i_same_class_different_id.right,
+        ),
       ).toStrictEqual({
         threeWay: true,
         differencesL: [

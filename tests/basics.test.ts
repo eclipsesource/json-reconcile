@@ -51,7 +51,7 @@ if (testsEnabled.basic === true) {
 
   test("compare 2-way - no differences API result", () => {
     expect(
-      createDiff({ left: basic.original, right: basic.original })
+      createDiff({ left: basic.original, right: basic.original }),
     ).toStrictEqual({
       threeWay: false,
       differencesL: [],
@@ -72,7 +72,7 @@ if (testsEnabled.basic === true) {
         original: basic.original,
         left: basic.original,
         right: basic.original,
-      })
+      }),
     ).toStrictEqual({
       threeWay: true,
       differencesL: [],
@@ -80,7 +80,7 @@ if (testsEnabled.basic === true) {
       conflicts: [],
     });
     expect(
-      createDiff({ original: basic.left, left: basic.left, right: basic.left })
+      createDiff({ original: basic.left, left: basic.left, right: basic.left }),
     ).toStrictEqual({
       threeWay: true,
       differencesL: [],

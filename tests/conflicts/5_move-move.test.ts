@@ -168,14 +168,14 @@ const m_m_category_reference: InputModels = {
 
 // TESTS
 
-if (testsEnabled["m-m"] === true) {
+if (testsEnabled["5_move-move"] === true) {
   describe("category reference from SmartCity to Project and to InfrastructureComponent -> m-m reference conflict", () => {
     test("2-way: original - a", () => {
       expect(
         createDiff2Way(
           m_m_category_reference.original,
-          m_m_category_reference.left
-        )
+          m_m_category_reference.left,
+        ),
       ).toStrictEqual([
         {
           op: "delete",
@@ -210,8 +210,8 @@ if (testsEnabled["m-m"] === true) {
       expect(
         createDiff2Way(
           m_m_category_reference.original,
-          m_m_category_reference.right
-        )
+          m_m_category_reference.right,
+        ),
       ).toStrictEqual([
         {
           op: "delete",
@@ -247,8 +247,8 @@ if (testsEnabled["m-m"] === true) {
         createDiff3Way(
           m_m_category_reference.original,
           m_m_category_reference.left,
-          m_m_category_reference.right
-        )
+          m_m_category_reference.right,
+        ),
       ).toStrictEqual({
         threeWay: true,
         differencesL: [

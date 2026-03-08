@@ -8,7 +8,7 @@ import {
 import { testsEnabled } from "../configs.js";
 
 // TEST MODEL
-const d_up_attribute_multiplicity_upperBound: InputModels = {
+const d_up__attribute_multiplicity_upperBound: InputModels = {
   original: {
     package: {
       id: "scml",
@@ -106,7 +106,7 @@ const d_up_attribute_multiplicity_upperBound: InputModels = {
   },
 };
 
-const d_up_attribute_multiplicity_upperBound_delete_parent: InputModels = {
+const d_up__attribute_multiplicity_upperBound_delete_parent: InputModels = {
   original: {
     package: {
       id: "scml",
@@ -184,7 +184,7 @@ const d_up_attribute_multiplicity_upperBound_delete_parent: InputModels = {
   },
 };
 
-const d_up_containment_multiplicity_upperBound: InputModels = {
+const d_up__containment_multiplicity_upperBound: InputModels = {
   original: {
     package: {
       id: "scml",
@@ -269,7 +269,7 @@ const d_up_containment_multiplicity_upperBound: InputModels = {
   },
 };
 
-const d_up_attribute_multiplicity_upperbound_child_parent: InputModels = {
+const d_up__attribute_multiplicity_upperbound_child_parent: InputModels = {
   original: {
     package: {
       id: "scml",
@@ -389,7 +389,7 @@ const d_up_attribute_multiplicity_upperbound_child_parent: InputModels = {
   },
 };
 
-const d_up_i_delete_elem_add_elem_in_array: InputModels = {
+const d_up_i__delete_elem_add_elem_in_array: InputModels = {
   original: {
     package: {
       id: "scml",
@@ -433,14 +433,14 @@ const d_up_i_delete_elem_add_elem_in_array: InputModels = {
 
 // TESTS
 
-if (testsEnabled["d-up"] === true) {
-  describe("update Category attribute multiplicity upper bound and delete this attribute upper bound -> d-up conflict", () => {
+if (testsEnabled["3_delete-update"] === true) {
+  describe("3_delete-update: update Category attribute multiplicity upper bound and delete this attribute upper bound -> d-up conflict", () => {
     test("2-way: original - a", () => {
       expect(
         createDiff2Way(
-          d_up_attribute_multiplicity_upperBound.original,
-          d_up_attribute_multiplicity_upperBound.left
-        )
+          d_up__attribute_multiplicity_upperBound.original,
+          d_up__attribute_multiplicity_upperBound.left,
+        ),
       ).toStrictEqual([
         {
           op: "delete",
@@ -453,9 +453,9 @@ if (testsEnabled["d-up"] === true) {
     test("2-way: original - b", () => {
       expect(
         createDiff2Way(
-          d_up_attribute_multiplicity_upperBound.original,
-          d_up_attribute_multiplicity_upperBound.right
-        )
+          d_up__attribute_multiplicity_upperBound.original,
+          d_up__attribute_multiplicity_upperBound.right,
+        ),
       ).toStrictEqual([
         {
           op: "update",
@@ -468,10 +468,10 @@ if (testsEnabled["d-up"] === true) {
     test("3-way", () => {
       expect(
         createDiff3Way(
-          d_up_attribute_multiplicity_upperBound.original,
-          d_up_attribute_multiplicity_upperBound.left,
-          d_up_attribute_multiplicity_upperBound.right
-        )
+          d_up__attribute_multiplicity_upperBound.original,
+          d_up__attribute_multiplicity_upperBound.left,
+          d_up__attribute_multiplicity_upperBound.right,
+        ),
       ).toStrictEqual({
         threeWay: true,
         differencesL: [
@@ -504,13 +504,13 @@ if (testsEnabled["d-up"] === true) {
     });
   });
 
-  describe("update Category attribute multiplicity upper bound and delete parent Category class -> d-up conflict", () => {
+  describe("3_delete-update: update Category attribute multiplicity upper bound and delete parent Category class -> d-up conflict", () => {
     test("2-way: original - a", () => {
       expect(
         createDiff2Way(
-          d_up_attribute_multiplicity_upperBound_delete_parent.original,
-          d_up_attribute_multiplicity_upperBound_delete_parent.left
-        )
+          d_up__attribute_multiplicity_upperBound_delete_parent.original,
+          d_up__attribute_multiplicity_upperBound_delete_parent.left,
+        ),
       ).toStrictEqual([
         {
           op: "delete",
@@ -546,9 +546,9 @@ if (testsEnabled["d-up"] === true) {
     test("2-way: original - b", () => {
       expect(
         createDiff2Way(
-          d_up_attribute_multiplicity_upperBound_delete_parent.original,
-          d_up_attribute_multiplicity_upperBound_delete_parent.right
-        )
+          d_up__attribute_multiplicity_upperBound_delete_parent.original,
+          d_up__attribute_multiplicity_upperBound_delete_parent.right,
+        ),
       ).toStrictEqual([
         {
           op: "update",
@@ -561,10 +561,10 @@ if (testsEnabled["d-up"] === true) {
     test("3-way", () => {
       expect(
         createDiff3Way(
-          d_up_attribute_multiplicity_upperBound_delete_parent.original,
-          d_up_attribute_multiplicity_upperBound_delete_parent.left,
-          d_up_attribute_multiplicity_upperBound_delete_parent.right
-        )
+          d_up__attribute_multiplicity_upperBound_delete_parent.original,
+          d_up__attribute_multiplicity_upperBound_delete_parent.left,
+          d_up__attribute_multiplicity_upperBound_delete_parent.right,
+        ),
       ).toStrictEqual({
         threeWay: true,
         differencesL: [
@@ -603,13 +603,13 @@ if (testsEnabled["d-up"] === true) {
     });
   });
 
-  describe("delete parent Project of child Category class and update attribute multiplicity of Category class - parent - child -> d-up conflict", () => {
+  describe("3_delete-update: delete parent Project of child Category class and update attribute multiplicity of Category class - parent - child -> d-up conflict", () => {
     test("2-way: original - a", () => {
       expect(
         createDiff2Way(
-          d_up_attribute_multiplicity_upperbound_child_parent.original,
-          d_up_attribute_multiplicity_upperbound_child_parent.left
-        )
+          d_up__attribute_multiplicity_upperbound_child_parent.original,
+          d_up__attribute_multiplicity_upperbound_child_parent.left,
+        ),
       ).toStrictEqual([
         {
           op: "delete",
@@ -647,9 +647,9 @@ if (testsEnabled["d-up"] === true) {
     test("2-way: original - b", () => {
       expect(
         createDiff2Way(
-          d_up_attribute_multiplicity_upperbound_child_parent.original,
-          d_up_attribute_multiplicity_upperbound_child_parent.right
-        )
+          d_up__attribute_multiplicity_upperbound_child_parent.original,
+          d_up__attribute_multiplicity_upperbound_child_parent.right,
+        ),
       ).toStrictEqual([
         {
           op: "update",
@@ -662,10 +662,10 @@ if (testsEnabled["d-up"] === true) {
     test("3-way", () => {
       expect(
         createDiff3Way(
-          d_up_attribute_multiplicity_upperbound_child_parent.original,
-          d_up_attribute_multiplicity_upperbound_child_parent.left,
-          d_up_attribute_multiplicity_upperbound_child_parent.right
-        )
+          d_up__attribute_multiplicity_upperbound_child_parent.original,
+          d_up__attribute_multiplicity_upperbound_child_parent.left,
+          d_up__attribute_multiplicity_upperbound_child_parent.right,
+        ),
       ).toStrictEqual({
         threeWay: true,
         differencesL: [
@@ -698,13 +698,13 @@ if (testsEnabled["d-up"] === true) {
     });
   });
 
-  describe("update upper bound multiplicity of reference between SmartCity and Category and delete this referece -> d-up conflict", () => {
+  describe("3_delete-update: update upper bound multiplicity of reference between SmartCity and Category and delete this referece -> d-up conflict", () => {
     test("2-way: original - a", () => {
       expect(
         createDiff2Way(
-          d_up_containment_multiplicity_upperBound.original,
-          d_up_containment_multiplicity_upperBound.left
-        )
+          d_up__containment_multiplicity_upperBound.original,
+          d_up__containment_multiplicity_upperBound.left,
+        ),
       ).toStrictEqual([
         {
           op: "delete",
@@ -723,9 +723,9 @@ if (testsEnabled["d-up"] === true) {
     test("2-way: original - b", () => {
       expect(
         createDiff2Way(
-          d_up_containment_multiplicity_upperBound.original,
-          d_up_containment_multiplicity_upperBound.right
-        )
+          d_up__containment_multiplicity_upperBound.original,
+          d_up__containment_multiplicity_upperBound.right,
+        ),
       ).toStrictEqual([
         {
           op: "update",
@@ -738,10 +738,10 @@ if (testsEnabled["d-up"] === true) {
     test("3-way", () => {
       expect(
         createDiff3Way(
-          d_up_containment_multiplicity_upperBound.original,
-          d_up_containment_multiplicity_upperBound.left,
-          d_up_containment_multiplicity_upperBound.right
-        )
+          d_up__containment_multiplicity_upperBound.original,
+          d_up__containment_multiplicity_upperBound.left,
+          d_up__containment_multiplicity_upperBound.right,
+        ),
       ).toStrictEqual({
         threeWay: true,
         differencesL: [
@@ -782,8 +782,8 @@ if (testsEnabled["d-up"] === true) {
     test("2-way: original - a", () => {
       expect(
         createDiff2Way(
-          d_up_i_delete_elem_add_elem_in_array.original,
-          d_up_i_delete_elem_add_elem_in_array.left
+          d_up_i__delete_elem_add_elem_in_array.original,
+          d_up_i__delete_elem_add_elem_in_array.left
         )
       ).toStrictEqual([
         {
@@ -799,8 +799,8 @@ if (testsEnabled["d-up"] === true) {
     test("2-way: original - b", () => {
       expect(
         createDiff2Way(
-          d_up_i_delete_elem_add_elem_in_array.original,
-          d_up_i_delete_elem_add_elem_in_array.right
+          d_up_i__delete_elem_add_elem_in_array.original,
+          d_up_i__delete_elem_add_elem_in_array.right
         )
       ).toStrictEqual([
         {
@@ -816,9 +816,9 @@ if (testsEnabled["d-up"] === true) {
     test("3-way", () => {
       expect(
         createDiff3Way(
-          d_up_i_delete_elem_add_elem_in_array.original,
-          d_up_i_delete_elem_add_elem_in_array.left,
-          d_up_i_delete_elem_add_elem_in_array.right
+          d_up_i__delete_elem_add_elem_in_array.original,
+          d_up_i__delete_elem_add_elem_in_array.left,
+          d_up_i__delete_elem_add_elem_in_array.right
         )
       ).toStrictEqual({
         threeWay: true,

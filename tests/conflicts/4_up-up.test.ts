@@ -458,14 +458,14 @@ const up_up_smartcity_reference_with_id_value_change: InputModels = {
 
 // TESTS
 
-if (testsEnabled["up-up"] === true) {
+if (testsEnabled["4_update-update"] === true) {
   describe("relation between Project and Category - upper bound change -> up-up conflict", () => {
     test("2-way: original - a", () => {
       expect(
         createDiff2Way(
           up_up_reference_mulitplicity_upperBound.original,
-          up_up_reference_mulitplicity_upperBound.left
-        )
+          up_up_reference_mulitplicity_upperBound.left,
+        ),
       ).toStrictEqual([
         {
           op: "update",
@@ -479,8 +479,8 @@ if (testsEnabled["up-up"] === true) {
       expect(
         createDiff2Way(
           up_up_reference_mulitplicity_upperBound.original,
-          up_up_reference_mulitplicity_upperBound.right
-        )
+          up_up_reference_mulitplicity_upperBound.right,
+        ),
       ).toStrictEqual([
         {
           op: "update",
@@ -495,8 +495,8 @@ if (testsEnabled["up-up"] === true) {
         createDiff3Way(
           up_up_reference_mulitplicity_upperBound.original,
           up_up_reference_mulitplicity_upperBound.left,
-          up_up_reference_mulitplicity_upperBound.right
-        )
+          up_up_reference_mulitplicity_upperBound.right,
+        ),
       ).toStrictEqual({
         threeWay: true,
         differencesL: [
@@ -621,8 +621,8 @@ if (testsEnabled["up-up"] === true) {
       expect(
         createDiff2Way(
           up_up_property_name_and_class_parent.original,
-          up_up_property_name_and_class_parent.left
-        )
+          up_up_property_name_and_class_parent.left,
+        ),
       ).toStrictEqual([
         {
           op: "delete",
@@ -653,8 +653,8 @@ if (testsEnabled["up-up"] === true) {
       expect(
         createDiff2Way(
           up_up_property_name_and_class_parent.original,
-          up_up_property_name_and_class_parent.right
-        )
+          up_up_property_name_and_class_parent.right,
+        ),
       ).toStrictEqual([
         {
           op: "delete",
@@ -686,8 +686,8 @@ if (testsEnabled["up-up"] === true) {
         createDiff3Way(
           up_up_property_name_and_class_parent.original,
           up_up_property_name_and_class_parent.left,
-          up_up_property_name_and_class_parent.right
-        )
+          up_up_property_name_and_class_parent.right,
+        ),
       ).toStrictEqual({
         threeWay: true,
         differencesL: [
@@ -737,8 +737,8 @@ if (testsEnabled["up-up"] === true) {
       expect(
         createDiff2Way(
           up_up_smartcity_reference.original,
-          up_up_smartcity_reference.left
-        )
+          up_up_smartcity_reference.left,
+        ),
       ).toStrictEqual([
         {
           op: "update",
@@ -752,8 +752,8 @@ if (testsEnabled["up-up"] === true) {
       expect(
         createDiff2Way(
           up_up_smartcity_reference.original,
-          up_up_smartcity_reference.right
-        )
+          up_up_smartcity_reference.right,
+        ),
       ).toStrictEqual([
         {
           op: "update",
@@ -768,8 +768,8 @@ if (testsEnabled["up-up"] === true) {
         createDiff3Way(
           up_up_smartcity_reference.original,
           up_up_smartcity_reference.left,
-          up_up_smartcity_reference.right
-        )
+          up_up_smartcity_reference.right,
+        ),
       ).toStrictEqual({
         threeWay: true,
         differencesL: [
