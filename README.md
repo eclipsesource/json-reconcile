@@ -159,7 +159,9 @@ and then
 
 ``` npm run start ```
 
-## Run Tests with ECMAScript Modules
+## Tests
+
+this works only with the ECMAScript Modules
 
 from package.json command:
 ``` npm run test ```
