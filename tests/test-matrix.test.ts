@@ -53,14 +53,78 @@ const CONFLICT_TYPES_SUITS: ConflictType[] = [
         description:
           "reference from Project to Category already exists, update name and multiplicity of reference and delete Category",
       },
+      {
+        variant: "1_5_delete_insert_use",
+        description:
+          "newly inserted Project class, the containment to SmartCity and the reference to Category, delete Category",
+      },
     ],
   },
   {
     name: "2_delete-move",
-    scenarios: [],
+    scenarios: [
+      {
+        variant: "2_1_insert_new_containment",
+        description:
+          "add Location class and InfrastructureComponent as container for Location, delete InfrastructureComponent",
+      },
+      {
+        variant: "2_2_target_delete",
+        description:
+          "container of InfrastructureComponent moved from SmartCity to Project, delete InfrastructureComponent",
+      },
+      {
+        variant: "2_3_source_delete",
+        description:
+          "container of Category moved from Project to InfrastructureComponent, delete InfrastructureComponent",
+      },
+      {
+        variant: "2_4_move_to_new_delete_target",
+        description:
+          "add InfrastructureComponent class and and container of existing Category moved from Project to InfrastructureComponent, deleted Category",
+      },
+    ],
   },
   {
     name: "3_delete-update",
+    scenarios: [
+      {
+        variant: "3_1_insert_attr_delete_class",
+        description:
+          "add Atribute SDG to existing Category class, delete Category",
+      },
+      {
+        variant: "3_2_attr_typ_delete_class",
+        description: "",
+      },
+      {
+        variant: "3_3_edge_name_class_delete",
+        description: "",
+      },
+      {
+        variant: "3_4_attr_class_delete_pseudo",
+        description: "",
+      },
+      {
+        variant: "3_5_delete_edge_source_pseudo",
+        description: "",
+      },
+    ],
+  },
+  {
+    name: "4_update-update",
+    scenarios: [],
+  },
+  {
+    name: "5_move-move",
+    scenarios: [],
+  },
+  {
+    name: "6_insert-insert",
+    scenarios: [],
+  },
+  {
+    name: "7_not-categorized",
     scenarios: [],
   },
 ];
@@ -75,24 +139,26 @@ CONFLICT_TYPES_SUITS.forEach((type) => {
             return getModel(variantFilePath);
           })();
 
-          it("2-way: original - A", () => {
-            const result = createDiff2Way(models.base, models.left);
-            expect(result).toEqual(models.expected["2way-a"]);
-          });
+          if (models !== null) {
+            it("2-way: original - A", () => {
+              const result = createDiff2Way(models.base, models.left);
+              expect(result).toEqual(models.expected["2way-a"]);
+            });
 
-          it("2-way: orignal - B", () => {
-            const result = createDiff2Way(models.base, models.right);
-            expect(result).toEqual(models.expected["2way-b"]);
-          });
+            it("2-way: orignal - B", () => {
+              const result = createDiff2Way(models.base, models.right);
+              expect(result).toEqual(models.expected["2way-b"]);
+            });
 
-          it("3-way: conflict detection", () => {
-            const result = createDiff3Way(
-              models.base,
-              models.left,
-              models.right,
-            );
-            expect(result).toEqual(models.expected["3way"]);
-          });
+            it("3-way: conflict detection", () => {
+              const result = createDiff3Way(
+                models.base,
+                models.left,
+                models.right,
+              );
+              expect(result).toEqual(models.expected["3way"]);
+            });
+          }
         });
       });
     });

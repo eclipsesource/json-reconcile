@@ -99,7 +99,8 @@
       ]
     }
   },
-  "right": {"package": {
+  "right": {
+    "package": {
       "id": "scml",
       "classes": [
         {

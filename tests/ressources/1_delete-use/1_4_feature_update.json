@@ -42,6 +42,7 @@
           "references": [
             {
               "id": "category",
+              "name": "category",
               "containment": false,
               "upperBound": 1,
               "lowerBound": 0,
@@ -96,7 +97,8 @@
           "id": "Project",
           "references": [
             {
-              "id": "category11",
+              "id": "category",
+              "name": "category11",
               "containment": false,
               "upperBound": -1,
               "lowerBound": 1,
@@ -109,7 +111,8 @@
       ]
     }
   },
-  "right": {"package": {
+  "right": {
+    "package": {
       "id": "scml",
       "classes": [
         {
@@ -136,17 +139,19 @@
   "expected": {
     "2way-a": [
       {
-        "op": "add",
-        "path": "/package/classes/2/references/0",
-        "value": {
-          "containment": false,
-          "id": "category",
-          "lowerBound": 1,
-          "type": {
-            "$ref": "#/package/classes/1"
-          },
-          "upperBound": -1
-        }
+        "op": "update",
+        "path": "/package/classes/2/references/0/name",
+        "value": "category11"
+      },
+      {
+        "op": "update",
+        "path": "/package/classes/2/references/0/upperBound",
+        "value": -1
+      },
+      {
+        "op": "update",
+        "path": "/package/classes/2/references/0/lowerBound",
+        "value": 1
       }
     ],
     "2way-b": [
@@ -179,6 +184,20 @@
         }
       },
       {
+        "op": "delete",
+        "path": "/package/classes/1/references/0",
+        "value": {
+          "id": "category",
+          "name": "category",
+          "containment": false,
+          "upperBound": 1,
+          "lowerBound": 0,
+          "type": {
+            "$ref": "#/package/classes/1"
+          }
+        }
+      },
+      {
         "op": "update",
         "path": "/package/classes/0/references/0/type/$ref",
         "value": "#/package/classes/1"
@@ -189,11 +208,22 @@
       "differencesL": [
         {
           "id": 0,
-          "kind": "add",
+          "kind": "update",
           "state": 0,
-          "path": "/package/classes/2/references/0"
+          "path": "/package/classes/2/references/0/name"
+        },
+        {
+          "id": 1,
+          "kind": "update",
+          "state": 0,
+          "path": "/package/classes/2/references/0/upperBound"
+        },
+        {
+          "id": 2,
+          "kind": "update",
+          "state": 0,
+          "path": "/package/classes/2/references/0/lowerBound"
         }
-        
       ],
       "differencesR": [
         {
@@ -210,6 +240,12 @@
         },
         {
           "id": 2,
+          "kind": "delete",
+          "state": 0,
+          "path": "/package/classes/1/references/0"
+        },
+        {
+          "id": 3,
           "kind": "update",
           "state": 0,
           "path": "/package/classes/0/references/0/type/$ref"

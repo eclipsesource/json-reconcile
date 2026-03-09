@@ -7,16 +7,21 @@
           "id": "Smart City",
           "references": [
             {
-              "id": "category",
+              "id": "project",
               "containment": true,
               "upperBound": -1,
               "lowerBound": 0,
               "type": {
                 "$ref": "#/package/classes/1"
               }
-            },
+            }
+          ]
+        },
+        {
+          "id": "Project",
+          "references": [
             {
-              "id": "project",
+              "id": "category",
               "containment": true,
               "upperBound": -1,
               "lowerBound": 0,
@@ -36,10 +41,6 @@
               "type": "int"
             }
           ]
-        },
-        {
-          "id": "Project",
-          "references": []
         }
       ]
     }
@@ -52,24 +53,19 @@
           "id": "Smart City",
           "references": [
             {
-              "id": "category",
+              "id": "project",
               "containment": true,
               "upperBound": -1,
               "lowerBound": 0,
               "type": {
                 "$ref": "#/package/classes/1"
               }
-            },
-            {
-              "id": "project",
-              "containment": true,
-              "upperBound": -1,
-              "lowerBound": 0,
-              "type": {
-                "$ref": "#/package/classes/2"
-              }
             }
           ]
+        },
+        {
+          "id": "Project",
+          "references": []
         },
         {
           "id": "Category",
@@ -83,15 +79,15 @@
           ]
         },
         {
-          "id": "Project",
+          "id": "InfrastructureComponent",
           "references": [
             {
               "id": "category",
-              "containment": false,
+              "containment": true,
               "upperBound": -1,
-              "lowerBound": 1,
+              "lowerBound": 0,
               "type": {
-                "$ref": "#/package/classes/1"
+                "$ref": "#/package/classes/2"
               }
             }
           ]
@@ -127,23 +123,32 @@
   "expected": {
     "2way-a": [
       {
-        "op": "add",
-        "path": "/package/classes/2/references/0",
+        "op": "move",
+        "from": "/package/classes/1/references/0",
+        "path": "/package/classes/3/references/0",
         "value": {
-          "containment": false,
           "id": "category",
-          "lowerBound": 1,
+          "containment": true,
+          "upperBound": -1,
+          "lowerBound": 0,
           "type": {
-            "$ref": "#/package/classes/1"
-          },
-          "upperBound": -1
+            "$ref": "#/package/classes/2"
+          }
+        }
+      },
+      {
+        "op": "add",
+        "path": "/package/classes/3",
+        "value": {
+          "id": "InfrastructureComponent",
+          "references": []
         }
       }
     ],
     "2way-b": [
       {
         "op": "delete",
-        "path": "/package/classes/1",
+        "path": "/package/classes/2",
         "value": {
           "id": "Category",
           "attributes": [
@@ -158,21 +163,16 @@
       },
       {
         "op": "delete",
-        "path": "/package/classes/0/references/0",
+        "path": "/package/classes/1/references/0",
         "value": {
           "id": "category",
           "containment": true,
           "upperBound": -1,
           "lowerBound": 0,
           "type": {
-            "$ref": "#/package/classes/1"
+            "$ref": "#/package/classes/2"
           }
         }
-      },
-      {
-        "op": "update",
-        "path": "/package/classes/0/references/0/type/$ref",
-        "value": "#/package/classes/1"
       }
     ],
     "3way": {
@@ -180,36 +180,35 @@
       "differencesL": [
         {
           "id": 0,
+          "kind": "move",
+          "state": 0,
+          "path": "/package/classes/3/references/0"
+        },
+        {
+          "id": 1,
           "kind": "add",
           "state": 0,
-          "path": "/package/classes/2/references/0"
+          "path": "/package/classes/3"
         }
-        
       ],
       "differencesR": [
         {
           "id": 0,
           "kind": "delete",
           "state": 0,
-          "path": "/package/classes/1"
+          "path": "/package/classes/2"
         },
         {
           "id": 1,
           "kind": "delete",
           "state": 0,
-          "path": "/package/classes/0/references/0"
-        },
-        {
-          "id": 2,
-          "kind": "update",
-          "state": 0,
-          "path": "/package/classes/0/references/0/type/$ref"
+          "path": "/package/classes/1/references/0"
         }
       ],
       "conflicts": [
         {
           "leftDiff": {
-            "$ref": "#/differencesL/0"
+            "$ref": "#/differencesL/1"
           },
           "rightDiff": {
             "$ref": "#/differencesR/0"
