@@ -46,7 +46,7 @@ const CONFLICT_TYPES_SUITS: ConflictType[] = [
       {
         variant: "1_3_source_delete",
         description:
-          "delete Project class and add reference from Project to Category -- KNOWN GITHUB ISSUE https://github.com/eclipsesource/json-reconcile/issues/7",
+          "delete Project class and add reference from Project to Category",
       },
       {
         variant: "1_4_feature_update",
@@ -95,19 +95,23 @@ const CONFLICT_TYPES_SUITS: ConflictType[] = [
       },
       {
         variant: "3_2_attr_typ_delete_class",
-        description: "",
+        description:
+          "update type of attribute SDG of Category class to 'string', delete Category",
       },
       {
         variant: "3_3_edge_name_class_delete",
-        description: "",
+        description:
+          "update name of containment (SmartCity-Project), delete Project",
       },
       {
         variant: "3_4_attr_class_delete_pseudo",
-        description: "",
+        description:
+          "delete attribute SDG of Category, delete Category  --  HOW TO HANDLE PSEUDO CONFLICTS (delte-delete)",
       },
       {
         variant: "3_5_delete_edge_source_pseudo",
-        description: "",
+        description:
+          "delete the containment of SmartCity-Category, delete Category  --  HOW TO HANDLE PSEUDO CONFLICTS (delte-delete)",
       },
     ],
   },
