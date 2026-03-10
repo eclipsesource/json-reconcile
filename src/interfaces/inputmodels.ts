@@ -17,6 +17,7 @@ export interface DiffWithUsedFlagCustom<Op> {
   used: boolean;
 }
 
+// Maps with paths (string) as keys
 export interface DiffGroupByOpAndPath {
   add: Map<string, DiffWithUsedFlagCustom<AddOp>>;
   delete: Map<string, DiffWithUsedFlagCustom<DeleteOp>>;

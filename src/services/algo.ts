@@ -188,12 +188,12 @@ export function runtimeImprovedMapImplementations(
       );
     }
 
-    const matchingLeft = diffMapLeft.update.get(pathLeft);
+    const matchingLeftUpdate = diffMapLeft.update.get(pathLeft);
     const matchingRightDelete = diffMapRight.delete.get(pathLeft);
 
-    if (matchingRightDelete !== undefined && matchingLeft !== undefined) {
+    if (matchingRightDelete !== undefined && matchingLeftUpdate !== undefined) {
       console.log("----------- UPDATE DELETE conflict :O !! -----------");
-      addConflict(matchingLeft, matchingRightDelete, diffModel);
+      addConflict(matchingLeftUpdate, matchingRightDelete, diffModel);
     }
   }
 
@@ -262,6 +262,47 @@ export function runtimeImprovedMapImplementations(
           "----------- PARENT CHILD -- DELETE USE conflict :O !! -----------",
         );
         addConflict(matchingLeftDelete, matchingRightChildAdd, diffModel);
+      }
+    }
+  }
+
+  console.log(
+    "----------- special UPDATE DELETE or special USE DELETE conflict, path contained ? -----------",
+  );
+  for (const pathRight of diffMapRight.delete.keys()) {
+    const matchingRightDelete = diffMapRight.delete.get(pathRight);
+
+    for (const key of diffMapLeft.add.keys()) {
+      if (key.startsWith(pathRight)) {
+        const matchingLeftAdd = diffMapLeft.add.get(key);
+
+        if (
+          matchingLeftAdd !== undefined &&
+          matchingRightDelete !== undefined
+        ) {
+          console.log(
+            "----------- USE DELETE conflict (path contained) conflict :O !! -----------",
+          );
+          addConflict(matchingLeftAdd, matchingRightDelete, diffModel);
+        }
+        break;
+      }
+    }
+
+    for (const key of diffMapLeft.update.keys()) {
+      if (key.startsWith(pathRight)) {
+        const matchingLeftUpdate = diffMapLeft.update.get(key);
+
+        if (
+          matchingLeftUpdate !== undefined &&
+          matchingRightDelete !== undefined
+        ) {
+          console.log(
+            "----------- UPDATE DELETE conflict (path contained) conflict :O !! -----------",
+          );
+          addConflict(matchingLeftUpdate, matchingRightDelete, diffModel);
+        }
+        break;
       }
     }
   }
