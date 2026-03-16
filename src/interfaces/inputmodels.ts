@@ -25,9 +25,29 @@ export interface DiffGroupByOpAndPath {
   move: Map<string, DiffWithUsedFlagCustom<MoveOp>>;
 }
 
+/* model structure just for reference
 interface Model {
   package: {
     id: string;
+    packages?: {
+      id: string;
+      classes: {
+        id: string;
+        attributes?: {
+          id: string;
+          upperBound: number; // -1 = *
+          lowerBound: number;
+          type: string;
+        }[];
+        references?: {
+          id: string;
+          containment: boolean;
+          upperBound: number; // -1 = *
+          lowerBound: number;
+          type: string;
+        }[];
+      }
+    }[];
     classes: {
       id: string;
       attributes?: {
@@ -46,3 +66,4 @@ interface Model {
     }[];
   };
 }
+ */

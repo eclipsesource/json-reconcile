@@ -12,6 +12,7 @@ interface ConflictType {
     | "2_delete-move"
     | "3_delete-update"
     | "4_update-update"
+    | "4_xx_update-update_ordered"
     | "5_move-move"
     | "6_insert-insert"
     | "7_not-categorized";
@@ -117,15 +118,72 @@ const CONFLICT_TYPES_SUITS: ConflictType[] = [
   },
   {
     name: "4_update-update",
-    scenarios: [],
+    scenarios: [
+      {
+        variant: "4_1_attr_name",
+        description: "update Category name on both sides with different values",
+      },
+      {
+        variant: "4_2_multiplicity_containment",
+        description:
+          "update containment from SmartCity to Category, the multiplicity upper bound on both sides with different values",
+      },
+    ],
+  },
+  {
+    name: "4_xx_update-update_ordered",
+    scenarios: [
+      {
+        variant: "4_10_class_order_beginning",
+        description:
+          "add Project class at the beginning (index 0), add InfrastructureComponent class also at the beginning (index 0)",
+      },
+      {
+        variant: "4_11_delete_insert_class",
+        description:
+          "delete Category from index 0, add Project class between Category and SmartCity (index 1)",
+      },
+      {
+        variant: "4_12_order_no_conflict_class",
+        description:
+          "add InfrastructureComponent class between Category and Project (index 1), add Location class between Project and Smart City (index 2)",
+      },
+      {
+        variant: "4_13_reordering_with_class",
+        description:
+          "move Category class from first to second position between Project and SmartCity, move Category to third position after Project and SmartCity",
+      },
+    ],
   },
   {
     name: "5_move-move",
-    scenarios: [],
+    scenarios: [
+      {
+        variant: "5_1_category_containment",
+        description:
+          "move category containment from SmartCity to Project, move category containment from SmartCity to InfrastructureComponent",
+      },
+      {
+        variant: "5_2_containment_cycle_category",
+        description:
+          "move category containment from SmartCity to Project, move project containment from SmartCity to Category (cycle Project-Category)",
+      },
+      {
+        variant: "5_10_with_package",
+        description:
+          "move Category class from newPackage1 to newPackage2, move Category class from newPackage1 to newPackage2 (containment SmartCity to Category change)",
+      },
+    ],
   },
   {
     name: "6_insert-insert",
-    scenarios: [],
+    scenarios: [
+      {
+        variant: "6_1_category_no_container",
+        description:
+          "add new containment from SmartCity to Category class, add new containment from Project to Category class",
+      },
+    ],
   },
   {
     name: "7_not-categorized",

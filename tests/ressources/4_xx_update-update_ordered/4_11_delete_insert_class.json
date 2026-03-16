@@ -1,0 +1,186 @@
+{
+  "base": {
+    "package": {
+      "id": "scml",
+      "classes": [
+        {
+          "id": "Category",
+          "attributes": [
+            {
+              "id": "SDGs",
+              "upperBound": -1,
+              "lowerBound": 1,
+              "type": "int"
+            }
+          ]
+        },
+        {
+          "id": "Smart City",
+          "references": [
+            {
+              "id": "category",
+              "containment": true,
+              "upperBound": -1,
+              "lowerBound": 0,
+              "type": {
+                "$ref": "#/package/classes/0"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "left": {
+    "package": {
+      "id": "scml",
+      "classes": [
+        {
+          "id": "Smart City",
+          "references": []
+        }
+      ]
+    }
+  },
+  "right": {
+    "package": {
+      "id": "scml",
+      "classes": [
+        {
+          "id": "Category",
+          "attributes": [
+            {
+              "id": "SDGs",
+              "upperBound": -1,
+              "lowerBound": 1,
+              "type": "int"
+            }
+          ]
+        },
+        {
+          "id": "Project",
+          "references": []
+        },
+        {
+          "id": "Smart City",
+          "references": [
+            {
+              "id": "project",
+              "containment": true,
+              "upperBound": -1,
+              "lowerBound": 0,
+              "type": {
+                "$ref": "#/package/classes/1"
+              }
+            },
+            {
+              "id": "category",
+              "containment": true,
+              "upperBound": -1,
+              "lowerBound": 0,
+              "type": {
+                "$ref": "#/package/classes/0"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "2way-a": [
+      {
+        "op": "delete",
+        "path": "/package/classes/0",
+        "value": {
+          "id": "Category",
+          "attributes": [
+            {
+              "id": "SDGs",
+              "upperBound": -1,
+              "lowerBound": 1,
+              "type": "int"
+            }
+          ]
+        }
+      },
+      {
+        "op": "delete",
+        "path": "/package/classes/1/references/0",
+        "value": {
+          "id": "category",
+          "containment": true,
+          "upperBound": -1,
+          "lowerBound": 0,
+          "type": {
+            "$ref": "#/package/classes/0"
+          }
+        }
+      }
+    ],
+    "2way-b": [
+      {
+        "op": "add",
+        "path": "/package/classes/1",
+        "value": {
+          "id": "Project",
+          "references": []
+        }
+      },
+      {
+        "op": "add",
+        "path": "/package/classes/2/references/0",
+        "value": {
+          "id": "project",
+          "containment": true,
+          "upperBound": -1,
+          "lowerBound": 0,
+          "type": {
+            "$ref": "#/package/classes/1"
+          }
+        }
+      }
+    ],
+    "3way": {
+      "threeWay": true,
+      "differencesL": [
+        {
+          "id": 0,
+          "kind": "delete",
+          "state": 0,
+          "path": "/package/classes/0"
+        },
+        {
+          "id": 1,
+          "kind": "delete",
+          "state": 0,
+          "path": "/package/classes/1/references/0"
+        }
+      ],
+      "differencesR": [
+        {
+          "id": 0,
+          "kind": "add",
+          "state": 0,
+          "path": "/package/classes/1"
+        },
+        {
+          "id": 1,
+          "kind": "add",
+          "state": 0,
+          "path": "/package/classes/2/references/0"
+        }
+      ],
+      "conflicts": [
+        {
+          "leftDiff": {
+            "$ref": "#/differencesL/0"
+          },
+          "rightDiff": {
+            "$ref": "#/differencesR/0"
+          }
+        }
+      ]
+    }
+  }
+}
