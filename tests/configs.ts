@@ -7,5 +7,5 @@ export const testsEnabled = {
   "4_xx_update-update_ordered": true,
   "5_move-move": true,
   "6_insert-insert": true,
-  "7_not-categorized": false,
+  "7_not-categorized": true,
 };

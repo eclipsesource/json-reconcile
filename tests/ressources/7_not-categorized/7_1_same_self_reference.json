@@ -1,0 +1,264 @@
+{
+  "base": {
+    "package": {
+      "id": "scml",
+      "classes": [
+        {
+          "id": "Smart City",
+          "references": [
+            {
+              "id": "project",
+              "containment": true,
+              "upperBound": -1,
+              "lowerBound": 0,
+              "type": {
+                "$ref": "#/package/classes/1"
+              }
+            }
+          ]
+        },
+        {
+          "id": "Project",
+          "references": [
+            {
+              "id": "component",
+              "containment": true,
+              "upperBound": -1,
+              "lowerBound": 0,
+              "type": {
+                "$ref": "#/package/classes/2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "InfrastructureComponent",
+          "references": []
+        }
+      ]
+    }
+  },
+  "left": {
+    "package": {
+      "id": "scml",
+      "classes": [
+        {
+          "id": "Smart City",
+          "references": [
+            {
+              "id": "project",
+              "containment": true,
+              "upperBound": -1,
+              "lowerBound": 0,
+              "type": {
+                "$ref": "#/package/classes/1"
+              }
+            }
+          ]
+        },
+        {
+          "id": "Project",
+          "references": [
+            {
+              "id": "component",
+              "containment": true,
+              "upperBound": -1,
+              "lowerBound": 0,
+              "type": {
+                "$ref": "#/package/classes/2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "InfrastructureComponent",
+          "references": [
+            {
+              "id": "x",
+              "containment": true,
+              "upperBound": 1,
+              "lowerBound": 1,
+              "type": {
+                "$ref": "#/package/classes/2"
+              }
+            },
+            {
+              "id": "y",
+              "containment": false,
+              "upperBound": 1,
+              "lowerBound": 1,
+              "type": {
+                "$ref": "#/package/classes/2"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "right": {
+    "package": {
+      "id": "scml",
+      "classes": [
+        {
+          "id": "Smart City",
+          "references": [
+            {
+              "id": "project",
+              "containment": true,
+              "upperBound": -1,
+              "lowerBound": 0,
+              "type": {
+                "$ref": "#/package/classes/1"
+              }
+            }
+          ]
+        },
+        {
+          "id": "Project",
+          "references": [
+            {
+              "id": "component",
+              "containment": true,
+              "upperBound": -1,
+              "lowerBound": 0,
+              "type": {
+                "$ref": "#/package/classes/2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "InfrastructureComponent",
+          "references": [
+            {
+              "id": "x",
+              "containment": true,
+              "upperBound": 1,
+              "lowerBound": 1,
+              "type": {
+                "$ref": "#/package/classes/2"
+              }
+            },
+            {
+              "id": "y",
+              "containment": false,
+              "upperBound": 1,
+              "lowerBound": 1,
+              "type": {
+                "$ref": "#/package/classes/2"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "2way-a": [
+      {
+        "op": "add",
+        "path": "/package/classes/2/references/0",
+        "value": {
+          "id": "x",
+          "containment": true,
+          "upperBound": 1,
+          "lowerBound": 1,
+          "type": {
+            "$ref": "#/package/classes/2"
+          }
+        }
+      },
+      {
+        "op": "add",
+        "path": "/package/classes/2/references/1",
+        "value": {
+          "id": "y",
+          "containment": false,
+          "upperBound": 1,
+          "lowerBound": 1,
+          "type": {
+            "$ref": "#/package/classes/2"
+          }
+        }
+      }
+    ],
+    "2way-b": [
+      {
+        "op": "add",
+        "path": "/package/classes/2/references/0",
+        "value": {
+          "id": "x",
+          "containment": true,
+          "upperBound": 1,
+          "lowerBound": 1,
+          "type": {
+            "$ref": "#/package/classes/2"
+          }
+        }
+      },
+      {
+        "op": "add",
+        "path": "/package/classes/2/references/1",
+        "value": {
+          "id": "y",
+          "containment": false,
+          "upperBound": 1,
+          "lowerBound": 1,
+          "type": {
+            "$ref": "#/package/classes/2"
+          }
+        }
+      }
+    ],
+    "3way": {
+      "threeWay": true,
+      "differencesL": [
+        {
+          "id": 0,
+          "kind": "add",
+          "state": 0,
+          "path": "/package/classes/2/references/0"
+        },
+        {
+          "id": 1,
+          "kind": "add",
+          "state": 0,
+          "path": "/package/classes/2/references/1"
+        }
+      ],
+      "differencesR": [
+        {
+          "id": 0,
+          "kind": "add",
+          "state": 0,
+          "path": "/package/classes/2/references/0"
+        },
+        {
+          "id": 1,
+          "kind": "add",
+          "state": 0,
+          "path": "/package/classes/2/references/1"
+        }
+      ],
+      "conflicts": [
+        {
+          "leftDiff": {
+            "$ref": "#/differencesL/0"
+          },
+          "rightDiff": {
+            "$ref": "#/differencesR/0"
+          }
+        },
+        {
+          "leftDiff": {
+            "$ref": "#/differencesL/1"
+          },
+          "rightDiff": {
+            "$ref": "#/differencesR/1"
+          }
+        }
+      ]
+    }
+  }
+}

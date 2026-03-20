@@ -187,7 +187,18 @@ const CONFLICT_TYPES_SUITS: ConflictType[] = [
   },
   {
     name: "7_not-categorized",
-    scenarios: [],
+    scenarios: [
+      {
+        variant: "7_1_same_self_reference",
+        description:
+          "add new self containment and self reference to InfrastructureComponent class, add new self containment and self reference to InfrastructureComponent class, both with same id",
+      },
+      {
+        variant: "7_2_create_same_class",
+        description:
+          "add new Location class and the containment from InfrastructureComponent to Location, add new Location class and containment from InfrastructureComponent to Location, both with same id",
+      },
+    ],
   },
 ];
 
