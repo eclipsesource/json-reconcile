@@ -4,6 +4,12 @@ import { getInputModelsOrError } from "../utils/prepInputModels.js";
 
 const dicome = Router();
 
+/**
+ * Compare two models and detect conflicts
+ *
+ * @param {InputModels} req.body - The first operand
+ * @returns {DiffModel} The sum of both operands
+ */
 dicome.post("/compare", (req, res) => {
   console.log("request body", req.body);
   const inputModelsOrError = getInputModelsOrError(req.body, req.session);
@@ -18,22 +24,28 @@ dicome.post("/compare", (req, res) => {
   }
 });
 
-dicome.put("/apply/ltr", (req, res) => {
+/**
+ * Apply differences
+ *
+ * for conflicts: if this is a left change then right automatically rejected and vis a versa
+ *
+ * @param {number[]} req.body - list of the IDs of 1-n changes to apply
+ * @returns {object} JSON patch (if technically possible) of diff model and left/right
+ */
+dicome.put("/apply", (req, res) => {
   // TODO
   res.sendStatus(200);
 });
 
-dicome.put("/apply/rtl", (req, res) => {
-  // TODO
-  res.sendStatus(200);
-});
-
-dicome.put("/accept", (req, res) => {
-  // TODO
-  res.sendStatus(200);
-});
-
-dicome.put("/reject", (req, res) => {
+/**
+ * Discard differences
+ *
+ * for conflicts: if this is a left change then right automatically accepted and vis a versa
+ *
+ * @param {number[]} req.body - list of the IDs of 1-n changes to discard
+ * @returns {object} JSON patch (if technically possible) of diff model and left/right
+ */
+dicome.put("/discard", (req, res) => {
   // TODO
   res.sendStatus(200);
 });
