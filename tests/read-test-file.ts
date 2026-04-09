@@ -7,7 +7,7 @@ export function getModel(filePath: string): AllTheFiles | null {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
 
-  const fullPath = path.join(__dirname, "ressources/", filePath);
+  const fullPath = path.join(__dirname, "data/", filePath);
 
   const fileContent = fs.readFileSync(fullPath, "utf-8");
 
