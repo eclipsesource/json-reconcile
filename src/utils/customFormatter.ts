@@ -156,7 +156,6 @@ class CustomJuuFormatter extends BaseFormatter<
   format(delta: Delta, left?: unknown): CustomOp[] {
     const context = this.prepareContext({});
     const preparedContext = context;
-    console.log("CONTEXT", JSON.stringify(preparedContext));
     this.recurse(preparedContext, delta, left);
     return preparedContext.result;
   }

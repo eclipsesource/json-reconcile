@@ -8,11 +8,8 @@ import * as customJuuFormatter from "../utils/customFormatter.js";
 import { CustomOp } from "../interfaces/util.js";
 import defaultHashMatching from "../customisable/defaultHashMatching.js";
 import { algoVariation, CONFIG } from "../config.js";
-import { addUsedFlag, prepareDiffMap } from "../utils/prepInputModels.js";
-import {
-  nestedForLoopWorstImplementation,
-  runtimeImprovedMapImplementations,
-} from "./algo.js";
+import { prepareDiffMap } from "../utils/prepInputModels.js";
+import { runtimeImprovedMapImplementations } from "./algo.js";
 
 export function createDiff(inputModels: InputModels): DiffModel {
   if (inputModels.original === undefined) {
@@ -38,14 +35,16 @@ function createDiffModelFrom2WayDiff(operations: CustomOp[]): DiffModel {
     conflicts: [],
   };
 
-  for (const op of operations) {
+  console.log(operations);
+
+  operations.forEach((op, index) => {
     diffModel.differencesL.push({
-      id: 77, // TODO: what id to take?
+      id: index, // TODO: what id to take? more sophisticated?
       kind: op.op,
       state: DifferenceState.UNRESOLVED,
       path: op.path,
     });
-  }
+  });
 
   return diffModel;
 }
@@ -53,13 +52,11 @@ function createDiffModelFrom2WayDiff(operations: CustomOp[]): DiffModel {
 export function createDiff2Way(left: JSONValue, right: JSONValue): CustomOp[] {
   const delta = jsondiffpatch
     .create({
-      objectHash: (obj) => {
-        return defaultHashMatching(obj as Record<string, undefined>);
+      objectHash: (obj, index) => {
+        return defaultHashMatching(obj as Record<string, undefined>, index);
       },
     })
     .diff(left, right);
-
-  console.log("DEELTAA", JSON.stringify(delta));
 
   const operations = customJuuFormatter.format(delta);
 
