@@ -1,0 +1,226 @@
+{
+  "packages": [
+    {
+      "id": "pkg1",
+      "classes": [
+        {
+          "id": "A",
+          "slots": [
+            { "id": "s1", "kind": "many", "target": { "$ref": "#/packages/0/classes/1" } },
+            { "id": "s2", "kind": "many", "target": { "$ref": "#/packages/0/classes/2" } }
+          ],
+          "fields": [
+            { "id": "f1", "type": "String" }
+          ]
+        },
+        {
+          "id": "B",
+          "slots": [
+            { "id": "s3", "kind": "many", "target": { "$ref": "#/packages/1/classes/0" } }
+          ],
+          "fields": [
+            { "id": "f3",  "type": "bool" },
+            { "id": "f4",  "type": "float" },
+            { "id": "f37", "type": "String" }
+          ]
+        },
+        {
+          "id": "C",
+          "slots": [
+            { "id": "s4", "kind": "single", "target": { "$ref": "#/packages/0/classes/4" } }
+          ],
+          "fields": [
+            { "id": "f5", "type": "String" }
+          ]
+        },
+        {
+          "id": "D",
+          "slots": [],
+          "fields": [
+            { "id": "f6", "type": "int" },
+            { "id": "f7", "type": "float" }
+          ]
+        },
+        {
+          "id": "E",
+          "slots": [
+            { "id": "s5",  "kind": "many",   "target": { "$ref": "#/packages/1/classes/1" } },
+            { "id": "s19", "kind": "single", "target": { "$ref": "#/packages/1/classes/2" } }
+          ],
+          "fields": [
+            { "id": "f8", "type": "float" }
+          ]
+        },
+        {
+          "id": "F",
+          "slots": [
+            { "id": "s6", "kind": "single", "target": { "$ref": "#/packages/2/classes/0" } }
+          ],
+          "fields": [
+            { "id": "f9",  "type": "bool" },
+            { "id": "f10", "type": "int" }
+          ]
+        },
+        {
+          "id": "G",
+          "slots": [],
+          "fields": [
+            { "id": "f11", "type": "String" },
+            { "id": "f38", "type": "int" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pkg2",
+      "classes": [
+        {
+          "id": "H",
+          "slots": [
+            { "id": "s7", "kind": "many", "target": { "$ref": "#/packages/1/classes/1" } }
+          ],
+          "fields": [
+            { "id": "f12", "type": "int" },
+            { "id": "f13", "type": "String" }
+          ]
+        },
+        {
+          "id": "I",
+          "slots": [
+            { "id": "s9", "kind": "single", "target": { "$ref": "#/packages/1/classes/2" } }
+          ],
+          "fields": [
+            { "id": "f14", "type": "float" },
+            { "id": "f15", "type": "String" }
+          ]
+        },
+        {
+          "id": "J",
+          "slots": [],
+          "fields": [
+            { "id": "f16", "type": "String" },
+            { "id": "f17", "type": "int" }
+          ]
+        },
+        {
+          "id": "K",
+          "slots": [
+            { "id": "s10", "kind": "many", "target": { "$ref": "#/packages/0/classes/0" } }
+          ],
+          "fields": [
+            { "id": "f19", "type": "bool" }
+          ]
+        },
+        {
+          "id": "L",
+          "slots": [
+            { "id": "s11", "kind": "single", "target": { "$ref": "#/packages/1/classes/5" } }
+          ],
+          "fields": [
+            { "id": "f20", "type": "String" },
+            { "id": "f21", "type": "bool" }
+          ]
+        },
+        {
+          "id": "M",
+          "slots": [],
+          "fields": [
+            { "id": "f22", "type": "float" }
+          ]
+        },
+        {
+          "id": "N",
+          "slots": [
+            { "id": "s12", "kind": "single", "target": { "$ref": "#/packages/2/classes/1" } }
+          ],
+          "fields": [
+            { "id": "f23", "type": "String" },
+            { "id": "f24", "type": "bool" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pkg3",
+      "classes": [
+        {
+          "id": "O",
+          "slots": [
+            { "id": "s13", "kind": "single", "target": { "$ref": "#/packages/2/classes/1" } }
+          ],
+          "fields": [
+            { "id": "f25", "type": "int" },
+            { "id": "f26", "type": "String" },
+            { "id": "f39", "type": "bool" }
+          ]
+        },
+        {
+          "id": "P",
+          "slots": [
+            { "id": "s14", "kind": "many",   "target": { "$ref": "#/packages/0/classes/1" } },
+            { "id": "s15", "kind": "single", "target": { "$ref": "#/packages/1/classes/3" } }
+          ],
+          "fields": [
+            { "id": "f27", "type": "float" }
+          ]
+        },
+        {
+          "id": "Q",
+          "slots": [],
+          "fields": [
+            { "id": "f28", "type": "bool" },
+            { "id": "f29", "type": "float" }
+          ]
+        },
+        {
+          "id": "R",
+          "slots": [
+            { "id": "s16", "kind": "many", "target": { "$ref": "#/packages/2/classes/4" } }
+          ],
+          "fields": [
+            { "id": "f30", "type": "String" }
+          ]
+        },
+        {
+          "id": "S",
+          "slots": [],
+          "fields": [
+            { "id": "f31", "type": "int" },
+            { "id": "f32", "type": "float" },
+            { "id": "f33", "type": "bool" }
+          ]
+        },
+        {
+          "id": "T",
+          "slots": [
+            { "id": "s17", "kind": "single", "target": { "$ref": "#/packages/0/classes/5" } }
+          ],
+          "fields": [
+            { "id": "f34", "type": "String" }
+          ]
+        },
+        {
+          "id": "U",
+          "slots": [
+            { "id": "s18", "kind": "many", "target": { "$ref": "#/packages/1/classes/0" } }
+          ],
+          "fields": [
+            { "id": "f35", "type": "int" },
+            { "id": "f36", "type": "bool" }
+          ]
+        },
+        {
+          "id": "V",
+          "slots": [
+            { "id": "s20", "kind": "many",   "target": { "$ref": "#/packages/2/classes/5" } },
+            { "id": "s21", "kind": "single", "target": { "$ref": "#/packages/0/classes/0" } }
+          ],
+          "fields": [
+            { "id": "f40", "type": "int" },
+            { "id": "f41", "type": "String" }
+          ]
+        }
+      ]
+    }
+  ]
+}

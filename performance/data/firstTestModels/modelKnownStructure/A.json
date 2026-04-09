@@ -1,0 +1,88 @@
+{
+  "package": {
+    "id": "pkg",
+    "classes": [
+      {
+        "id": "A",
+        "references": [
+          {
+            "id": "r1",
+            "containment": true,
+            "upperBound": -1,
+            "lowerBound": 1,
+            "type": {
+              "$ref": "#/package/classes/1"
+            }
+          },
+          {
+            "id": "r2",
+            "containment": false,
+            "upperBound": 1,
+            "lowerBound": 1,
+            "type": {
+              "$ref": "#/package/classes/2"
+            }
+          }
+        ]
+      },
+      {
+        "id": "B",
+        "attributes": [
+          {
+            "id": "b1",
+            "upperBound": 1,
+            "lowerBound": 1,
+            "type": "String"
+          },
+          {
+            "id": "b2",
+            "upperBound": 1,
+            "lowerBound": 1,
+            "type": "float"
+          }
+        ],
+        "references": [
+          {
+            "id": "r3",
+            "containment": true,
+            "upperBound": -1,
+            "lowerBound": 0,
+            "type": {
+              "$ref": "#/package/classes/3"
+            }
+          }
+        ]
+      },
+      {
+        "id": "C",
+        "attributes": [
+          {
+            "id": "c1",
+            "upperBound": 1,
+            "lowerBound": 1,
+            "type": "String"
+          },
+          {
+            "id": "c2",
+            "upperBound": 1,
+            "lowerBound": 0,
+            "type": "String"
+          }
+        ],
+        "references": []
+      },
+      {
+        "id": "D",
+        "attributes": [
+          {
+            "id": "d1",
+            "upperBound": 1,
+            "lowerBound": 1,
+            "type": "int"
+          }
+        ],
+        "references": []
+      }
+    ]
+  }
+}

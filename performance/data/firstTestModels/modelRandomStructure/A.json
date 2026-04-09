@@ -1,0 +1,87 @@
+{
+  "package": {
+    "id": "pkg",
+    "classes": [
+      {
+        "id": "A",
+        "slots": [
+          {
+            "id": "s1",
+            "kind": "single",
+            "target": { "$ref": "#/package/classes/1" }
+          },
+          {
+            "id": "s2",
+            "kind": "many",
+            "target": { "$ref": "#/package/classes/2" }
+          },
+          {
+            "id": "s3",
+            "kind": "many",
+            "target": { "$ref": "#/package/classes/3" }
+          }
+        ],
+        "fields": [
+          { "id": "f1", "type": "String" },
+          { "id": "f2", "type": "bool" }
+        ]
+      },
+      {
+        "id": "B",
+        "slots": [
+          {
+            "id": "s4",
+            "kind": "single",
+            "target": { "$ref": "#/package/classes/3" }
+          }
+        ],
+        "fields": [
+          { "id": "f3", "type": "int" },
+          { "id": "f4", "type": "float" },
+          { "id": "f5", "type": "String" }
+        ]
+      },
+      {
+        "id": "C",
+        "slots": [
+          {
+            "id": "s5",
+            "kind": "many",
+            "target": { "$ref": "#/package/classes/4" }
+          },
+          {
+            "id": "s6",
+            "kind": "single",
+            "target": { "$ref": "#/package/classes/1" }
+          }
+        ],
+        "fields": [
+          { "id": "f6", "type": "bool" }
+        ]
+      },
+      {
+        "id": "D",
+        "slots": [],
+        "fields": [
+          { "id": "f7", "type": "String" },
+          { "id": "f8", "type": "int" },
+          { "id": "f9", "type": "float" }
+        ]
+      },
+      {
+        "id": "E",
+        "slots": [
+          {
+            "id": "s7",
+            "kind": "single",
+            "target": { "$ref": "#/package/classes/3" }
+          }
+        ],
+        "fields": [
+          { "id": "f10", "type": "int" },
+          { "id": "f11", "type": "bool" }
+        ]
+      }
+    ]
+  }
+}
