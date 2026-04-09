@@ -1,8 +1,9 @@
 import { CONFIG } from "../config.js";
 
 export default function defaultHashMatching(
-  object: Record<string, undefined>
-): undefined {
+  object: Record<string, undefined>,
+  index: number | undefined,
+) {
   // return objRecord.name || objRecord.id || objRecord._id;
-  return object[CONFIG.IDENTIFIER];
+  return object[CONFIG.IDENTIFIER] || "$$index:" + index;
 }
