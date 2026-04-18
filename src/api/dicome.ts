@@ -40,7 +40,9 @@ dicome.put("/apply", (req, res) => {
 /**
  * Discard differences
  *
- * for conflicts: if this is a left change then right automatically accepted and vis a versa
+ * for conflicts: if this is a left change then right will NOT be applied automatical,
+ * the change has to be in list of apply endpoint
+ * and vis a versa
  *
  * @param {number[]} req.body - list of the IDs of 1-n changes to discard
  * @returns {object} JSON patch (if technically possible) of diff model and left/right
