@@ -1,10 +1,12 @@
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
-import xmlToJson from "simple-xml-to-json";
+import { XMLParser } from "fast-xml-parser";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+const parser = new XMLParser();
 
 export function getFile(filePath: string): string {
   const fullPath = path.join(__dirname, "../data/", filePath);
@@ -15,7 +17,7 @@ export function getFile(filePath: string): string {
 }
 
 export function xmlToJsonAndWrite(xml: string, pathToSave: string): string {
-  const json = xmlToJson.convertXML(xml);
+  const json = parser.parse(xml, true);
 
   console.log(JSON.stringify(json));
 
@@ -29,7 +31,7 @@ function writeJson(path: string, content: string) {
     path + "/json/model.json",
     JSON.stringify(content, null, 2),
     { flag: "w", encoding: "utf8" },
-    (err) => {
+    (err: Error) => {
       if (err) throw err;
     },
   );
