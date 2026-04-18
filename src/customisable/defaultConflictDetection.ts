@@ -1,7 +1,7 @@
-import isEqual from "lodash.isequal";
 import { childParentRefExists, directRefExists } from "../utils/refHandler.js";
 import { CustomOp, DifferenceOperationKind } from "../interfaces/util.js";
 import { DiffWithUsedFlag } from "../interfaces/inputmodels.js";
+import { isDeepStrictEqual } from "node:util";
 
 /* 
 both directions
@@ -76,16 +76,16 @@ export function isMoveMoveConflict(
     return false;
   }
 
-  if (!isEqual(diffL.opInfo.value, diffR.opInfo.value)) {
+  if (!isDeepStrictEqual(diffL.opInfo.value, diffR.opInfo.value)) {
     return false;
   }
 
   for (const opL of diffsL) {
     if (opL.opInfo.op === DifferenceOperationKind.ADD) {
-      if (isEqual(opL.opInfo.value, diffL.opInfo.value)) {
+      if (isDeepStrictEqual(opL.opInfo.value, diffL.opInfo.value)) {
         for (const opR of diffsR) {
           if (opR.opInfo.op === DifferenceOperationKind.ADD) {
-            if (isEqual(opR.opInfo.value, diffR.opInfo.value)) {
+            if (isDeepStrictEqual(opR.opInfo.value, diffR.opInfo.value)) {
               if (opL.opInfo.path !== opR.opInfo.path) {
                 return true;
               }
