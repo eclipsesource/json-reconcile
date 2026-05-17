@@ -3,10 +3,31 @@ import path, { dirname } from "path";
 import { createDiff } from "../../src/services/createDiff.js";
 import { InputModels } from "../../src/interfaces/inputmodels.js";
 import { fileURLToPath } from "url";
-import { getFile, xmlToJsonAndWrite } from "./utils.js";
+import { convertAllXML, getFile } from "./utils.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+enum Size {
+  SMALL = "small",
+  NOMINAL = "nominal",
+  LARGE = "large",
+}
+
+enum Side {
+  MODIFIED = "modified",
+  ORIGINAL = "original",
+}
+
+const xmlFolderPath = path.join(
+  __dirname,
+  `../data/EMFCompare_Models/model_size_${Size.LARGE}/${Side.ORIGINAL}`,
+);
+
+const jsonFolderPath = path.join(
+  __dirname,
+  `../data/${Size.LARGE}/${Side.ORIGINAL}`,
+);
 
 function measure<T>(name: string, fn: () => T): T {
   console.time(name);
@@ -15,26 +36,13 @@ function measure<T>(name: string, fn: () => T): T {
   return result;
 }
 
-function runAllPerformanceTests(xml: boolean) {
-  let jsonL = "";
-  let jsonR = "";
-
-  if (xml) {
-    const fileL = getFile("smallModel/original/model.uml");
-    const fileR = getFile("smallModel/A/model.uml");
-
-    const fullPath = path.join(__dirname, "../data/smallModel");
-
-    jsonL = xmlToJsonAndWrite(fullPath + "/original", fileL);
-    jsonR = xmlToJsonAndWrite(fullPath + "/A", fileR);
-  } else {
-    jsonL = JSON.parse(getFile("smallModel/original/json/model.json"));
-    jsonR = JSON.parse(getFile("smallModel/A/json/model.json"));
-  }
+function runPerformanceTest(size: string) {
+  const fullPath = path.join(__dirname, `../data/${size}`);
+  const modelFileName = "model.json";
 
   const inputModels: InputModels = {
-    left: jsonL,
-    right: jsonR,
+    left: getFile(`${fullPath}/original`, modelFileName),
+    right: getFile(`${fullPath}/A`, modelFileName),
   };
 
   const diffmodel = measure("Small Model", () => {
@@ -45,4 +53,6 @@ function runAllPerformanceTests(xml: boolean) {
   console.log(diffmodel);
 }
 
-runAllPerformanceTests(false);
+convertAllXML(xmlFolderPath, jsonFolderPath);
+
+// runPerformanceTest('small');
