@@ -73,3 +73,6 @@ out
 dist
 
 coverage
+
+performance/data/EMFCompare_Models/*/*/*.uml
+performance/data/*/*/*.json

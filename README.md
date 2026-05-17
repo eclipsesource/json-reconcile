@@ -168,3 +168,9 @@ from package.json command:
 
 from console:
 ``` NODE_OPTIONS="$NODE_OPTIONS --experimental-vm-modules" npx jest ```
+
+## Performance Tests
+
+run
+
+``` npm run performance ```
