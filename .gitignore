@@ -74,5 +74,5 @@ dist
 
 coverage
 
-performance/data/EMFCompare_Models/*/*/*.uml
-performance/data/*/*/*.json
+performance/data/**/*.uml
+performance/data/**/*.json
