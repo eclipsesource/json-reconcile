@@ -3,6 +3,20 @@ import { CustomOp, DifferenceOperationKind } from "../interfaces/util.js";
 import { DiffWithUsedFlag } from "../interfaces/inputmodels.js";
 import { isDeepStrictEqual } from "node:util";
 
+
+export function isUpdateUpdateTheSameConflict(
+  diffL: DiffWithUsedFlag,
+  diffR: DiffWithUsedFlag,
+): boolean {
+
+  if (isDeepStrictEqual(diffL.opInfo.value, diffR.opInfo.value)) {
+    return true;
+  }
+
+  return false;
+}
+
+
 /* 
 both directions
 */
@@ -106,4 +120,28 @@ export function isMoveMoveConflict(
   // search for same value in operationsLeft add operations
 
   // dann hab ich die zusammengehörigen Operations für move => delete und add
+}
+
+
+// special case if ref target got deleted
+export function isDeleteMoveConflict(
+  operationLeft: CustomOp,
+  operationRight: CustomOp,
+): boolean {
+
+  // TODO
+  if (
+    operationLeft.op === DifferenceOperationKind.MOVE
+  ) {
+    if (directRefExists(operationRight.path, operationLeft.value as object)) {
+      return true;
+    }
+  } else if (
+    operationRight.op === DifferenceOperationKind.MOVE
+  ) {
+    if (directRefExists(operationLeft.path, operationRight.value as object)) {
+      return true;
+    }
+  }
+  return false;
 }
