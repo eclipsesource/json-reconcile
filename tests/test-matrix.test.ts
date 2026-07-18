@@ -1,13 +1,13 @@
 import { DiffModel } from "../src/interfaces/diffmodel.js";
 import { CustomOp } from "../src/interfaces/util.js";
-import { createDiff2Way, createDiff3Way } from "../src/services/createDiff.js";
+import { createDiff2Way, createDiff3Way } from "../src/services/comparisonMerging.service.js";
 import { JSONValue } from "../src/utils/jsonHelper.js";
 import { testsEnabled } from "./configs.js";
 import { getModel } from "./read-test-file.js";
 
 interface ConflictType {
   name:
-    | "basic"
+    // | "basic"
     | "1_delete-use"
     | "2_delete-move"
     | "3_delete-update"
@@ -58,7 +58,7 @@ const CONFLICT_TYPES_SUITS: ConflictType[] = [
         variant: "1_5_delete_insert_use",
         description:
           "newly inserted Project class, the containment to SmartCity and the reference to Category, delete Category",
-      },
+      }
     ],
   },
   {
@@ -73,7 +73,7 @@ const CONFLICT_TYPES_SUITS: ConflictType[] = [
         variant: "2_2_target_delete",
         description:
           "container of InfrastructureComponent moved from SmartCity to Project, delete InfrastructureComponent",
-      },
+      }, 
       {
         variant: "2_3_source_delete",
         description:
@@ -83,7 +83,7 @@ const CONFLICT_TYPES_SUITS: ConflictType[] = [
         variant: "2_4_move_to_new_delete_target",
         description:
           "add InfrastructureComponent class and and container of existing Category moved from Project to InfrastructureComponent, deleted Category",
-      },
+      }
     ],
   },
   {

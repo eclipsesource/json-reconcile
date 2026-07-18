@@ -1,5 +1,5 @@
 import { InputModels } from "../src/interfaces/inputmodels.js";
-import { createDiff, createDiff2Way } from "../src/services/createDiff.js";
+import { createDiff, createDiff2Way } from "../src/services/comparisonMerging.service.js";
 import {
   tryOutJSONRefLib1,
   tryOutJSONRefsLib2,
