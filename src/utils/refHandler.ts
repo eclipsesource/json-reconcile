@@ -1,5 +1,11 @@
-import $RefParser from "@apidevtools/json-schema-ref-parser";
-import { findRefs } from "json-refs";
+import $RefParser, { FileInfo } from "@apidevtools/json-schema-ref-parser";
+import {
+  findRefs,
+  resolveRefsAt,
+  RetrievedResolvedRefsResults,
+} from "json-refs";
+import path from "path";
+import fs from "fs";
 
 const referencesWithRef = {
   package: {
@@ -82,6 +88,77 @@ export function getAllReferences(): void {
   // return this list
 }
 
+export function resolveAllRefs_Sol1(
+  jsonFilePath: string,
+): Promise<RetrievedResolvedRefsResults> {
+  // console.log(res.refs); // JSON Reference locations and details
+  // console.log(JSON.stringify(res.resolved)); // The document with the appropriate JSON References resolved
+  return resolveRefsAt(jsonFilePath, {
+    filter: ["relative"],
+  });
+}
+
+export async function resolveAllRefs2_bunde(
+  folderPath: string,
+  jsonFilePath: string,
+): Promise<object> {
+  console.time("prepFileCache");
+
+  const fileCache = new Map<string, unknown>();
+  const fileNames = fs.readdirSync(folderPath);
+
+  for (const file of fileNames) {
+    if (file.endsWith(".json")) {
+      const filePath = path.join(folderPath, file);
+
+      const fileContent = fs.readFileSync(filePath, "utf8");
+      fileCache.set(file, JSON.parse(fileContent));
+    }
+  }
+
+  console.timeEnd("prepFileCache");
+
+  let count = 1;
+
+  const newSchema = await $RefParser.bundle(jsonFilePath, {
+    mutateInputSchema: false,
+    continueOnError: false,
+    resolve: {
+      file: {
+        read(file: FileInfo) {
+          console.log(count);
+          count++;
+          const name = file.url.split("/");
+          return fileCache.get(name[name.length - 1]);
+        },
+      },
+    },
+  });
+
+
+  // const refs = findRefs(newSchema);
+
+  // console.log(refs);
+
+  return newSchema;
+}
+
+export async function resolveAllRefs3_dereference(
+  jsonFilePath: string,
+): Promise<object> {
+
+  const newSchema = await $RefParser.dereference(jsonFilePath, {
+    mutateInputSchema: false,
+    continueOnError: false,
+  });
+
+  // const refs = findRefs(newSchema);
+
+  // console.log(refs);
+
+  return newSchema;
+}
+
 export function directRefExists(pathToCompare: string, value: object): boolean {
   console.log("------- directRefExists function ------");
   console.log("input parameter value: ", value);
@@ -93,7 +170,7 @@ export function directRefExists(pathToCompare: string, value: object): boolean {
 
   for (const key in refs) {
     if (refs[key]!.uri === uriReferencePath) {
-      console.log("found uri: ", refs[key]);
+      // console.log("found uri: ", refs[key]);
       return true;
     }
   }
@@ -124,7 +201,7 @@ export function childParentRefExists(
         foundUri.split("/").length > uriReferencePath.split("/").length) ||
       foundUri === uriReferencePath
     ) {
-      console.log("found uri: ", refs[key]);
+      // console.log("found uri: ", refs[key]);
       return true;
     }
   }
