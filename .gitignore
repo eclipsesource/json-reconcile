@@ -76,3 +76,5 @@ coverage
 
 performance/data/**/*.uml
 performance/data/**/*.json
+
+.clinic
