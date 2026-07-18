@@ -119,6 +119,7 @@ class CustomJuuFormatter extends BaseFormatter<
     this.formatDeltaChildren(context, delta, left);
   }
   format_added(context: CustomJuuFormatterContext, delta: AddedDelta): void {
+    // console.log("DEEELTAAAA", JSON.stringify(delta))
     context.pushCurrentOp({ op: DifferenceOperationKind.ADD, value: delta[0] });
   }
 
@@ -126,6 +127,7 @@ class CustomJuuFormatter extends BaseFormatter<
     context: CustomJuuFormatterContext,
     delta: ModifiedDelta,
   ): void {
+    // console.log("DEEELTAAAA", JSON.stringify(delta))
     context.pushCurrentOp({
       op: DifferenceOperationKind.UPDATE,
       value: delta[1],
@@ -136,15 +138,18 @@ class CustomJuuFormatter extends BaseFormatter<
     context: CustomJuuFormatterContext,
     delta: DeletedDelta,
   ): void {
-    context.pushCurrentOp({
+      // console.log("DEEELTAAAA", JSON.stringify(delta))
+      context.pushCurrentOp({
       op: DifferenceOperationKind.DELETE,
       value: delta[0],
     });
   }
 
   format_moved(context: CustomJuuFormatterContext, delta: MovedDelta): void {
+    // console.log("DEEELTAAAA", JSON.stringify(delta))
+    const val = delta[0] === "" ? null : delta[0];
     context.pushMoveOp({
-      value: delta[0],
+      value: val,
       to: delta[1],
     });
   }
@@ -235,6 +240,9 @@ export const format = (delta: Delta, left?: unknown): CustomOp[] => {
   if (!defaultInstance) {
     defaultInstance = new CustomJuuFormatter();
   }
+  
+  // console.log(JSON.stringify(delta, null, 2))
+  
   return reorderOps(defaultInstance.format(delta, left));
 };
 
