@@ -1,14 +1,15 @@
 import { Router } from "express";
-import { createDiff } from "../services/createDiff.js";
-import { getInputModelsOrError } from "../utils/prepInputModels.js";
+import { getInputModelsOrError, prepForPatch } from "../utils/prepInput.js";
+import * as comparissonMergingService from "../services/comparisonMerging.service.js";
+import * as patchingService from "../services/patching.service.js";
 
 const dicome = Router();
 
 /**
  * Compare two models and detect conflicts
  *
- * @param {InputModels} req.body - The first operand
- * @returns {DiffModel} The sum of both operands
+ * @param {InputModels} req.body
+ * @returns {DiffModel}
  */
 dicome.post("/compare", (req, res) => {
   console.log("request body", req.body);
@@ -16,9 +17,9 @@ dicome.post("/compare", (req, res) => {
 
   if (typeof inputModelsOrError === "string") {
     console.log(inputModelsOrError);
-    res.status(500).send(inputModelsOrError);
+    res.status(400).send(inputModelsOrError);
   } else {
-    const diffModel = createDiff(inputModelsOrError);
+    const diffModel = comparissonMergingService.createDiff(inputModelsOrError);
     req.session.diffModel = diffModel;
     res.send(diffModel);
   }
@@ -26,44 +27,51 @@ dicome.post("/compare", (req, res) => {
 
 /**
  * Apply differences
+ * @description for conflict: opposing change is automatically rejected (DISCARD)
+ * 
+ * changes State of respective differences in DiffModel
  *
- * for conflicts: if this is a left change then right automatically rejected and vis a versa
- *
- * @param {number[]} req.body - non-empty list of DiffModel Differences IDs
- * @returns {object} JSON patch (if technically possible) of diff model and left/right
+ * @param {leftIds: number[], rightIds: number[]} req.body - json with a list of DiffModel Differences IDs coming from left and right side
+ * @returns {object} JSON patch
+ * 
  */
 dicome.put("/apply", (req, res) => {
-  const sessionDiffModel = req.session.diffModel;
+  const userInputOrError = prepForPatch(req.body, req.session);
 
-  // TODO
-  // create service
-  // get differences from id array
-  // ...
-  // change status of conflict if 3 way
+  if (typeof userInputOrError === "string") {
+    res.status(400).send(userInputOrError);
+  } else {
+    const applyResp = patchingService.applyDifferences(userInputOrError.leftIds as number[], userInputOrError.rightIds as number[], userInputOrError.diffmodel);
 
-  res.sendStatus(200);
+    res.sendStatus(applyResp);
+  }
+
+    // TODO: Test if diff model in sess is really overwritten ???
+
 });
 
 /**
  * Discard differences
+ * @description if conflict: opposing difference will NOT be applied automatical
+ * 
+ * changes State of respective differences in DiffModel
  *
- * for conflicts: if this is a left change then right will NOT be applied automatical,
- * the change has to be in list of apply endpoint
- * and vis a versa
- *
- * @param {number[]} req.body - non empty list of DiffModel Differences IDs
- * @returns {object} JSON patch (if technically possible) of diff model and left/right
+ * @param {leftIds: number[], rightIds: number[]} req.body - json with a list of DiffModel Differences IDs coming from left and right side
+ * @returns {object} JSON patch
+ * Sideeffect: 
  */
 dicome.put("/discard", (req, res) => {
-  const sessionDiffModel = req.session.diffModel;
+  const userInputOrError = prepForPatch(req.body, req.session);
 
-  // TODO
-  // create service
-  // get differences from id array
-  // ...
-  // change status of conflict if 3 way
+  if (typeof userInputOrError === "string") {
+    res.status(400).send(userInputOrError);
+  } else {
+    const discardResp = patchingService.discardDifferences(userInputOrError.leftIds as number[], userInputOrError.rightIds as number[], userInputOrError.diffmodel);
 
-  res.sendStatus(200);
+    res.sendStatus(discardResp);
+  }
+
+  // TODO: Test if diff model in sess is really overwritten ???
 });
 
 dicome.delete("/session", (req, res) => {
