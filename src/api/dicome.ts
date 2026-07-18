@@ -29,11 +29,18 @@ dicome.post("/compare", (req, res) => {
  *
  * for conflicts: if this is a left change then right automatically rejected and vis a versa
  *
- * @param {number[]} req.body - list of the IDs of 1-n changes to apply
+ * @param {number[]} req.body - non-empty list of DiffModel Differences IDs
  * @returns {object} JSON patch (if technically possible) of diff model and left/right
  */
 dicome.put("/apply", (req, res) => {
+  const sessionDiffModel = req.session.diffModel;
+
   // TODO
+  // create service
+  // get differences from id array
+  // ...
+  // change status of conflict if 3 way
+
   res.sendStatus(200);
 });
 
@@ -44,11 +51,18 @@ dicome.put("/apply", (req, res) => {
  * the change has to be in list of apply endpoint
  * and vis a versa
  *
- * @param {number[]} req.body - list of the IDs of 1-n changes to discard
+ * @param {number[]} req.body - non empty list of DiffModel Differences IDs
  * @returns {object} JSON patch (if technically possible) of diff model and left/right
  */
 dicome.put("/discard", (req, res) => {
+  const sessionDiffModel = req.session.diffModel;
+
   // TODO
+  // create service
+  // get differences from id array
+  // ...
+  // change status of conflict if 3 way
+
   res.sendStatus(200);
 });
 
