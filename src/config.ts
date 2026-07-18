@@ -1,7 +1,9 @@
-export const CONFIG = {
-  // other options: "_id", "name"
+import { Config } from "./interfaces/util.js";
+
+export const CONFIG: Config = {
+  // other options: "id", "_id", "name", $xmi:id
   IDENTIFIER: "id",
-  ORDERED_LIST: false,
+  ORDERED_LIST: true,
 };
 
 export const algoVariation = {
