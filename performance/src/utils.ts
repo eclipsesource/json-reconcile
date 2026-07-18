@@ -23,6 +23,9 @@ function allXmlToJson(
   const jsonFiles = new Map<string, string>();
 
   for (const fileName of fileNames) {
+    if (fileName === ".gitkeep") {
+      continue;
+    }
     const xmlContent = getFile(xmlFolderPath, fileName);
 
     const { name: jsonFileName } = path.parse(fileName);
@@ -98,7 +101,7 @@ function resolveHref(href: string, index: Map<string, string>): string {
 export function getFile(folderPath: string, fileName: string): string {
   const filePath = path.join(folderPath, fileName);
 
-  const fileContent = fs.readFileSync(filePath, "utf-8");
+  const fileContent = fs.readFileSync(filePath, "utf8");
 
   return fileContent;
 }
@@ -115,8 +118,18 @@ function xmlToJson(xmlContent: string): string {
       return attrValue;
     },
     attributeNamePrefix: "$",
+
     transformAttributeName: (attributeName: string) => {
       return attributeName === "$href" ? "$ref" : attributeName;
+    },
+    transformTagName: (tagName: string) => {
+      if (tagName === "xmi:XMI") {
+        return "xmi_XMI";
+      } else if (tagName === "uml:Model") {
+        return "uml_Model";
+      }
+
+      return tagName;
     },
   };
 
@@ -125,7 +138,7 @@ function xmlToJson(xmlContent: string): string {
   return parser.parse(xmlContent, true);
 }
 
-function writeJson(
+export function writeJson(
   targetPath: string,
   stringifiedContent: string,
   filename: string,
