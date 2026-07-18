@@ -143,10 +143,7 @@
         "op": "move",
         "from": "/package/classes/1",
         "path": "/package/classes/0",
-        "value": {
-          "id": "Project",
-          "references": []
-        }
+        "value": null
       },
       {
         "op": "update",
@@ -164,10 +161,7 @@
         "op": "move",
         "from": "/package/classes/0",
         "path": "/package/classes/2",
-        "value": {
-          "id": "Project",
-          "references": []
-        }
+        "value": null
       },
       {
         "op": "update",
@@ -225,18 +219,10 @@
       "conflicts": [
         {
           "leftDiff": {
-            "$ref": "#/differencesL/0"
+            "$ref": "#/differencesL/2"
           },
           "rightDiff": {
-            "$ref": "#/differencesR/0"
-          }
-        },
-        {
-          "leftDiff": {
-            "$ref": "#/differencesL/1"
-          },
-          "rightDiff": {
-            "$ref": "#/differencesR/1"
+            "$ref": "#/differencesR/2"
           }
         }
       ]
