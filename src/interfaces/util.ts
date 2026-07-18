@@ -1,3 +1,8 @@
+export interface Config {
+  IDENTIFIER: string,
+  ORDERED_LIST: boolean,
+}
+
 export enum DifferenceOperationKind {
   ADD = "add",
   DELETE = "delete",
