@@ -22,6 +22,18 @@ modelGetter.get("/right", (req, res) => {
   }
 });
 
+modelGetter.get("/original", (req, res) => {
+  const sessionInputModels = req.session.inputModels;
+
+  if (sessionInputModels === undefined) {
+    res.sendStatus(500);
+  } else if (sessionInputModels.original === undefined) {
+    res.sendStatus(500);
+  } else {
+    res.send(sessionInputModels.original);
+  }
+});
+
 modelGetter.get("/diff", (req, res) => {
   const sessionDiffModel = req.session.diffModel;
 
