@@ -161,15 +161,19 @@ export async function resolveAllRefs3_dereference(
 
 export function directRefExists(pathToCompare: string, value: object): boolean {
   console.log("------- directRefExists function ------");
-  console.log("input parameter value: ", value);
+  // console.log("input parameter value: ", value);
+  
   const refs = findRefs(value);
-
-  console.log(refs);
 
   const uriReferencePath = "#" + pathToCompare;
 
   for (const key in refs) {
-    if (refs[key]!.uri === uriReferencePath) {
+    if (refs[key] === undefined) {
+      console.error("UNDEFINED REF for KEY", key);
+      return false;
+    }
+    const foundUri = refs[key].uri;
+    if (foundUri === uriReferencePath) {
       // console.log("found uri: ", refs[key]);
       return true;
     }
@@ -186,8 +190,6 @@ export function childParentRefExists(
   console.log("input parameter value: ", value);
   const refs = findRefs(value);
 
-  console.log("REFS: ", refs);
-
   const uriReferencePath = "#" + pathToCompare;
 
   for (const key in refs) {
@@ -198,8 +200,7 @@ export function childParentRefExists(
     const foundUri = refs[key].uri;
     if (
       (foundUri.startsWith(uriReferencePath) &&
-        foundUri.split("/").length > uriReferencePath.split("/").length) ||
-      foundUri === uriReferencePath
+        foundUri.split("/").length > uriReferencePath.split("/").length)
     ) {
       // console.log("found uri: ", refs[key]);
       return true;
