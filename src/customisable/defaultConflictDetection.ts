@@ -17,9 +17,29 @@ export function isUpdateUpdateTheSameConflict(
 }
 
 
-/* 
-both directions
-*/
+export function isDeleteUseConflict(
+  operationLeft: CustomOp,
+  operationRight: CustomOp,
+): boolean {
+  if (
+    operationLeft.op === DifferenceOperationKind.DELETE &&
+    operationRight.op === DifferenceOperationKind.ADD
+  ) {
+    if (directRefExists(operationLeft.path, operationRight.value as object)) {
+      return true;
+    }
+  } else if (
+    operationLeft.op === DifferenceOperationKind.ADD &&
+    operationRight.op === DifferenceOperationKind.DELETE
+  ) {
+    if (directRefExists(operationRight.path, operationLeft.value as object)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
 export function isParentChildDeleteUseConflict(
   operationLeft: CustomOp,
   operationRight: CustomOp,
@@ -47,27 +67,6 @@ export function isParentChildDeleteUseConflict(
   return false;
 }
 
-export function isDeleteUseConflict(
-  operationLeft: CustomOp,
-  operationRight: CustomOp,
-): boolean {
-  if (
-    operationLeft.op === DifferenceOperationKind.DELETE &&
-    operationRight.op === DifferenceOperationKind.ADD
-  ) {
-    if (directRefExists(operationLeft.path, operationRight.value as object)) {
-      return true;
-    }
-  } else if (
-    operationLeft.op === DifferenceOperationKind.ADD &&
-    operationRight.op === DifferenceOperationKind.DELETE
-  ) {
-    if (directRefExists(operationRight.path, operationLeft.value as object)) {
-      return true;
-    }
-  }
-  return false;
-}
 
 // pre condition: both, opLeft and opRight are delete operations with same path
 export function isMoveMoveConflict(
@@ -128,8 +127,6 @@ export function isDeleteMoveConflict(
   operationLeft: CustomOp,
   operationRight: CustomOp,
 ): boolean {
-
-  // TODO
   if (
     operationLeft.op === DifferenceOperationKind.MOVE
   ) {
