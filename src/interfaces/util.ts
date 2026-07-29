@@ -28,7 +28,7 @@ export interface UpdateOp {
 export interface MoveOp {
   op: DifferenceOperationKind.MOVE;
   from: string;
-  path: string;
+  path: string; // target path
   value: unknown;
 }
 export type CustomOp = AddOp | DeleteOp | UpdateOp | MoveOp;

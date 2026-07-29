@@ -9,7 +9,7 @@
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
     "performance": "tsx performance/src/performanceTesting.ts",
-    "confl-gen": "tsx performance/src/conflictGeneration.ts"
+    "conflgen": "tsx performance/src/conflictGeneration.ts"
   },
   "author": "",
   "license": "ISC",
