@@ -105,7 +105,7 @@
     "2way-a": [
       {
         "op": "move",
-        "from": "/package/classes/0/references/0",
+        "from": "/package/classes/0/references/1",
         "path": "/package/classes/1/references/0",
         "value": {
           "id": "component",
@@ -172,6 +172,14 @@
           },
           "rightDiff": {
             "$ref": "#/differencesR/0"
+          }
+        },
+        {
+          "leftDiff": {
+            "$ref": "#/differencesL/0"
+          },
+          "rightDiff": {
+            "$ref": "#/differencesR/1"
           }
         }
       ]
