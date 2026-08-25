@@ -8,4 +8,5 @@ export const testsEnabled = {
   "5_move-move": true,
   "6_insert-insert": true,
   "7_not-categorized": true,
+  "glsp_biguml": true,
 };

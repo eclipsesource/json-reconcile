@@ -1,0 +1,996 @@
+{
+  "base": {
+    "diagram": {
+      "__type": "ClassDiagram",
+      "__id": "diagram_8822f7e3-fc32-4616-853d-cbb0185902af",
+      "diagramType": "CLASS",
+      "entities": [
+        {
+          "__type": "Class",
+          "__id": "Class_e15b71e1-f14f-4759-a6d2-31de77c7326d",
+          "name": "Project",
+          "isAbstract": false,
+          "properties": [
+            {
+              "__type": "Property",
+              "__id": "Property_1904cb4e-7513-4024-8dfd-25d6a0a860d4",
+              "name": "tmp",
+              "isDerived": false,
+              "isOrdered": false,
+              "isStatic": false,
+              "isDerivedUnion": false,
+              "isReadOnly": false,
+              "isNavigable": false,
+              "isUnique": true,
+              "visibility": "PUBLIC",
+              "propertyType": {
+                "__type": "Reference",
+                "__refType": "DataTypeReference",
+                "__value": "PrimitiveType_4aa67a42-3069-4d6a-aae5-a2d682849f6e"
+              },
+              "aggregation": "NONE"
+            }
+          ],
+          "operations": [],
+          "isActive": false,
+          "visibility": "PUBLIC"
+        },
+        {
+          "__type": "PrimitiveType",
+          "__id": "PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb",
+          "name": "Integer"
+        },
+        {
+          "__type": "PrimitiveType",
+          "__id": "PrimitiveType_bdc12ce3-8dcd-41d4-ab35-cc495fde6c32",
+          "name": "String"
+        },
+        {
+          "__type": "Class",
+          "__id": "Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741",
+          "name": "SmartCity",
+          "isAbstract": false,
+          "properties": [],
+          "operations": [],
+          "isActive": false,
+          "visibility": "PUBLIC"
+        },
+        {
+          "__type": "PrimitiveType",
+          "__id": "PrimitiveType_4aa67a42-3069-4d6a-aae5-a2d682849f6e",
+          "name": "Boolean"
+        },
+        {
+          "__type": "Class",
+          "__id": "Class_b5449861-d5fc-4263-9070-d640e0024b82",
+          "name": "Category",
+          "isAbstract": false,
+          "properties": [
+            {
+              "__type": "Property",
+              "__id": "Property_17b78784-859c-468f-94e6-bed48cbd7523",
+              "name": "sdg",
+              "isDerived": false,
+              "isOrdered": false,
+              "isStatic": false,
+              "isDerivedUnion": false,
+              "isReadOnly": false,
+              "isNavigable": false,
+              "isUnique": false,
+              "visibility": "PUBLIC",
+              "multiplicity": "*",
+              "propertyType": {
+                "__type": "Reference",
+                "__refType": "DataTypeReference",
+                "__value": "PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb"
+              }
+            }
+          ],
+          "operations": [],
+          "isActive": false,
+          "visibility": "PUBLIC"
+        }
+      ],
+      "relations": [
+        {
+          "__type": "Association",
+          "__id": "Association_c4c31bc7-3561-4e82-9303-10260b827bd1",
+          "source": {
+            "__type": "Reference",
+            "__refType": "Node",
+            "__value": "Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741"
+          },
+          "target": {
+            "__type": "Reference",
+            "__refType": "Node",
+            "__value": "Class_e15b71e1-f14f-4759-a6d2-31de77c7326d"
+          },
+          "sourceMultiplicity": "*",
+          "targetMultiplicity": "*",
+          "sourceAggregation": "COMPOSITE",
+          "targetAggregation": "NONE",
+          "visibility": "PUBLIC"
+        },
+        {
+          "__type": "Association",
+          "__id": "Association_09540d11-3342-40eb-9255-f876f8beec62",
+          "source": {
+            "__type": "Reference",
+            "__refType": "Node",
+            "__value": "Class_b5449861-d5fc-4263-9070-d640e0024b82"
+          },
+          "target": {
+            "__type": "Reference",
+            "__refType": "Node",
+            "__value": "Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741"
+          },
+          "sourceMultiplicity": "*",
+          "targetMultiplicity": "*",
+          "sourceAggregation": "NONE",
+          "targetAggregation": "COMPOSITE",
+          "visibility": "PUBLIC"
+        }
+      ]
+    },
+    "metaInfos": [
+      {
+        "__type": "Size",
+        "__id": "size_Class_e15b71e1-f14f-4759-a6d2-31de77c7326d",
+        "height": 87,
+        "width": 117.609375,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "Class_e15b71e1-f14f-4759-a6d2-31de77c7326d"
+        }
+      },
+      {
+        "__type": "Position",
+        "__id": "pos_Class_e15b71e1-f14f-4759-a6d2-31de77c7326d",
+        "x": 371.48512747369404,
+        "y": 343.28204671058757,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "Class_e15b71e1-f14f-4759-a6d2-31de77c7326d"
+        }
+      },
+      {
+        "__type": "Size",
+        "__id": "size_PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb",
+        "height": 51,
+        "width": 128.390625,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb"
+        }
+      },
+      {
+        "__type": "Position",
+        "__id": "pos_PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb",
+        "x": 363,
+        "y": 50,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb"
+        }
+      },
+      {
+        "__type": "Size",
+        "__id": "size_PrimitiveType_bdc12ce3-8dcd-41d4-ab35-cc495fde6c32",
+        "height": 30,
+        "width": 80,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_bdc12ce3-8dcd-41d4-ab35-cc495fde6c32"
+        }
+      },
+      {
+        "__type": "Position",
+        "__id": "pos_PrimitiveType_bdc12ce3-8dcd-41d4-ab35-cc495fde6c32",
+        "x": 510,
+        "y": 50,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_bdc12ce3-8dcd-41d4-ab35-cc495fde6c32"
+        }
+      },
+      {
+        "__type": "Size",
+        "__id": "size_Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741",
+        "height": 87,
+        "width": 122.96875,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741"
+        }
+      },
+      {
+        "__type": "Position",
+        "__id": "pos_Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741",
+        "x": 225,
+        "y": 154,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741"
+        }
+      },
+      {
+        "__type": "Size",
+        "__id": "size_PrimitiveType_4aa67a42-3069-4d6a-aae5-a2d682849f6e",
+        "height": 51,
+        "width": 128.390625,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_4aa67a42-3069-4d6a-aae5-a2d682849f6e"
+        }
+      },
+      {
+        "__type": "Position",
+        "__id": "pos_PrimitiveType_4aa67a42-3069-4d6a-aae5-a2d682849f6e",
+        "x": 218,
+        "y": 50,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_4aa67a42-3069-4d6a-aae5-a2d682849f6e"
+        }
+      },
+      {
+        "__type": "Size",
+        "__id": "size_Class_b5449861-d5fc-4263-9070-d640e0024b82",
+        "height": 87,
+        "width": 118.3935546875,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "Class_b5449861-d5fc-4263-9070-d640e0024b82"
+        }
+      },
+      {
+        "__type": "Position",
+        "__id": "pos_Class_b5449861-d5fc-4263-9070-d640e0024b82",
+        "x": 552,
+        "y": 156,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "Class_b5449861-d5fc-4263-9070-d640e0024b82"
+        }
+      }
+    ]
+  },
+  "left": {
+    "diagram": {
+      "__type": "ClassDiagram",
+      "__id": "diagram_8822f7e3-fc32-4616-853d-cbb0185902af",
+      "diagramType": "CLASS",
+      "entities": [
+        {
+          "__type": "Class",
+          "__id": "Class_e15b71e1-f14f-4759-a6d2-31de77c7326d",
+          "name": "Project",
+          "isAbstract": false,
+          "properties": [
+            {
+              "__type": "Property",
+              "__id": "Property_1904cb4e-7513-4024-8dfd-25d6a0a860d4",
+              "name": "identifier",
+              "isDerived": false,
+              "isOrdered": false,
+              "isStatic": false,
+              "isDerivedUnion": false,
+              "isReadOnly": false,
+              "isNavigable": false,
+              "isUnique": true,
+              "visibility": "PUBLIC",
+              "propertyType": {
+                "__type": "Reference",
+                "__refType": "DataTypeReference",
+                "__value": "PrimitiveType_bdc12ce3-8dcd-41d4-ab35-cc495fde6c32"
+              },
+              "aggregation": "NONE"
+            }
+          ],
+          "operations": [],
+          "isActive": false,
+          "visibility": "PUBLIC"
+        },
+        {
+          "__type": "PrimitiveType",
+          "__id": "PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb",
+          "name": "Integer"
+        },
+        {
+          "__type": "PrimitiveType",
+          "__id": "PrimitiveType_bdc12ce3-8dcd-41d4-ab35-cc495fde6c32",
+          "name": "String"
+        },
+        {
+          "__type": "Class",
+          "__id": "Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741",
+          "name": "SmartCity",
+          "isAbstract": false,
+          "properties": [],
+          "operations": [],
+          "isActive": false,
+          "visibility": "PUBLIC"
+        },
+        {
+          "__type": "PrimitiveType",
+          "__id": "PrimitiveType_4aa67a42-3069-4d6a-aae5-a2d682849f6e",
+          "name": "Boolean"
+        },
+        {
+          "__type": "Class",
+          "__id": "Class_b5449861-d5fc-4263-9070-d640e0024b82",
+          "name": "Category",
+          "isAbstract": false,
+          "properties": [
+            {
+              "__type": "Property",
+              "__id": "Property_17b78784-859c-468f-94e6-bed48cbd7523",
+              "name": "SDG",
+              "isDerived": false,
+              "isOrdered": false,
+              "isStatic": false,
+              "isDerivedUnion": false,
+              "isReadOnly": false,
+              "isNavigable": false,
+              "isUnique": false,
+              "visibility": "PUBLIC",
+              "multiplicity": "*",
+              "propertyType": {
+                "__type": "Reference",
+                "__refType": "DataTypeReference",
+                "__value": "PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb"
+              }
+            }
+          ],
+          "operations": [],
+          "isActive": false,
+          "visibility": "PUBLIC"
+        }
+      ],
+      "relations": [
+        {
+          "__type": "Association",
+          "__id": "Association_c4c31bc7-3561-4e82-9303-10260b827bd1",
+          "source": {
+            "__type": "Reference",
+            "__refType": "Node",
+            "__value": "Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741"
+          },
+          "target": {
+            "__type": "Reference",
+            "__refType": "Node",
+            "__value": "Class_e15b71e1-f14f-4759-a6d2-31de77c7326d"
+          },
+          "sourceMultiplicity": "*",
+          "targetMultiplicity": "*",
+          "sourceAggregation": "COMPOSITE",
+          "targetAggregation": "NONE",
+          "visibility": "PUBLIC"
+        },
+        {
+          "__type": "Association",
+          "__id": "Association_09540d11-3342-40eb-9255-f876f8beec62",
+          "source": {
+            "__type": "Reference",
+            "__refType": "Node",
+            "__value": "Class_b5449861-d5fc-4263-9070-d640e0024b82"
+          },
+          "target": {
+            "__type": "Reference",
+            "__refType": "Node",
+            "__value": "Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741"
+          },
+          "sourceMultiplicity": "*",
+          "targetMultiplicity": "*",
+          "sourceAggregation": "NONE",
+          "targetAggregation": "COMPOSITE",
+          "visibility": "PUBLIC"
+        },
+        {
+          "__type": "Association",
+          "__id": "Association_9797e1a3-deb0-4d5b-8c39-d099fe31580d",
+          "source": {
+            "__type": "Reference",
+            "__refType": "Node",
+            "__value": "Class_e15b71e1-f14f-4759-a6d2-31de77c7326d"
+          },
+          "target": {
+            "__type": "Reference",
+            "__refType": "Node",
+            "__value": "Class_b5449861-d5fc-4263-9070-d640e0024b82"
+          },
+          "sourceMultiplicity": "*",
+          "targetMultiplicity": "*",
+          "sourceAggregation": "NONE",
+          "targetAggregation": "NONE",
+          "visibility": "PUBLIC"
+        }
+      ]
+    },
+    "metaInfos": [
+      {
+        "__type": "Size",
+        "__id": "size_Class_e15b71e1-f14f-4759-a6d2-31de77c7326d",
+        "height": 87,
+        "width": 117.609375,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "Class_e15b71e1-f14f-4759-a6d2-31de77c7326d"
+        }
+      },
+      {
+        "__type": "Position",
+        "__id": "pos_Class_e15b71e1-f14f-4759-a6d2-31de77c7326d",
+        "x": 371.48512747369404,
+        "y": 343.28204671058757,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "Class_e15b71e1-f14f-4759-a6d2-31de77c7326d"
+        }
+      },
+      {
+        "__type": "Size",
+        "__id": "size_PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb",
+        "height": 51,
+        "width": 128.390625,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb"
+        }
+      },
+      {
+        "__type": "Position",
+        "__id": "pos_PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb",
+        "x": 363,
+        "y": 50,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb"
+        }
+      },
+      {
+        "__type": "Size",
+        "__id": "size_PrimitiveType_bdc12ce3-8dcd-41d4-ab35-cc495fde6c32",
+        "height": 30,
+        "width": 80,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_bdc12ce3-8dcd-41d4-ab35-cc495fde6c32"
+        }
+      },
+      {
+        "__type": "Position",
+        "__id": "pos_PrimitiveType_bdc12ce3-8dcd-41d4-ab35-cc495fde6c32",
+        "x": 510,
+        "y": 50,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_bdc12ce3-8dcd-41d4-ab35-cc495fde6c32"
+        }
+      },
+      {
+        "__type": "Size",
+        "__id": "size_Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741",
+        "height": 87,
+        "width": 122.96875,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741"
+        }
+      },
+      {
+        "__type": "Position",
+        "__id": "pos_Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741",
+        "x": 225,
+        "y": 154,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741"
+        }
+      },
+      {
+        "__type": "Size",
+        "__id": "size_PrimitiveType_4aa67a42-3069-4d6a-aae5-a2d682849f6e",
+        "height": 51,
+        "width": 128.390625,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_4aa67a42-3069-4d6a-aae5-a2d682849f6e"
+        }
+      },
+      {
+        "__type": "Position",
+        "__id": "pos_PrimitiveType_4aa67a42-3069-4d6a-aae5-a2d682849f6e",
+        "x": 218,
+        "y": 50,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_4aa67a42-3069-4d6a-aae5-a2d682849f6e"
+        }
+      },
+      {
+        "__type": "Size",
+        "__id": "size_Class_b5449861-d5fc-4263-9070-d640e0024b82",
+        "height": 87,
+        "width": 118.3935546875,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "Class_b5449861-d5fc-4263-9070-d640e0024b82"
+        }
+      },
+      {
+        "__type": "Position",
+        "__id": "pos_Class_b5449861-d5fc-4263-9070-d640e0024b82",
+        "x": 552,
+        "y": 156,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "Class_b5449861-d5fc-4263-9070-d640e0024b82"
+        }
+      }
+    ]
+  },
+  "right": {
+    "diagram": {
+      "__type": "ClassDiagram",
+      "__id": "diagram_8822f7e3-fc32-4616-853d-cbb0185902af",
+      "diagramType": "CLASS",
+      "entities": [
+        {
+          "__type": "Class",
+          "__id": "Class_e15b71e1-f14f-4759-a6d2-31de77c7326d",
+          "name": "Project",
+          "isAbstract": false,
+          "properties": [
+            {
+              "__type": "Property",
+              "__id": "Property_1904cb4e-7513-4024-8dfd-25d6a0a860d4",
+              "name": "sdg",
+              "isDerived": false,
+              "isOrdered": false,
+              "isStatic": false,
+              "isDerivedUnion": false,
+              "isReadOnly": false,
+              "isNavigable": false,
+              "isUnique": true,
+              "visibility": "PUBLIC",
+              "propertyType": {
+                "__type": "Reference",
+                "__refType": "DataTypeReference",
+                "__value": "PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb"
+              },
+              "aggregation": "NONE"
+            }
+          ],
+          "operations": [],
+          "isActive": false,
+          "visibility": "PUBLIC"
+        },
+        {
+          "__type": "PrimitiveType",
+          "__id": "PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb",
+          "name": "Integer"
+        },
+        {
+          "__type": "PrimitiveType",
+          "__id": "PrimitiveType_bdc12ce3-8dcd-41d4-ab35-cc495fde6c32",
+          "name": "String"
+        },
+        {
+          "__type": "Class",
+          "__id": "Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741",
+          "name": "SmartCity",
+          "isAbstract": false,
+          "properties": [],
+          "operations": [],
+          "isActive": false,
+          "visibility": "PUBLIC"
+        },
+        {
+          "__type": "PrimitiveType",
+          "__id": "PrimitiveType_4aa67a42-3069-4d6a-aae5-a2d682849f6e",
+          "name": "Boolean"
+        }
+      ],
+      "relations": [
+        {
+          "__type": "Association",
+          "__id": "Association_c4c31bc7-3561-4e82-9303-10260b827bd1",
+          "source": {
+            "__type": "Reference",
+            "__refType": "Node",
+            "__value": "Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741"
+          },
+          "target": {
+            "__type": "Reference",
+            "__refType": "Node",
+            "__value": "Class_e15b71e1-f14f-4759-a6d2-31de77c7326d"
+          },
+          "sourceMultiplicity": "*",
+          "targetMultiplicity": "*",
+          "sourceAggregation": "COMPOSITE",
+          "targetAggregation": "NONE",
+          "visibility": "PUBLIC"
+        }
+      ]
+    },
+    "metaInfos": [
+      {
+        "__type": "Size",
+        "__id": "size_Class_e15b71e1-f14f-4759-a6d2-31de77c7326d",
+        "height": 87,
+        "width": 117.609375,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "Class_e15b71e1-f14f-4759-a6d2-31de77c7326d"
+        }
+      },
+      {
+        "__type": "Position",
+        "__id": "pos_Class_e15b71e1-f14f-4759-a6d2-31de77c7326d",
+        "x": 371.48512747369404,
+        "y": 343.28204671058757,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "Class_e15b71e1-f14f-4759-a6d2-31de77c7326d"
+        }
+      },
+      {
+        "__type": "Size",
+        "__id": "size_PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb",
+        "height": 51,
+        "width": 128.390625,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb"
+        }
+      },
+      {
+        "__type": "Position",
+        "__id": "pos_PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb",
+        "x": 363,
+        "y": 50,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb"
+        }
+      },
+      {
+        "__type": "Size",
+        "__id": "size_PrimitiveType_bdc12ce3-8dcd-41d4-ab35-cc495fde6c32",
+        "height": 30,
+        "width": 80,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_bdc12ce3-8dcd-41d4-ab35-cc495fde6c32"
+        }
+      },
+      {
+        "__type": "Position",
+        "__id": "pos_PrimitiveType_bdc12ce3-8dcd-41d4-ab35-cc495fde6c32",
+        "x": 510,
+        "y": 50,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_bdc12ce3-8dcd-41d4-ab35-cc495fde6c32"
+        }
+      },
+      {
+        "__type": "Size",
+        "__id": "size_Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741",
+        "height": 87,
+        "width": 122.96875,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741"
+        }
+      },
+      {
+        "__type": "Position",
+        "__id": "pos_Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741",
+        "x": 225,
+        "y": 154,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741"
+        }
+      },
+      {
+        "__type": "Size",
+        "__id": "size_PrimitiveType_4aa67a42-3069-4d6a-aae5-a2d682849f6e",
+        "height": 51,
+        "width": 128.390625,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_4aa67a42-3069-4d6a-aae5-a2d682849f6e"
+        }
+      },
+      {
+        "__type": "Position",
+        "__id": "pos_PrimitiveType_4aa67a42-3069-4d6a-aae5-a2d682849f6e",
+        "x": 218,
+        "y": 50,
+        "element": {
+          "__type": "Reference",
+          "__refType": "ElementWithSizeAndPosition",
+          "__value": "PrimitiveType_4aa67a42-3069-4d6a-aae5-a2d682849f6e"
+        }
+      }
+    ]
+  },
+  "expected": {
+    "2way-a": [
+      {
+        "op": "update",
+        "path": "/diagram/entities/0/properties/0/name",
+        "value": "identifier"
+      },
+      {
+        "op": "update",
+        "path": "/diagram/entities/0/properties/0/propertyType/__value",
+        "value": "PrimitiveType_bdc12ce3-8dcd-41d4-ab35-cc495fde6c32"
+      },
+      {
+        "op": "update",
+        "path": "/diagram/entities/5/properties/0/name",
+        "value": "SDG"
+      },
+      {
+        "op": "add",
+        "path": "/diagram/relations/2",
+        "value": {
+          "__type": "Association",
+          "__id": "Association_9797e1a3-deb0-4d5b-8c39-d099fe31580d",
+          "source": {
+            "__type": "Reference",
+            "__refType": "Node",
+            "__value": "Class_e15b71e1-f14f-4759-a6d2-31de77c7326d"
+          },
+          "target": {
+            "__type": "Reference",
+            "__refType": "Node",
+            "__value": "Class_b5449861-d5fc-4263-9070-d640e0024b82"
+          },
+          "sourceMultiplicity": "*",
+          "targetMultiplicity": "*",
+          "sourceAggregation": "NONE",
+          "targetAggregation": "NONE",
+          "visibility": "PUBLIC"
+        }
+      }
+    ],
+    "2way-b": [
+      {
+        "op": "delete",
+        "path": "/metaInfos/11",
+        "value": {
+          "__type": "Position",
+          "__id": "pos_Class_b5449861-d5fc-4263-9070-d640e0024b82",
+          "x": 552,
+          "y": 156,
+          "element": {
+            "__type": "Reference",
+            "__refType": "ElementWithSizeAndPosition",
+            "__value": "Class_b5449861-d5fc-4263-9070-d640e0024b82"
+          }
+        }
+      },
+      {
+        "op": "delete",
+        "path": "/metaInfos/10",
+        "value": {
+          "__type": "Size",
+          "__id": "size_Class_b5449861-d5fc-4263-9070-d640e0024b82",
+          "height": 87,
+          "width": 118.3935546875,
+          "element": {
+            "__type": "Reference",
+            "__refType": "ElementWithSizeAndPosition",
+            "__value": "Class_b5449861-d5fc-4263-9070-d640e0024b82"
+          }
+        }
+      },
+      {
+        "op": "delete",
+        "path": "/diagram/entities/5",
+        "value": {
+          "__type": "Class",
+          "__id": "Class_b5449861-d5fc-4263-9070-d640e0024b82",
+          "name": "Category",
+          "isAbstract": false,
+          "properties": [
+            {
+              "__type": "Property",
+              "__id": "Property_17b78784-859c-468f-94e6-bed48cbd7523",
+              "name": "sdg",
+              "isDerived": false,
+              "isOrdered": false,
+              "isStatic": false,
+              "isDerivedUnion": false,
+              "isReadOnly": false,
+              "isNavigable": false,
+              "isUnique": false,
+              "visibility": "PUBLIC",
+              "multiplicity": "*",
+              "propertyType": {
+                "__type": "Reference",
+                "__refType": "DataTypeReference",
+                "__value": "PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb"
+              }
+            }
+          ],
+          "operations": [],
+          "isActive": false,
+          "visibility": "PUBLIC"
+        }
+      },
+      {
+        "op": "delete",
+        "path": "/diagram/relations/1",
+        "value": {
+          "__type": "Association",
+          "__id": "Association_09540d11-3342-40eb-9255-f876f8beec62",
+          "source": {
+            "__type": "Reference",
+            "__refType": "Node",
+            "__value": "Class_b5449861-d5fc-4263-9070-d640e0024b82"
+          },
+          "target": {
+            "__type": "Reference",
+            "__refType": "Node",
+            "__value": "Class_f3557e3c-2d8b-4a2f-a35d-82b331f92741"
+          },
+          "sourceMultiplicity": "*",
+          "targetMultiplicity": "*",
+          "sourceAggregation": "NONE",
+          "targetAggregation": "COMPOSITE",
+          "visibility": "PUBLIC"
+        }
+      },
+      {
+        "op": "update",
+        "path": "/diagram/entities/0/properties/0/name",
+        "value": "sdg"
+      },
+      {
+        "op": "update",
+        "path": "/diagram/entities/0/properties/0/propertyType/__value",
+        "value": "PrimitiveType_0a01b327-590d-414f-a8dc-023f08a56fbb"
+      }
+    ],
+    "3way": {
+      "threeWay": true,
+      "differencesL": [
+        {
+          "id": 0,
+          "kind": "add",
+          "state": 0,
+          "path": "/diagram/relations/2"
+        },
+        {
+          "id": 1,
+          "kind": "update",
+          "state": 0,
+          "path": "/diagram/entities/0/properties/0/name"
+        },
+        {
+          "id": 2,
+          "kind": "update",
+          "state": 0,
+          "path": "/diagram/entities/0/properties/0/propertyType/__value"
+        },
+        {
+          "id": 3,
+          "kind": "update",
+          "state": 0,
+          "path": "/diagram/entities/5/properties/0/name"
+        }
+      ],
+      "differencesR": [
+        {
+          "id": 0,
+          "kind": "delete",
+          "state": 0,
+          "path": "/metaInfos/11"
+        },
+        {
+          "id": 1,
+          "kind": "delete",
+          "state": 0,
+          "path": "/metaInfos/10"
+        },
+        {
+          "id": 2,
+          "kind": "delete",
+          "state": 0,
+          "path": "/diagram/entities/5"
+        },
+        {
+          "id": 3,
+          "kind": "delete",
+          "state": 0,
+          "path": "/diagram/relations/1"
+        },
+        {
+          "id": 4,
+          "kind": "update",
+          "state": 0,
+          "path": "/diagram/entities/0/properties/0/name"
+        },
+        {
+          "id": 5,
+          "kind": "update",
+          "state": 0,
+          "path": "/diagram/entities/0/properties/0/propertyType/__value"
+        }
+      ],
+      "conflicts": [
+        {
+          "leftDiff": {
+            "$ref": "#/differencesL/1"
+          },
+          "rightDiff": {
+            "$ref": "#/differencesR/4"
+          }
+        },
+        {
+          "leftDiff": {
+            "$ref": "#/differencesL/2"
+          },
+          "rightDiff": {
+            "$ref": "#/differencesR/5"
+          }
+        },
+        {
+          "leftDiff": {
+            "$ref": "#/differencesL/0"
+          },
+          "rightDiff": {
+            "$ref": "#/differencesR/2"
+          }
+        },
+        {
+          "leftDiff": {
+            "$ref": "#/differencesL/3"
+          },
+          "rightDiff": {
+            "$ref": "#/differencesR/2"
+          }
+        }
+      ]
+    }
+  }
+}

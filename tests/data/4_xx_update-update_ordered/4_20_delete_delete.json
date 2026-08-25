@@ -1,0 +1,135 @@
+{
+  "base": {
+    "package": {
+      "id": "scml",
+      "classes": [
+        {
+          "id": "Smart City",
+          "references": []
+        },
+        {
+          "id": "Category",
+          "attributes": [
+            {
+              "id": "SDGs",
+              "upperBound": -1,
+              "lowerBound": 1,
+              "type": "int"
+            }
+          ]
+        },
+        {
+          "id": "Project",
+          "references": []
+        },
+        {
+          "id": "InfrastructureComponent",
+          "references": []
+        }
+      ]
+    }
+  },
+  "left": {
+    "package": {
+      "id": "scml",
+      "classes": [
+        {
+          "id": "Smart City",
+          "references": []
+        },
+        {
+          "id": "Project",
+          "references": []
+        },
+        {
+          "id": "InfrastructureComponent",
+          "references": []
+        }
+      ]
+    }
+  },
+  "right": {
+    "package": {
+      "id": "scml",
+      "classes": [
+        {
+          "id": "Smart City",
+          "references": []
+        },
+        {
+          "id": "Category",
+          "attributes": [
+            {
+              "id": "SDGs",
+              "upperBound": -1,
+              "lowerBound": 1,
+              "type": "int"
+            }
+          ]
+        },
+        {
+          "id": "InfrastructureComponent",
+          "references": []
+        }
+      ]
+    }
+  },
+  "expected": {
+    "2way-a": [
+      {
+        "op": "delete",
+        "path": "/package/classes/1",
+        "value": {
+          "id": "Category",
+          "attributes": [
+            {
+              "id": "SDGs",
+              "upperBound": -1,
+              "lowerBound": 1,
+              "type": "int"
+            }
+          ]
+        }
+      }
+    ],
+    "2way-b": [
+      {
+        "op": "delete",
+        "path": "/package/classes/2",
+        "value": {
+          "id": "Project",
+          "references": []
+        }
+      }
+    ],
+    "3way": {
+      "threeWay": true,
+      "differencesL": [
+        {
+          "id": 0,
+          "kind": "delete",
+          "state": 0,
+          "path": "/package/classes/1"
+        }
+      ],
+      "differencesR": [
+        {
+          "id": 0,
+          "kind": "delete",
+          "state": 0,
+          "path": "/package/classes/2"
+        }
+      ],
+      "conflicts": [
+        {
+          "leftDiff": {
+            "$ref": "#/differencesL/0"
+          },
+          "rightDiff": {
+            "$ref": "#/differencesR/0"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -15,7 +15,8 @@ interface ConflictType {
     | "4_xx_update-update_ordered"
     | "5_move-move"
     | "6_insert-insert"
-    | "7_not-categorized";
+    | "7_not-categorized"
+    | "glsp_biguml";
   scenarios: TestSuite[];
 }
 
@@ -153,6 +154,11 @@ const CONFLICT_TYPES_SUITS: ConflictType[] = [
         description:
           "move Category class from first to second position between Project and SmartCity, move Category to third position after Project and SmartCity",
       },
+      {
+        variant: "4_20_delete_delete",
+        description:
+          "delete Category class second position, delete Project from third position",
+      },
     ],
   },
   {
@@ -200,6 +206,16 @@ const CONFLICT_TYPES_SUITS: ConflictType[] = [
       },
     ],
   },
+  {
+    name: "glsp_biguml",
+    scenarios: [
+      {
+        variant: "small_composite_operations",
+        description:
+          "update-update, delete-use, delete-update bigUML composition test",
+      },
+    ],
+  }
 ];
 
 CONFLICT_TYPES_SUITS.forEach((type) => {
