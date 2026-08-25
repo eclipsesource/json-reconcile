@@ -1,4 +1,4 @@
-# json-reconcile [![Project - Active Development](https://img.shields.io/badge/Project-Active-2ea44f)](https://github.com/eclipsesource/.github/blob/main/repository-classification.md) [![Aim - PoC](https://img.shields.io/badge/Aim-PoC-a45b2e)](https://github.com/eclipsesource/.github/blob/main/repository-classification.md)
+# DiCoMe (json-reconcile) [![Project - Active Development](https://img.shields.io/badge/Project-Active-2ea44f)](https://github.com/eclipsesource/.github/blob/main/repository-classification.md) [![Aim - PoC](https://img.shields.io/badge/Aim-PoC-a45b2e)](https://github.com/eclipsesource/.github/blob/main/repository-classification.md)
 
 Typescript library for diffing and merging JSON models
 
@@ -102,18 +102,6 @@ GET /dicome/model/diff
 **Request Body:** -
 
 **Response:** diff model
-
-```bash
-PUT /dicome/apply/[ltr | rtl]
-```
-
-**Request Header:** current session - session cookie
-
-**Parameter:** ltr (left to right) or rtl (right to left)
-
-**Request Body:** list of 1-n changes to apply
-
-**Response:** JSON patch (if technically possible) of diff model and left/right
 
 ```bash
 PUT /dicome/accept
