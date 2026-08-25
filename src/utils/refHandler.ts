@@ -160,7 +160,7 @@ export async function resolveAllRefs3_dereference(
 }
 
 export function directRefExists(pathToCompare: string, value: object): boolean {
-  console.log("------- directRefExists function ------");
+  // console.log("------- directRefExists function ------");
   // console.log("input parameter value: ", value);
   
   const refs = findRefs(value);
