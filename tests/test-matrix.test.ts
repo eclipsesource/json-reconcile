@@ -46,17 +46,17 @@ const CONFLICT_TYPES_SUITS: ConflictType[] = [
           "delete Category class and add reference from Project to Category",
       },
       {
-        variant: "1_3_source_delete",
+        variant: "1_2_source_delete",
         description:
           "delete Project class and add reference from Project to Category",
       },
       {
-        variant: "1_4_feature_update",
+        variant: "1_3_feature_update",
         description:
           "reference from Project to Category already exists, update name and multiplicity of reference and delete Category",
       },
       {
-        variant: "1_5_delete_insert_use",
+        variant: "1_4_delete_insert_use",
         description:
           "newly inserted Project class, the containment to SmartCity and the reference to Category, delete Category",
       }
