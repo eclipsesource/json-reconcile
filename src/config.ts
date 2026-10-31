@@ -1,7 +1,7 @@
 import { Config } from "./interfaces/util.js";
 
 export const CONFIG: Config = {
-  // other options: "id", "_id", "name", $xmi:id
+  // other options: "id", "_id", "__id", "$xmi:id"
   IDENTIFIER: "id",
   ORDERED_LIST: true,
 };
