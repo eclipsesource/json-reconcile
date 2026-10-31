@@ -88,6 +88,9 @@ export function getAllReferences(): void {
   // return this list
 }
 
+/* 
+  in the end we did not used this variant, only used resolveAllRefs2_bunde
+*/
 export function resolveAllRefs_Sol1(
   jsonFilePath: string,
 ): Promise<RetrievedResolvedRefsResults> {
