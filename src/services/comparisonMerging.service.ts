@@ -74,9 +74,10 @@ export function createDiff3Way(
     conflicts: [],
   };
 
+  console.time('TWO WAY');
   const diffsLeft = createDiff2Way(original, left);
-
   const diffsRight = createDiff2Way(original, right);
+  console.timeEnd('TWO WAY');
 
   if (diffsLeft == undefined || diffsRight == undefined) {
     // left or right is the same as orginal, so no conflicts but differences
@@ -103,8 +104,9 @@ export function createDiff3Way(
     return diffModel;
   }
 
-  console.log("jsonpatch result left", JSON.stringify(diffsLeft));
-  console.log("jsonpatch result right", JSON.stringify(diffsRight));
+  // console.log("jsonpatch result left", JSON.stringify(diffsLeft, null, 2));
+  // console.log()
+  // console.log("jsonpatch result right", JSON.stringify(diffsRight, null, 2));
 
   /* 
   if (algoVariation.nested) {
@@ -132,8 +134,9 @@ export function createDiff3Way(
       diffModel,
     );
   }
-*/
+  */
 
+  console.time('PREP & CONFLICT DETECTION');
   if (algoVariation.eficient) {
     const diffMapL = prepareDiffMap(diffsLeft);
     const diffMapR = prepareDiffMap(diffsRight);
@@ -176,7 +179,9 @@ export function createDiff3Way(
       diffModel,
     );
   }
+  console.timeEnd('PREP & CONFLICT DETECTION');
 
+  console.log("------ TOTAL CONFLICT COOOUNT: ", diffModel.conflicts.length)
   return diffModel;
 }
 

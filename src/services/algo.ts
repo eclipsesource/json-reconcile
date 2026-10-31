@@ -20,7 +20,7 @@ export function runtimeImprovedMapImplementations(
   diffMapRight: DiffGroupByOpAndPath,
   diffModel: DiffModel,
 ): DiffModel {
-  console.log("----------- INSERT INSERT or USE DELETE conflict ? -----------");
+  // console.log("----------- INSERT INSERT or USE DELETE conflict ? -----------");
   for (const pathLeft of diffMapLeft.add.keys()) {
     
     const matchingLeftAdd = diffMapLeft.add.get(pathLeft);
@@ -29,10 +29,10 @@ export function runtimeImprovedMapImplementations(
     if (matchingLeftAdd !== undefined && matchingRightAdd !== undefined) {
 
       if (isUpdateUpdateTheSameConflict(matchingLeftAdd, matchingRightAdd)) {
-        console.log("INSER INSERT THE SAME conflict !!");
+        // console.log("INSER INSERT THE SAME conflict !!");
         addConflict(matchingLeftAdd, matchingRightAdd, diffModel);
       } else if (CONFIG.ORDERED_LIST == true) {
-        console.log("INSER INSERT conflict !!");
+        // console.log("INSER INSERT conflict !!");
         addConflict(matchingLeftAdd, matchingRightAdd, diffModel);
       }
     }
@@ -43,29 +43,25 @@ export function runtimeImprovedMapImplementations(
         if (
           isDeleteUseConflict(matchingLeftAdd.opInfo, matchingRightDelete.opInfo)
         ) {
-          console.log("----------- USE DELETE conflict !! -----------");
+          // console.log("----------- USE DELETE conflict !! -----------");
           addConflict(matchingLeftAdd, matchingRightDelete, diffModel);
         } else if (
           isParentChildDeleteUseConflict(matchingLeftAdd.opInfo, matchingRightDelete.opInfo)
         ) {
-          console.log(
-            "----------- PARENT CHILD -- USE DELETE conflict :O !! -----------",
-          );
+          // console.log("----------- PARENT CHILD -- USE DELETE conflict :O !! -----------",);
           addConflict(matchingLeftAdd, matchingRightDelete, diffModel);
         }
       }
     }
   }
 
-  console.log(
-    "----------- UPDATE UPDATE or UPDATE DELETE conflict ? -----------",
-  );
+  // console.log("----------- UPDATE UPDATE or UPDATE DELETE conflict ? -----------",);
   for (const pathLeft of diffMapLeft.update.keys()) {
     const matchingLeftUpdate = diffMapLeft.update.get(pathLeft);
     const matchingRightUpdate = diffMapRight.update.get(pathLeft);
 
     if (matchingLeftUpdate !== undefined && matchingRightUpdate !== undefined) {
-      console.log("UPDATE UPDATE conflict !!");
+      // console.log("UPDATE UPDATE conflict !!");
       addConflict(
         matchingLeftUpdate,
         matchingRightUpdate,
@@ -76,7 +72,7 @@ export function runtimeImprovedMapImplementations(
     const matchingRightDelete = diffMapRight.delete.get(pathLeft);
 
     if (matchingRightDelete !== undefined && matchingLeftUpdate !== undefined) {
-      console.log("----------- UPDATE DELETE conflict :O !! -----------");
+      // console.log("----------- UPDATE DELETE conflict :O !! -----------");
       addConflict(matchingLeftUpdate, matchingRightDelete, diffModel);
     }
 
@@ -87,23 +83,19 @@ export function runtimeImprovedMapImplementations(
         pathLeft.startsWith(k) &&
         pathLeft.split("/").length > k.split("/").length
       ) {
-        console.log(
-          "----------- PARENT CHILD -- UPDATE DELETE conflict :O !! -----------",
-        );
+        // console.log("----------- PARENT CHILD -- UPDATE DELETE conflict :O !! -----------");
         addConflict(matchingLeftUpdate, matchingRightParentDelete, diffModel);
       } else if (
         matchingLeftUpdate !== undefined &&
         matchingLeftUpdate.opInfo.value as string === '#' + k
       ) {
-        console.log(
-          "----------- direct ref value UPDATE DELETE conflict :O !! -----------",
-        );
+        // console.log("----------- direct ref value UPDATE DELETE conflict :O !! -----------");
         addConflict(matchingLeftUpdate, matchingRightParentDelete, diffModel);
       }
     }
   }
 
-  console.log("----------- MOVE MOVE conflict ? -----------");
+  // console.log("----------- MOVE MOVE conflict ? -----------");
   for (const pathLeft of diffMapLeft.move.keys()) {
     const matchingPathRight = diffMapRight.move.get(pathLeft);
     const matchingPathLeft = diffMapLeft.move.get(pathLeft);
@@ -118,7 +110,7 @@ export function runtimeImprovedMapImplementations(
         (matchingPathRight.opInfo.value as Record<string, undefined>)[CONFIG.IDENTIFIER]
       )
     ) {
-      console.log("MOVE MOVE conflict !!");
+      // console.log("MOVE MOVE conflict !!");
       addConflict(matchingPathLeft, matchingPathRight, diffModel);
     }
 
@@ -129,7 +121,7 @@ export function runtimeImprovedMapImplementations(
       matchingPathLeft.opInfo.value == null && matchingFromRight.opInfo.value == null &&
       CONFIG.ORDERED_LIST == true
     ) {
-      console.log("MOVE MOVE (special case reordering) conflict !!");
+      // console.log("MOVE MOVE (special case reordering) conflict !!");
       addConflict(matchingPathLeft, matchingFromRight, diffModel);
     }
 
@@ -141,27 +133,27 @@ export function runtimeImprovedMapImplementations(
           matchingPathLeft.opInfo.value == null && right.opInfo.value == null &&
           CONFIG.ORDERED_LIST == true
         ) {
-          console.log("MOVE MOVE (special case reordering) conflict !!");
+          // console.log("MOVE MOVE (special case reordering) conflict !!");
           addConflict(matchingPathLeft, right, diffModel);
         }
         if (matchingPathLeft !== undefined && matchingPathLeft.opInfo.from === right.opInfo.from &&
           pathLeft !== k &&
           matchingPathLeft.opInfo.value == null && right.opInfo.value == null
         ) {
-          console.log("MOVE MOVE (mysteriosss) conflict !!");
+          // console.log("MOVE MOVE (mysteriosss) conflict !!");
           addConflict(matchingPathLeft, right, diffModel);
         }
       }
     }
   }
 
-  console.log("----------- DELETE UPDATE or DELETE USE or DELETE MOVE conflict ? -----------");
+  // console.log("----------- DELETE UPDATE or DELETE USE or DELETE MOVE conflict ? -----------");
   for (const pathLeft of diffMapLeft.delete.keys()) {
     const matchingLeftDelete = diffMapLeft.delete.get(pathLeft);
     const matchingRightUpdate = diffMapRight.update.get(pathLeft);
 
     if (matchingRightUpdate !== undefined && matchingLeftDelete !== undefined) {
-      console.log("----------- DELETE UPDATE conflict :O !! -----------");
+      // console.log("----------- DELETE UPDATE conflict :O !! -----------");
       addConflict(matchingLeftDelete, matchingRightUpdate, diffModel);
     }
 
@@ -172,16 +164,14 @@ export function runtimeImprovedMapImplementations(
         k.startsWith(pathLeft) &&
         k.split("/").length > pathLeft.split("/").length
       ) {
-        console.log(
-          "----------- PARENT CHILD -- DELETE UPDATE conflict :O !! -----------",
-        );
+        // console.log("----------- PARENT CHILD -- DELETE UPDATE conflict :O !! -----------");
         addConflict(matchingLeftDelete, matchingRightChildUpdate, diffModel);
       }
     }
 
     const pathMatchingRightAdd = diffMapRight.add.get(pathLeft);
     if (pathMatchingRightAdd !== undefined && matchingLeftDelete !== undefined) {
-      console.log("----------- DELETE USE conflict :O !! -----------");
+      // console.log("----------- DELETE USE conflict :O !! -----------");
       addConflict(matchingLeftDelete, pathMatchingRightAdd, diffModel);
     }
 
@@ -193,9 +183,7 @@ export function runtimeImprovedMapImplementations(
           matchingRightAdd.opInfo,
         )
       ) {
-        console.log(
-          "----------- PARENT CHILD -- DELETE USE conflict :O !! -----------",
-        );
+        // console.log("----------- PARENT CHILD -- DELETE USE conflict :O !! ----------");
         addConflict(matchingLeftDelete, matchingRightAdd, diffModel);
       }
     }
@@ -205,17 +193,13 @@ export function runtimeImprovedMapImplementations(
         matchingLeftDelete !== undefined
         && (k.startsWith(pathLeft) || isDeleteMoveConflict(matchingLeftDelete.opInfo, matchingRightMove.opInfo))
       ) {
-        console.log(
-          "----------- DELETE MOVE conflict :O !! -----------",
-        );
+        // console.log("----------- DELETE MOVE conflict :O !! -----------");
         addConflict(matchingLeftDelete, matchingRightMove, diffModel);
       }
     }
   }
 
-  console.log(
-    "----------- special USE DELETE or MOVE DELETE conflict, path contained ? -----------",
-  );
+  // console.log("----------- special USE DELETE or MOVE DELETE conflict, path contained ? ---------");
   for (const pathRight of diffMapRight.delete.keys()) {
     const matchingRightDelete = diffMapRight.delete.get(pathRight);
 
@@ -227,9 +211,7 @@ export function runtimeImprovedMapImplementations(
           matchingLeftAdd !== undefined &&
           matchingRightDelete !== undefined
         ) {
-          console.log(
-            "----------- USE DELETE conflict (path contained) conflict :O !! -----------",
-          );
+          // console.log("----------- USE DELETE conflict (path contained) conflict :O !! ----------");
           addConflict(matchingLeftAdd, matchingRightDelete, diffModel);
         }
         break; // really ? break? but what if there is one more use delete conflict?
@@ -243,9 +225,7 @@ export function runtimeImprovedMapImplementations(
           matchingLeftMove.opInfo.path.startsWith(pathRight) ||
           isDeleteMoveConflict(matchingLeftMove.opInfo, matchingRightDelete.opInfo)
         ) {
-          console.log(
-            "----------- MOVE DELETE ($ref change) conflict :O !! -----------",
-          );
+          // console.log("----------- MOVE DELETE ($ref change) conflict :O !! -----------");
           addConflict(matchingLeftMove, matchingRightDelete, diffModel);
         }
 
@@ -254,9 +234,7 @@ export function runtimeImprovedMapImplementations(
           k === pathRight &&
           isDeepStrictEqual(matchingLeftMove.opInfo.value, matchingRightDelete.opInfo.value)
         ) {
-          console.log(
-            "----------- MOVE DELETE (object moving within json) conflict :O !! -----------",
-          );
+          // console.log("----------- MOVE DELETE (object moving within json) conflict :O !! ----------");
           addConflict(matchingLeftMove, matchingRightDelete, diffModel);
         }
       }

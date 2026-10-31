@@ -186,8 +186,8 @@ export function childParentRefExists(
   pathToCompare: string,
   value: object,
 ): boolean {
-  console.log("------- childParentRefExists function ------");
-  console.log("input parameter value: ", value);
+  // console.log("------- childParentRefExists function ------");
+  // console.log("input parameter value: ", value);
   const refs = findRefs(value);
 
   const uriReferencePath = "#" + pathToCompare;

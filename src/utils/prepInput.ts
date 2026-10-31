@@ -152,7 +152,7 @@ function groupByOperationAndPath(
 function gatherUpMoveOpsFromDeleteAdd(
   diffMap: DiffGroupByOpAndPath
 ): DiffGroupByOpAndPath {
-  console.log("------------ gatherUpMoveOpsFromDeleteAdd -------------");
+  // console.log("------------ gatherUpMoveOpsFromDeleteAdd -------------");
 
   const diffMapWithMove: DiffGroupByOpAndPath = {
     add: diffMap.add,
@@ -171,8 +171,8 @@ function gatherUpMoveOpsFromDeleteAdd(
     ...[...diffMap.add.values()]
   );
 
-  console.log("FLATTEN DELETE: ", JSON.stringify(flattenDelete));
-  console.log("FLATTEN ADD: ", JSON.stringify(flattenAdd));
+  // console.log("FLATTEN DELETE: ", JSON.stringify(flattenDelete, null, 2));
+  // console.log("FLATTEN ADD: ", JSON.stringify(flattenAdd, null, 2));
 
   for (const diffAdd of flattenAdd) {
     const foundDelete = flattenDelete.find(
