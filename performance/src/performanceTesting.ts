@@ -2,7 +2,7 @@ import path, { dirname } from "path";
 import { InputModels } from "../../src/interfaces/inputmodels.js";
 import { fileURLToPath } from "url";
 import { convertAllXML, writeJson } from "./utils.js";
-import { resolveAllRefs2_bunde, resolveAllRefs_Sol1 } from "../../src/utils/refHandler.js";
+import { resolveAllRefs2_bunde } from "../../src/utils/refHandler.js";
 import { JSONValue } from "../../src/utils/jsonHelper.js";
 import * as comparissonMergingService from "../../src/services/comparisonMerging.service.js";
 
@@ -21,7 +21,7 @@ enum Side {
   ORIGINAL = "original",
 }
 
-const selectedSize = Size.SMALL;
+const selectedSize = Size.NOMINAL;
 const selectedSide = Side.ORIGINAL;
 
 const xmlFolderPath = path.join(
