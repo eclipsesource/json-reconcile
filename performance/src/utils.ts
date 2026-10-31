@@ -1,5 +1,5 @@
 import path from "path";
-import fs from "fs";
+import * as fs from 'node:fs';
 import { X2jOptions, XMLParser } from "fast-xml-parser";
 
 export function convertAllXML(xmlFolderPath: string, jsonFolderPath: string) {
@@ -144,12 +144,10 @@ export function writeJson(
   filename: string,
 ): void {
   const fullPath = path.join(targetPath, `${filename}.json`);
-  fs.writeFile(
+
+  fs.writeFileSync(
     fullPath,
     stringifiedContent,
     { flag: "w", encoding: "utf8" }, // file will be created if it does not exist
-    (err: unknown) => {
-      if (err) throw err;
-    },
   );
 }
